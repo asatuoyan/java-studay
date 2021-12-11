@@ -1,0 +1,9 @@
+* 解决问题
+** 功能问题
+   java,jsp,tomcat
+** 扩展性问题
+   struts spring springMVC
+** 解决性能问题
+   NOSQL,java线程，Hadoop,Nginx,MQ,ElasticSearch
+** nosql数据库
+   1. 使用nosql存储用户存储，不需要Io操作

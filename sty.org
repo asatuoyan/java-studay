@@ -1,0 +1,123 @@
+Loading /home/akinjoker/.emacs.d/custom.el (source)...done
+Warning: Cannot find nixos option file.
+Loading /home/akinjoker/.emacs.d/graphviz-dot-mode.el (source)...done
+Loading /home/akinjoker/.emacs.d/.session...done
+Restoring clock data
+Loading /home/akinjoker/.emacs.d/org-clock-save.el (source)...done
+Desktop: 3926.73ms to restore ~/web_code/html&css.org
+Desktop: 1004.83ms to restore ~/web_code/轮播图/style.css
+Desktop: 250.19ms to restore ~/web_code/轮播图/轮播图.html
+Desktop: 157.24ms to restore nil
+Desktop: 486.61ms to restore nil
+Desktop: 230.35ms to restore ~/web_code/day04/layout.css
+Desktop: 251.29ms to restore ~/web_code/day04/BFC.html
+Desktop: 248.62ms to restore /etc/motd
+Desktop: 217.36ms to restore nil
+Desktop: 210.55ms to restore ~/emacs-study.org
+Desktop: 279.77ms to restore ~/web_code/day04/高度塌陷.html
+Desktop: 245.23ms to restore ~/web_code/day04/simple-layout.html
+Desktop: 276.92ms to restore ~/web_code/day04/nav.css
+Desktop: 278.75ms to restore ~/web_code/day04/导航条.html
+Desktop: 258.25ms to restore ~/web_code/html&css.org_archive
+Desktop: 239.94ms to restore nil
+Desktop: 367.49ms to restore ~/web_code/day04/浮动.html
+Desktop: 280.72ms to restore ~/Desktop/problem_answer.txt
+Setting up indent for shell type bash
+Indentation variables are now local.
+Indentation setup for shell type bash
+Desktop: 415.76ms to restore ~/Downloads/USB-Driver/startnetwork.sh
+Desktop: 485.71ms to restore ~/web_code/day04/box-size.html
+Desktop: 473.81ms to restore ~/web_code/exam1/sport-news.css
+Desktop: 514.52ms to restore ~/web_code/exam1/網易新聞.html
+Desktop: 312.06ms to restore ~/web_code/exam1/news.css
+Desktop: 430.28ms to restore ~/web_code/exam1/网易新闻右侧的列表.html
+Desktop: 317.90ms to restore ~/web_code/exam1/img-list.css
+Desktop: 417.05ms to restore nil
+Desktop: 303.50ms to restore nil
+Desktop: 354.94ms to restore ~/web_code/day03/news.css
+Desktop: 357.42ms to restore ~/web_code/exam1/图片列表.html
+Desktop: 370.97ms to restore ~/web_code/exam1/jingdong-list.css
+Desktop: 380.04ms to restore ~/web_code/exam1/京东左侧导航栏.html
+Desktop: 390.81ms to restore ~/graphviz/潜鱼书阁.gv
+Desktop: 387.06ms to restore ~/web_code/day03/hyperlink-pseudo.html
+Loading mmm-sample...done
+Desktop: 451.17ms to restore ~/web_code/day03/关系选择器.html
+Desktop: 371.27ms to restore ~/graphviz/test.gv
+Desktop: 395.07ms to restore ~/web_code/day03/style.css
+Desktop: 453.73ms to restore ~/web_code/day03/css语法.html
+Desktop: 614.98ms to restore ~/web_code/day03/index.html
+Desktop: 411.20ms to restore ~/web_code/day02/iframe.html
+Desktop: 557.66ms to restore ~/web_code/day02/audio.html
+Desktop: 566.20ms to restore /usr/local/share/emacs/27.2/etc/COPYING
+Desktop: 566.73ms to restore ~/web_code/day02/hyperlink.html
+Desktop: 508.31ms to restore nil
+Desktop: 545.89ms to restore ~/disk-manager.org
+Desktop: 574.28ms to restore ~/java-think-graph/Collection.gv
+Desktop: 596.33ms to restore ~/Desktop/第1部分：Java基础编程/尚硅谷_宋红康_第2章_基本语法/代码整洁之道_关于标识符.txt
+Desktop: 589.27ms to restore ~/web_code/day02/list.html
+Desktop: 697.84ms to restore ~/web_code/day01/exer1/space.html
+Desktop: 842.17ms to restore ~/.emacs.d/lisp/init-local.el
+Desktop: 482.12ms to restore ~/web_code/day01/exer1/index2.html
+Desktop: 438.22ms to restore nil
+Desktop: 428.42ms to restore nil
+Desktop: 496.73ms to restore ~/web_code/day01/exer1/index.html
+Desktop: 440.75ms to restore ~/the-fear-and-the-freedom.org
+Desktop: 484.65ms to restore /etc/network/interfaces
+Desktop: 457.38ms to restore ~/linux.gv
+Type C-c C-c or C-c C-x to view the image as text or hex.
+Desktop: 504.51ms to restore ~/graphviz/潜鱼书阁.png
+Desktop: 499.83ms to restore ~/graphviz/线程生命周期.gv
+uncompressing desktop.el.gz...done
+Desktop: 617.70ms to restore /usr/local/share/emacs/27.2/lisp/desktop.el.gz
+Desktop: 511.33ms to restore ~/graphviz/MVC.gv
+Desktop: 515.45ms to restore ~/java-think-graph/Object-Oriented.gv
+Desktop: 659.19ms to restore ~/.emacs.d/lisp/init-locales.el
+Desktop: 562.22ms to restore nil
+Desktop: 545.40ms to restore nil
+Desktop: 611.35ms to restore ~/graphviz/潜鱼书阁管理.gv
+Desktop: 956.15ms to restore /usr/local/share/emacs/27.2/lisp/loaddefs.el
+Desktop: 639.08ms to restore ~/elisp-test.el
+Desktop: 797.87ms to restore ~/.emacs.d/init.el
+Desktop: 642.27ms to restore nil
+Invalid image size (see ‘max-image-size’) [2 times]
+Type C-c C-c or C-c C-x to view the image as text or hex.
+Invalid image size (see ‘max-image-size’) [4 times]
+Desktop: 1003.41ms to restore ~/java-think-graph/Object-Oriented.png
+Type C-c C-c or C-c C-x to view the image as text or hex.
+Desktop: 769.61ms to restore ~/java-think-graph/Collection.png
+Desktop: 626.65ms to restore nil
+Type C-c C-c or C-c C-x to view the image as text or hex.
+Desktop: 708.17ms to restore ~/graphviz/潜鱼书阁管理.png
+Setting up indent for shell type bash
+Indentation variables are now local.
+Indentation setup for shell type bash
+Desktop: 682.99ms to restore ~/bin/mullvad-install.sh
+Wrote /home/akinjoker/.emacs.d/.emacs.desktop.lock
+Desktop: 1 frame, 74 buffers restored.
+Desktop restored in 39626.34ms
+Loading /home/akinjoker/.emacs.d/recentf...done
+Cleaning up the recentf list...done (0 removed)
+Saving file /home/akinjoker/.emacs.d/custom.el...
+Wrote /home/akinjoker/.emacs.d/custom.el
+init completed in 4412.61ms
+For information about GNU Emacs and the GNU system, type C-h C-a.
+Window dedicated to html&css.org
+next-line: End of buffer [5 times]
+C-c C-g is undefined
+next-line: End of buffer [7 times]
+Saving file /home/akinjoker/web_code/html&css.org...
+Wrote /home/akinjoker/web_code/html&css.org
+Saving file /home/akinjoker/web_code/html&css.org...
+Wrote /home/akinjoker/web_code/html&css.org
+Saving file /home/akinjoker/web_code/html&css.org...
+Wrote /home/akinjoker/web_code/html&css.org
+Saving file /home/akinjoker/web_code/html&css.org...
+Wrote /home/akinjoker/web_code/html&css.org
+Saving file /home/akinjoker/web_code/html&css.org...
+Wrote /home/akinjoker/web_code/html&css.org
+Saving file /home/akinjoker/web_code/html&css.org...
+Wrote /home/akinjoker/web_code/html&css.org
+command-execute: Buffer is read-only: #<buffer *Messages*> [2 times]
+C-h C-g is undefined
+Quit
+(No changes need to be saved)

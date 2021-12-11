@@ -1,0 +1,43 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /home/akinjoker/study-org/js.org
+
+
+* Archive
+
+** COMMENT bind 为指定函数绑定响应元素
+   :PROPERTIES:
+   :ARCHIVE_TIME: 2021-10-03 Sun 01:13
+   :ARCHIVE_FILE: ~/study-org/js.org
+   :ARCHIVE_OLPATH: DOM（Dcoument Object Model）/事件的绑定
+   :ARCHIVE_CATEGORY: js
+   :END:
+   #+begin_export html
+   /*
+   <script>
+
+   </script>
+   ,*/
+   #+end_export
+
+* 节点的基本介绍
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2021-12-24 Fri 21:46
+  :ARCHIVE_FILE: /home/akinjoker/study-org/js.org
+  :ARCHIVE_OLPATH: DOM（Dcoument Object Model）/html操作
+  :ARCHIVE_CATEGORY: js
+  :END:
+  浏览器已经为我们提供文档节点对象这个对象是window属性,可以在页面中直接使用,
+  文档节点代表的是整个网页
+ * 节点Node,是构成我们网页的最基本的组成部分，网页中的每一个部分都可以
+   称为是一个节点
+ * 比如: html标签，属性，文本，注释，整个文档等都是一个节点.
+ * 虽然都是节点，但是实际上我们的具体类型是不同的。
+ * 比如：标签我们称为元素节点，属性称为属性节点，文本称为文本节点，文档称为
+   文档节点
+ * 常用节点分为四类
+   - 文档节点: 整个Html文档
+   - 元素节点: HTML文档中的HTML标签
+   - 属性节点: 元素的属性
+   - 文本节点: HTML标签

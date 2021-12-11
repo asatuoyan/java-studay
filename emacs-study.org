@@ -1,0 +1,100 @@
+* emacs study
+**  emacs install
+**  emacs command
+*** 移动命令
+- C-a C-e start and end
+- C-v 向下移动一个屏幕
+- M-v 向上移动一个屏幕
+- C-L 清理屏幕并且显示整个文本，移动光标到屏幕中心
+- C-p 向上一行 C-n 向下一行
+- C-b 屏幕上光标一个字母一个字母backward(向左（同行）)移动
+  C-f 屏幕上光标一个字母一个字谜forward（向右（同行）移动）
+- M-b M-f 一个字符一个字符的向backward或者forward移动 M-p M-n 未定义
+- C-a 移动到一行的开始 C-e 移动到一行的结尾
+- M-a 移动到一条语句的开始 M-e 移动到一句的结尾
+- C-u 8 C-f 向前移动八个字母单位
+- C-u 8 C-v(M-v) 向下卷动8行
+- 1和t是打开 0和 -1为关闭
+
+** 窗口命令
+  C-x 1 只留下一个窗口，干掉剩下所有窗口
+  C-u 0 C-l 移动光标到本行 从屏幕0行开始显示
+  C-h k C-f 显示C-f命令的文档
+  C-x 2 开启第二个窗口在下面 C-x 3 开启窗口在右边
+  C-x 0 关闭当前窗口
+** switch buffer
+    -C-x C-B 可以切换到最近使用的文件
+** disabled commands
+** F1-F12
+    - F1 help-command
+
+** buffer-command
+  eval-buffer 执行buffer中的所有命令
+** mark
+    ctrl+shift+space
+ * major mode and miner mode
+ ** major mode 同时只能激活一个
+ * minor mode 同时可以激活多个
+** indent
+** hippie expan(补全)
+** create directory
+   +: to create directory
+   C-x C-f: to create file
+   g: to refresh dired buffer
+   C(upper letter): copy file
+   D: delete file after confirm
+   d: delete that only marking
+   R: rename files
+** dired(目录，文件的显示)
+   C-x C-j 打开当前目录
+* buffer
+** buffer-local
+   - emacs 中一些变量是"buffer-local" 如果不是buffer-local 那么setq 和setq-default
+     是等价的，反之则不等价，setq-default修改全局变量的值。
+
+** mode
+   - (dekete-selection-mode t) 当选中时，输入characters,选中内容被替换
+   - add-hook 'emacs-lisp-mode-hook 'show-paren-mode
+     向emacs-lisp major mode上添加钩子，打开文件后，加载majormode，之后添加所有钩子
+   - hungry-delete-mode 删除
+   - package-list-packages (I(install)/delete/update)
+     按下I可以选中安装的package,按下U则可以取消
+   - smex 提供说明为M-x
+   - swiper 为M-x 输入命令时提供补全
+   - smartparen 智能双括号
+** 激活的mode
+   c-h m 查看的激活的mode
+** load
+   require 实际上内部调用load来加载文件
+* short keyword setting
+** 按键设置
+    kbd "M-<return>"
+** RET 按键
+    RET = C-m 在图形界面中，当按下<Enter>/<Return> 键实际上向Emacs发送<Return>
+    而Emacs自动将<return>映射为RET。
+** customize
+    - customize group 自定义Mode功能
+   org mode
+* org
+** table
+    |--*-----|
+    alt + 右箭头
+    alt+  up 或者down 移动当前行
+  * heml
+    M-; comment-dwim 设置为注释
+
+** TODO org todo事项
+   :LOGBOOK:
+   CLOCK: [2021-09-29 Wed 04:03]
+   :END:
+   todo  C-c C-t 标记todo事项
+   timer C-c C-x 标记待做事项的事件
+
+** org-capture [记笔记]
+   
+* lisp
+** COMMENT require
+   请求文件功能，如果没有设置默认文件，则使用请求的文件名作为默认文件名
+   中加载
+** defun-advice
+   可以增强函数增强功能，但是不用修改函数代码

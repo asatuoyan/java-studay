@@ -1,0 +1,94 @@
+* git操作
+** 基础设置
+   git init
+   git add .(目录)
+   git commit -m 'first commit'
+   git reset --hard HEAD
+   git reset --hard HEAD^
+   rm filename -> git add filename  -> git commit -m "delete filename" filename
+   工作区         缓冲区               提交
+   删除前，文件存在时的状态提交到本地库
+   - 删除操作已经提交到本地库，指针指向历史记录
+   - 删除操作尚未提交到本地库, 指针位置使用HEAD
+   
+** 基本操作
+   - git status
+   - git add(file name) 将工作区的修改添加到缓冲区
+   - git command -m "commit message" [file name] 添加到分支
+   - git --pretty=oneline 以最简洁的方式显示一行
+   - git reflog HEAD[@] @移动到当前版本需要多少步
+** git差异
+   1. git以行为单位进行文件管理,文件删除和修改git diff进行比较
+   2. git diff 将工作区和暂存区进行比较
+      git diff[本地库中的历史版本][文件名]
+         e     将文件和本地历史记录进行比较
+** git历史记录的管理
+   可以基于HEAD指针可以操作历史记录的回退和前进
+   1. 基于索引值 git reset --hard 344e620(一部分索引值) 
+   2. 使用^符号 git reset --hard HEAD^^ 回退两步
+   3. 基于~符号 git reset --hard HEAD~n 回退n步
+** reset命令的三个参数对比
+   1. --soft 参数
+      仅仅在本地库移动HEAD指针
+   2. --mixed 参数
+      在本地库移动HEAD指针
+      重置缓冲区
+   3. --hard 参数
+      在本地库移动HEAD指针
+      重置暂存区
+      重置工作区
+** 拉取
+   pull=fetch+merge
+   git fetch [远程地址别名] [远程分支名]
+   git merge [远程地址别名]/远程分支名
+** 解决冲突
+   - 要点
+     - 如果不是基于Github远程库的最新所做的修改,不能推送，必须拉取
+     - 拉取下来后如果进入冲突状态，则按照分支冲突解决操作解决即可
+* git分支
+** 分支
+   1. 同时推进多个功能开发，提高开发效率
+   2. 各个分支在开发过程中，如果某一个分支开发失败，不会对其它分支有任何影响
+** 分支操作
+   1. git branch branchName
+   2. git branch -v
+   3. git branch checkout branchName
+   4. git commit
+** 合并分支
+   1. 切换到接受修改的分支(被合并，增加新内容)
+   2. 执行merge命令 git merge branchName(新内容的分支)
+   3. 冲突
+      >>>>>>> edit by 分支名
+      conflict
+      -------
+   4. git add filename 标记文件为已解决
+** 克隆
+   - 完整下载远程库到本地
+   - 创建orign远程地址别名
+   - 初始化本地库
+   - 
+* git区域
+  1. 工作区 git add
+  2. 暂存区 git commit 提交到本地库
+  3. 本地库
+  4. git pull request 发起代码审核请求 merge合并
+* git签名
+  username
+  email
+  作用： 区分开发人员的身份
+  辨析： 这里设置的签名和登录远程库（代码托管中心的帐号没有一点关系）
+  命令： 项目级别/仓库级别 仅仅在当前范围内有效 ,保存位置为当前目录下的config文件
+         - git config user.name
+	 - git config user.email asatuoyan@gmail.com
+  系统用户级别：系统用户级别，登录当前操作系统的用户范围
+         - git config --global
+  优先级
+     - 就近原则，项目级别优先级优于系统用户优先级别，二者都有时采用项目级别
+       签名，如果只有系统，就以系统用户优先
+     - 二者如果都没有不容许操作
+* Magit基本操作
+** status buffer
+1. C-m g s 进入git status,同时可以得到类似于git diff git cached以及其它命令类似的信息
+2. d d 当两次键入d时，显示commit的diff 按一次时可以展示一个diff popup的内容
+3. l 来显示日志信息
+4. 

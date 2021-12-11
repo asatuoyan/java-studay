@@ -1,0 +1,4 @@
+* StringBuffer和StringBuilder
+   1. StringBuffer线程安全，但是速度不够快 JDK8中使用char[] 数组实现
+   2. StringBuilder线程不安全，但是速度快 JDK8中使用char[] 数组实现
+      

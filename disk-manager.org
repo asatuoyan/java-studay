@@ -1,0 +1,3 @@
+* disk-manager
+** lvm-extended
+   sudo lvresize -L +100G vgdebian/himer

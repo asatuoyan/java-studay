@@ -1,0 +1,12 @@
+* Cookie
+** 什么是Cookie
+   1. 是服务器通知客户端保存键值对的一种技术
+   2. 客户端，有了Cookie后，每次请求都发送给服务器
+   3. 每个Cookie大小不能超过4kb
+** 创建Cookie
+   1. 创建Cookie对象
+   2. 通知客户端保存Cookie
+   3. 通过响应头SetCookie通知客户端保存Cookie
+   4. 客户端：收到响应后，发现有set-Cookie响应头，就去看一下，没有就创建，
+      有就修改
+

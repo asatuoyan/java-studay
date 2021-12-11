@@ -1,0 +1,184 @@
+* java语言概述
+** java语言特点
+   1. 面向对象
+      - 基本 类，对象
+      - 特性 封装 继承 多态
+   2. 健壮性
+      吸收C/C++的优点，但去掉了影响程序健壮性的部分（如指针，内存的申请与释放等）
+      提供一个相对安全的内存管理和访问机制
+   3. 跨平台性
+      由于JVM的存在，java语言可以实现跨平台
+
+** java核心机制
+   1. java虚拟机(JVM JAVA VIRTAL MACHINE)
+      - JVM是一个虚拟的计算机，具有指令集并使用不同的存储区域，负责执行指令，管理
+        数据，内存和寄存器等。
+      - 不同的平台，有不同虚拟机
+      - 虚拟机屏蔽了底层的运行平台的差别。
+   2. 垃圾回收
+      - 垃圾回收在java程序运行中自动进行，程序员无法精确控制和干预
+** java的环境
+   JDK=JRE + 开发工具包
+   JRK=JVM + javaSE标准类库
+
+* java基本语法
+** 关键字和保留字
+*** 关键字(keyword)
+    定义： 由java赋予了特殊含义，有专门用途的字符串
+    特点： 关键字中的所有字母为小写
+*** 保留子(reserved word)
+    定义： 现版本尚未使用，但以后的版本可能作为关键字使用。自己命名标识符时
+    要避免这类保留字 goto const
+** 标识符(identifier)
+   1. java对各种变量，方法和类名等要素命名时使用的字符序列称为标识符
+   2. 标识符的命名规则(不能违反)
+      - 标识符由26个字母，0-9, $和_(下划线)组成
+      - 标识符不能以数字开头
+      - 不可以使用关键字和保留字，但是可以包含它们
+      - JAVAA中严格区分大小写，长度无限制
+      - 标识符不能包含空格
+   3. java中的名称命名规范
+      :包名:          多单词组成时所有字母都小写： helloworld
+      :类名，接口名:  多单组成时，所有单词的首字母都大写: HelloWorld
+      :变量名，方法名: 多单词组成时，第一个单词首字母都小写，第二个每个单词
+                        首字母都大写 helloWorld
+      :常量名: 所有字母都大写
+   注意： 尽量避免名字毫无意义
+   注意2： java采用unicode字符集，因此标识符可以使用汉字，但是不建议
+** 变量
+*** 变量的概念
+    - 内存中的一个存储区域
+    - 该区域的数据可以在同一类型范围内不断变化
+    - 变量是程序中基本的储存单元，包含变量名，变量类型和变量值
+    变量的作用
+    - 用于在内存中保存数据
+    使用变量注意
+    - Java中的每个变量必须先声明后使用
+    - 使用变量名来访问这块区域的数据
+    - 变量的作用域： 在{} 内
+    - 变量只有在{}内才有效
+    - 同一个作用域内，不能定义重名的变量
+*** 变量的分类（按数据类型）
+    数据类型
+    - 基本数据类型(8种)
+      - 数值型
+        - 整数型： byte short int long
+        - 浮点型: float double
+      - 字符型(char)
+      - 布尔型(boolean)
+    - 引用数据类型(3种)
+      - 类（class） 字符串也是类的一种
+      - 接口(interface)
+      - 数据([])
+*** 变量的分类(按位置不同)
+    1. 在方法体外，类体内声明的变量称为成员变量
+    2. 在方法体内部声明的变量称为局部变量
+       - 成员变量
+         1. 实例变量（不以static修饰）
+         2. 类变量(以static修饰)
+       - 局部变量
+         1. 形参（方法,构造器中定义的变量）
+         2. 方法局部变量(在方法内定义)
+         3. 代码快局部变量(在代码快内定义)x
+*** 基本数据类型变量间转换
+*** 基本数据类型与String间的转换
+*** 进制与进制间的转换
+* 问题
+** java语法
+*** java的类名和文件名
+    1. java保存的文件名必须与类名一致
+    2. 如果文件只有一个类，文件名必须和类名一致
+    3. java中只能有一个public类
+    4. 如果文件中不止一个类，那public类的名称必须和文件名一致-
+
+*** 成员变量与局部变量异同
+    同： 都有生命周期
+    异:  局部变量除形参外，需显式初始化
+
+* 常用类及其API
+** System
+- System.in 默认输入流
+- System.out 默认输出流
+- System.error 默认错误
+- System.exit() 结束虚拟机
+- System.gc() 请求系统回收器进行回收
+- System.getProperty() 找到系统中的属性名
+** Random
+1. nextInt() 取一个随机的整数 在int值的范围内随机取值
+2. 
+** Math
+- Math.round() 四舍五人(+0.5,然后向下取整)
+- Math.ceil() 向上取整
+- Math.floor() 向下取整
+* Collection和Map
+** 概述
+1. List 存储无序的不可重复的数据
+   - ArraryList LinkedList Vector
+2. Set 存储无序的不可重复的数据
+   - HashSet LinkedHashSet TreeSet
+3. Map 存储一对一对的数值
+   - Properties HaspMap LinkedHashMap TreeMap Hashtable
+** Collection中方法的使用
+**** ArrayList
+- add(Object o) 向集合的末尾添加对象
+- int size(Collection c) 集合中元素的个数
+- boolean isEmpty(Collection c) 集合是否为空
+- boolean contains(Object o) 集合中是否包含该对象
+- boolean containsAll(Collection c) 集合中是否包含另一个集合中的所有元素
+- boolean equals(Object o) 判断该对象与当前集合是否相等
+- void clear() 清除当前集合内数据
+- void remove(Object o) 删除集合中的对象
+- Iterator iterator() 返回一个该集合的迭代器
+  1. next() 指针下移，把当前指针上的元素返回
+  2. hasNext() 判断集合中下一个元素是否存在
+#+BEGIN_SRC java
+  Collection c=new ArrayList();
+  c.add("helloWorld");
+  c.add("heu");
+  Interator iter=c.iterator();
+  while(iter.hasNext()){
+      System.out.println(iter.next());
+  }
+#+END_SRC
+** List接口
+*** 概念
+   用于存储有序的可以重复数字，可以替代数组，称为动态数组，因为List实现对象有序，
+   所以会增加一些针对于索引的集合
+*** List中的方法
+1. 增加
+   add(Object o) 当插入list时，会把它整体作为一个元素插入
+   addAll(Object o)
+2. 删除
+   remove(int index)
+3. 修改 修改指定位置的元素
+   - set(int index,Object element);
+4. 查询
+   - get(int index)
+5. 插入
+6. 长度
+7. 遍历
+   - iterator()
+   - enhanced for
+   - normal for
+*** ArrayList
+**** 概述
+底层使用Object数组存储,在添加和查找数据时效率较高。
+*** Vector(向量)
+**** 概述
+底层使用Object数组存储
+*** LinkedList
+**** 概述
+底层使用双向链表存储,在插入和删除数据效率较高。当对集合中数据进行频繁的删除和插入操作时使用它。
+** Map接口
+*** HashMap
+健壮性好,效率高，但是线程不安全，可以添加null的key或value值 底层使用数组+单向链表+红黑树
+= HashMap的key不能重复，所以是一个Set集合，所以要重写HashCode方法
+*** LinkedHashMap
+在HashMap的数据结构的基础之上，添加了双向链表，这样在遍历时，就可以按照添加的顺序进行遍历
+*** Hashset
+*** HashTable
+古老实现类，线程安全，效率低下，不可以添加null的key或value值，底层使用数组+单向链表，由于不使用了，所
+没有进行优化
+*** TreeMap
+- 向TreeMap中添加的
+

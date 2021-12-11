@@ -1,0 +1,72 @@
+* 项目一
+** 功能点
+   1. 分页
+   2. 数据校验
+      - jquery 前端校验+JSR303后端校验
+   3. ajax
+   4. Rest风格的URL，使用HTTP协议的请求方式的动向，来表示对于资源的操作
+      (GET,POST,PUT,DELETE)
+** 技术框架
+   1. 基础框架
+   2. 数据库-MySQL
+   3. 前端框架bootstrap
+   4. maven来使用作为依赖管理
+   5. 分页pagehelper
+   6. 逆向工程-Mybatis-Generated
+** 步骤
+   1. 创建一个maven工程
+   2. 将项目包引入jar包
+      - spring
+	1. spring-aspects
+	2. spring-core
+      - springmvc 
+	1. spring-webmvc
+	2. spring-jdbc
+      - mybatis
+	1. mabytais
+	2. mybatis-spring
+      - 数据库连接池，驱动包
+	1. c3p0
+	2. mysql-connector
+      - 其它
+	1. jstl
+	2. servlet <scope>provided</scope>
+   3. 引入bootstrap前端框架
+      1. webapp创建资源static
+      2. 放入核心的css和js文件<srcipt><link> 
+** SSM整合的配置文件
+*** web.xml
+*** application.xml
+    1. spring的配置文件
+*** springMVC.xml
+    1. 控制表述层的配置文件
+*** mybatis.xml
+** 错误
+*** Mybatis
+    1. Result Maps collection already contains value for
+       - mybatis-generate生成文件时，如果文件已经存在，则会以追加的方法
+       - mapper的位置被配置了两次
+      
+** WEB中的路径问题
+   1. 以/ 开始的相对路径，找资源，以当前资源的路径为基准，经常容易出问题
+   2. 以/开始的相对路径，找资源，以服务器的路径为标准(http://localhost:3306)
+   3. 
+
+** ajax-查询
+   1. index.jsp页面直接发送请求进行员工分页数据的查询
+   2. 服务器将查出的数据，以json字符串的形式返回浏览器
+   3. 浏览器收到json字符串。可以使用js对json进行解析.可以使用js
+      通过dom增删改的形式改变页面
+   4. 返回json，实现客户端无关性
+** 新增-逻辑
+   1. 在index页面点击新增
+   2. 弹出新增
+   4. 去数据库查询部门列表显示在对话框中
+   5. 用户输入数据完成保存
+** URL
+   1. /emp/{id} GET查询员工
+   2. /emp  POST保存员工
+   3. /emp/{id} PUT 修改员工
+   4. /emp/{id} DELETE 删除员工
+** springMVC(JSR303后端校验)
+   1. tomcat7 以下el表达式不是新的标准，需要给服务器替换新的el包

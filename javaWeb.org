@@ -1,0 +1,1548 @@
+* html
+** 属性
+   基本属性 bgcolor(idea) 修改简单的样式效果
+   事件属性 onclick="alert" 可以直接设置事件响应后的代码
+** 特殊字符
+   字符实体，在html中具有特殊意义的字符(例如br)，不能直接输出，需要将
+   它们写成字符实体
+   常用的特殊字符 &lt <  &gt >
+   连续的空白字符，空格的
+   空格 &nbsp
+** 标题标签
+   1. align 属性是对齐属性
+      - left center right
+   2. href 属性设置连接的地址
+   3. target 属性设置哪个目标进行跳转
+      - _self 表示当前页面
+      - _blank 表示打开新页面进行跳转
+   4. img 标签是图片标签，用来显示图片
+          src属性可以设置图片的路径
+   5. table  border width height rowspan colspan 
+      - tr 行
+      - th 头标签
+      - td 单元格
+      align 设置单元格文本的对齐方式，在table中设置表格相对于页面的对齐方式
+* jQuery
+** $
+   jquery中$是一个函数
+   1. 使用jquery查询到标签对象
+   2. 使用标签对象.click(function(){})
+   3. $是jquery的核心函数，能完成jquery的很多功能，${}就是调用$这个函数
+      1. 传入参数 [函数] 时，表示页面加载完成之后，相当于
+	 window.onload=function(){};
+      2. 传入参数{HTML字符串}时，根据这个字符串创建元素节点对象
+      3. 传入参数为{选择器字符串时},
+	 $("#id 属性值"); id选择器，根据id查询标签对象
+	 $(".class属性值"); 类型选择器，可以根据class属性查询标签对象
+	 $("标签名"); 标签名选择器，根据指定的标签名查询标签对象
+      4. 传入参数为[DOM对象]时，会把这个dom对象转换为jQuery对象
+** DOM对象和jQuery对象
+*** 简介
+    DOM对象
+    1. 通过getElementById,getElementByTagName,getElementByName
+       和查询出来的标签对象是DOM对象
+    2. 通过createElement()方法创建的对象
+    jQuery对象
+    1. 通过jQuery提供的API创建的对象，是jQuery对象
+    2. 通过jQuery包装的DOM对象，也是jQuery对象
+    3. 通过jQuery提供的API查询到的对象，是jQuery对象
+*** jQuery对象的本质
+    jQuery是对dom对象的数组，以及jQuery提供的一系列功能函数
+*** jQuery对象和DOM对象的区别
+    jQuery对象不能DOM对象的属性和方法
+    DOM对象不能使用jQuery对象的属性和方法
+*** DOM对象和jQuery对象互转
+    1. DOM对象 > jQuery对象
+       1. 先有DOM对象
+       2. $DOM对象 | 就可以转换成jQuery对象
+    2. jQuery转换为DOM对象
+       - 先有JQuery对象
+       - JQuery对象[取出相应的DOM对象]
+
+** JQuery Selectors   
+*** 基础选择器
+    - $("#ID") 根据id查找标签对象
+    - $("div") 根据标签名
+    - $(".class") 根据类型名,查找所有类型class的元素
+    - $("*") 匹配所有元素
+    - selector1,selector2 组合选择器:合并选择器1，2的结果并返回
+      $("div,span,p.myClass")
+*** 层级选择器
+    - $("form input") 在给定祖先元素下匹配所有的后代元素，表单中的后代元素
+    - $("form > input") 给定父元素下所有的子元素
+    - $("label + input") 匹配跟在label后面的一个input元素
+    - $("label ~ input") 匹配跟在label后面的所有input元素
+*** 过滤选择器
+**** 基本过滤器
+     - :first 获取第一个元素
+     - :last 获取最后一个元素
+     - not(selector) 去除所有与给定选择器匹配的元素
+     - :even 匹配所有索引值为偶数的元素，从0开始计数
+     - :odd 匹配所有索引值为奇数的元素，从0开始计数
+     - :eq(index) 匹配一个给定索引值的元素
+     - :gt(index) 匹配所有大于给定索引值的元素
+     - :lt(index) 匹配所有小于给定索引值的元素
+     - :header 匹配如h1,h2,h3之类的标题元素
+     - :animated 匹配所有正在执行动画效果的元素
+**** 内容过滤器
+     - :contains(text) 匹配包含给定文本的元素
+     - empty 匹配所有不包含子元素或文本的元素
+     - :parent 匹配含有子元素或者文本的元素
+     - :has(selector) 匹配含有选择器所匹配的元素的元素
+**** 属性过滤器
+     - [attribute] 匹配包含给定属性的元素
+     - [attribute=value] 匹配给定的属性是某个特定值的元素
+     - [attribute!=value] 匹配不含有给定指定的属性，或者属性不等于特定值的
+                          元素
+     - [attribute^=value] 匹配给定的属性是以某些值开始的元素
+     - [attribute$=value] 匹配给定的属性是以某些值结尾的元素
+     - [attribute*=value] 匹配给定的属性是以包含某些值的元素
+     - [selector1][selector2][selector3] 复合属性选择器，需要同时满足多个
+       条件的使用
+**** 表单过滤器
+     - :input 匹配所有input,textarea,select和button元素
+     - :text 匹配所有文本输入框
+     - :password 匹配所有密码输入框
+     - :radio 匹配所有单选框
+     - :checkbox 匹配所有复选框
+     - :submit 匹配所有提交按钮
+     - :image 匹配所有img标签
+     - :reset 匹配所有reset按钮
+     - :button 匹配所有Input type=button<button> 按钮
+     - :file 匹配所有type=file 文件上传
+     - :hidden 匹配所有不可见元素display:none或input type=hidden
+**** 表单对象属性
+     - :enabled 匹配所有可用元素
+     - :disabled 匹配所有不可用元素(input disabled="disabled")
+     - :checked 匹配所有选中的被选中元素，单选框等，不包括select中的option
+     - :selected 匹配所有选中的option元素
+*** 元素选择器
+    1. element.eq(index) 获取给定索引的元素 :eq()
+    2. element.first() 获取第一个元素 :first
+    3. element.last() 获取最后一个元素 :last
+    4. element.filter(exp|obj|ele|fn) 筛选出与指定的表达式匹配的元素集合，用逗号分割多个
+       表达式 
+       - expr 字符串值
+       - JQuery object
+       - element
+       - function(index)
+    5. element.is(expr|obj|ele|fn) 判断是否匹配给定的选择器，只要有一个匹
+       配就返回true     
+    6. has(exp|element) 返回包含匹配选择器的元素的元素 同:has
+    7. not(exp|ele|fn) 删除匹配选择器的元素 同:not
+    8. children(exp) 返回匹配给定选择器的子元素的集合 同parent>child 
+    9. find(exp) 返回匹配给定选择器的后代元素 同ancestor descendant
+    10. next() 返回当前元素的下一个兄弟元素，这个函数是找出正在处理的元素
+	的后代元素的好方法 同 prev+next
+    11. nextAll() 返回当前元素后面的兄弟元素 同prev~next一样
+    12. nextUntil() 返回当前元素到指定匹配的元素为止的后面元素
+    13. parent() 查找一个元素的父元素
+    14. prev(exp) 返回当前元素的上一个兄弟元素
+    15. prevAll() 返回当前元素的所有兄弟元素
+    16. prevUnit(exp) 返回当前元素到指定匹配的元素为止的前面元素
+    17. siblings(exp) 返回所有的兄弟元素
+    18. add() 把add匹配的选择器的元素添加到JQuery对象中
+** JQuery属性操作
+   1. html()  可以设置和获取起始标签和结束标签中的内容，跟dom属性innerHTML一样
+   2. text()  可以获取和设置起始标签和结束标签中的文本，跟dom属性innerText一样
+   3. val() 可以设置和获取表单项的value属性值
+      $("button").val("设置的值");
+      $(":radio").val("radio1");
+      //操作单选
+      $("#multiple").val(["checkbox1","checkbox3"]);
+      //批量操作筛选框的选中状态
+      $(":radio,:checkbox,#multiple").val(["radio2","checkbox1","checkbox3","mult"])
+   4. attr() 可以设置和获取属性值 推荐操作checked,readOnly,selected,disabled
+      (":checkbox:first").attr("name","abc"); 设置
+      (":checkbox:first").attr("name") 获取
+      attr可以操作非标准的属性，比如自定义属性
+   5. prop() 可以设置和获取属性值 在没有选中时会返回false
+      只推荐操作checked,readOnly,selected.disabled      
+** CSS样式操作
+   addClass() 添加样式 可以一次添加多个样式，由空格来分隔
+   removeClass() 删除样式,一次删除一个或多个样式
+   toggleClass() 有就删除，没有就添加样式
+   offset() 返回第一个匹配元素相对于文档的位置,
+   获取和设置元素的座标,就是元素对于原点的偏移量
+** JQuery动画操作
+*** 基本动画
+    show() 将隐藏的元素显示
+    hide() 将可见的元素隐藏
+    toggle() 可见就隐藏，隐藏就可见
+    以上动画效果都可以添加参数:
+     1. 第一个参数是动画，执行的时长，以毫秒为单位
+     2. 第二个参数是动画的回调函数，动画完成后自动调用的函数
+*** 淡入淡出动画 
+    fadeIn() 淡入 慢慢可见
+    fadeOut() 淡出 慢慢消失
+    fadeTo() 在指定的时间的时间内慢慢将透明度修改到指定的值，0透明，
+    0.5半透明
+    fadeToggle() 淡入，淡出切换
+    以上动画可以传递两个参数:
+    1. 动画执行的时长
+    2. 回调函数
+
+** JQuery事件操作
+   1. JQuery的页面加载完成之后是浏览器的内核解析页面的标签创建好DOM对象之后
+      就会马上执行
+   2. 执行顺序
+      - JQuery页面加载完成之后
+      - 原生的js的页面加载完成之后，除了要等浏览器内核解析完标签创建好DOM对象
+	还要等标签显示时需要的内容加载完成
+   3. 执行次数
+      - 原生js的页面加载完成之后，只会执行最后一次的赋值函数
+      - 每注册一次函数，底层会把所有函数记录下来，按照注册的顺序依次执行
+	
+** JQuery中其他的事件处理方法
+   click()
+   - 可以绑定单击事件，以及触发单击事件
+   mouseover()
+   - 鼠标移入事件
+   mouseout()
+   - 鼠标溢出事件
+   bind()
+   - 同时绑定多个事件 $("element")bind("click mouseover")
+   one()
+   - 使用上和bind一样，但是one方法绑定的事件只会响应一次
+   live()
+   - 也是用来绑定事件，它可以用来绑定选择器匹配的所有元素的属性，那怕那个元素
+     是后面动态创建出来的也有效
+   unbind()
+   - 解除事件的绑定，如果不传入参数则全部删除
+
+* 事件的冒泡
+** 基本定义
+   1. 事件的冒泡是指，父子元素同时监听同一个对象，对触发子元素事件的时候，同一个
+      事件也被传递到父元素的事件里去响应
+   2. return false可以关闭默认行为，注意可能影响到别的默认行为
+** JavaScript 事件对象
+   事件对象，是封装有触发的事件信息的一个javascript
+   - 如果获取javascript事件对象呢?
+     这个event就是javascript传递参数事件处理函数的事件对象，以及使用
+   - 
+
+* xml
+** 简介
+   xml是可扩展的标记性语言
+** 作用
+   1. 用来保存数据,而且这些数据具有自我描述性
+   2. 它还可以做为项目或者模块的配置文件
+   3. 还可以作为网络传输数据的格式(JSON)为主
+** xml语法
+   1. 文档声明 
+   2. 元素(标签)
+      xml元素是指代从(且包括)开始标签直到(且包括)结束标签的部分。
+   3. xml属性
+      一个标签上可以有多个属性。每个属性的值必须使用引号引起来
+   4. xml注释 <!--  xml注释 -->
+   5. 文本区域(CDATA区)
+      可以告诉XML解析器，我CDATA只是纯文本，不需要XML语法解析
+      <![CDATA[content field]]> content field文本区不会报错
+   6. XML文档必须有根元素，而且没有父标签,根标签只能有一个
+      
+** XML命名规则
+   + 名称可以包含字母，数字及其它字符
+   + 名称不能以数字或标点符号开始
+   + 名称不建议以字符 "xml"(或者XML,Xml)开始
+   + 名称不能包含空格
+** XML解析技术
+*** 定义
+    1. 可扩展的标记性语言，不管是html文件，还是xml文件它们都是标记型文档，都可以
+    使用w3c指定的dom技术来进行解析
+    1. 最早JDK中为我们提供了两种xml解析技术，DOM和Sax技术
+       1. Sax simple API for XML
+       2. SAX解析，它和W3C制定的解析不太一样.它是以类似事件机制通过回调告诉
+	  用户当前正在解析的内容。它是一行一行读取xml文件进行解析的，不会创建
+	  大量的dom对象。
+       3. SAX在解析xml的时候，在内存使用上，和性能上，都优于DOM解析
+    2. Document接口表示整个HTML或XML文档，从概念来讲，它是文档树的根，并提供对文档数据的
+       基本访问
+    3. 第三方的解析
+       1. jdom在dom基础上进行了封装
+       2. dom4j 又对jdom进行了封装，更加简单化
+       3. pull 主要用在Andriod手机开发，是在sax非常类似都是事件机制解析xml文件
+** 文档信息
+
+* MVC概念
+** 介绍
+   MVC全称 : Model模式 View视图，Controller控制器
+   1. View视图： 只负责数据和界面的显示，不接受任何与显示无关的代码，便于程序员和
+              美工的分工合作
+   2. Controller控制器： 只负责接收请求，调度业务层的代码处理请求，然后派发页面
+              是一个调度者的角色
+   3. Model模型将与业务逻辑相关的数据封装为具体的javaBean类，并不会参杂任何与数据处理相关的代码
+* javaWeb
+** 什么是JavaWeb
+   javaWeb，所有通过java语言编写可以通过浏览器访问的程序的总称，叫javaWeb
+   javaWeb,是基于请求和响应来进行开发的
+*** 什么是请求
+    请求是指客户端向服务器端发送数据
+*** 什么是响应
+    响应是指服务器给客户端回传数据
+*** 请求和响应的关系
+    请求和响应是成对出现的，有请求就有响应
+** web资源的分类
+   web资源按实现的技术和呈现的效果不同，又分为静态资源和动态资源两类
+   静态资源： html css js txt mp4 jpg,etc..
+   动态资源： jsp页面 servlet程序
+** 常用的web服务器
+   1. tomcat: 由apache组织提供的一种web服务器，提供对jsp和Servlet的支持，它是一种轻
+   量级的javaWeb容器，也是使用最广泛的
+   1. Jboss: 是一个遵从javaEE规范的，开放源代码，纯java的EJB服务器，它支持所有的
+      JavaEE规范（free）
+   2. GlassFish: 由Oracle公司开发的javaWeb服务器，强健的商业服务器，达到产品级质量，
+      应用少
+   3. Resin 是CAUCHO公司的产品，是一个流行的服务器，对servlet和jsp提供了良好的支持
+      性能优良，而且自身采用JAVA语言开发(收费，应用比较多)
+   4. Weblogic 是Oracle 公司的产品，目前应用最广的收费web服务器，而且不断完善
+      以适应新的开发的要求。适合大型项目
+
+** tomcat
+*** Tomcat和servlet版本对应
+    | tomcat | jsp     | javaee | jdk6.0 |
+    |    7.0 | 3.0/2.2 |    6.0 |    6.0 |
+    |    8.0 | 3.1/3.2 |    8.0 |    7.0 |
+*** Tomcat目录介绍
+    + bin  专门用来存放tomcat的可执行程序
+    + conf 专门用来存放tomcat服务器的配置文件
+    + lib 专门用来存放tomcat服务器的jar包
+    + logs 专门用来存放tomcat服务器运行时输出的日记信息
+    + temp 专门用来存放tomcat运行时产生的临时数据
+    + webapps 专门用来存放部署的web工程
+    + work 是tomcat的工作目录 ，用来存放tomcat运行时jsp翻译为servlet,和
+      Session纯化的目录
+
+*** 如何启动Tomcat服务器
+    1. cd /home/akinjoker/apache-tomcat-9.0.45/bin/
+       bash catalina.sh or catalina run
+    2. 点击tomcat服务器窗口的x关闭 （windows）
+    3. 把tomcat服务器窗口置为当前窗口,然后按快捷键CTRL+C（windwos)
+    4. 找到tomcat中bin目录的下shutdown.bat 或者shutdown.sh就可以关闭
+ 
+*** 如何修改Tomcat的端口号
+    Mysql默认端口号: 3306
+    Tomcat默认的端口号: 8080
+    1. 找到tomcat目录下的conf目录，找到server.xml配置文件,找到tomcat目录19530
+    修改port为需要的端口值1-65535
+    1. HTTP协议默认端口为80
+*** 如何部署web工程到tomcat中
+    1. 只需要把web工程目录拷贝到Tomcat的webapps目录下即可
+    2. 找到tomcat中conf文件中的Catalina中的localhost,创建如下的配置文件
+       <Content path="工程的访问路径" docBase="工程的目录位置"/>
+    3. 手拖html页面到浏览器和在浏览器输入ip:port/project 访问的区别
+       1. 手拖，使用的协议是file协议,表示浏览器直接读取file协议后面的路径，
+	  解析器展示在浏览器上即可
+       2. 如果是后者，http协议,/book/是工程路径 /index.html 是文件
+	  localhost:8080/book/index.html
+       3. 浏览器请求发送到服务器，服务器接收到请求之后，读取你要访问的资源
+	  文件，然后回传给客户端的页面内容,回传index.html页面
+	  客户端： 得到index.html页面的内容解析展示到浏览器上
+
+*** ROOT的工程的访问，以及默认index.html页面的访问
+    http:/ip:port/ 没有工程名时候，默认访问的是ROOT工程
+    当我们在浏览器的地址栏中输入的访问地址如下:
+    http:/ip:port/project 没有资源名，默认访问的是index.html
+    
+*** 如何在IDEAL中部署工程到Tomcat上运行
+    1. 建议修改web工程对应的Tomcat运行实例名称
+    2. Deployment 当前部署的web工程.Application context 为工程路径，也就是访问路径
+    3. Server中URL为启动tomcat运行实例时默认打开的地址，
+    4. 重启
+       1. update resource 更新资源 web工程的资源
+       2. update classes and resource 中的Class字节码到tomcat运行实例中
+       3. redeploy 重新部署web模块，但是不重启tomcat实例
+** 动态工程
+*** 基本
+    1. 一般会在WEB_INF中创建一个Lib目录，WEB_INF是一个受浏览器保护的目录，浏览器
+    无法直接访问到此目录的内容.web.xml它是整个 web工程的配置部署描述文件,可以
+    在这些配置很多web工程的组件: 比如Servlet程序 Filter过滤器 Listener监听器
+    Session超时...等等
+    2. lib目录用来存放第三方的jar包
+    web目录用来存放web工程的资源页面 比如:html css js
+    src目录会存放自己编写的java源代码
+*** 添加lib(idea)
+    1. 打开project structure,点击libraries
+    2. 选择你添加的类库，添加到需要的模块
+    3. 选择Artifacts选项，将类库，添加到打包部署中
+
+** servlet
+*** 什么是servlet
+    1. sevlet是javaEE规范之一，规范就是接口
+    2. servlet是javaWeb三大组件之一, 三大组件为Servlet程序，Filter过滤器，Listener监听器.
+    3. Servlet 是运行在服务器上的java小程序，它可以接收客户端发送过来请求，
+       并响应数据给客户端
+*** 手动实现Servlet程序
+    1. 编写一个类去实现Servlet接口
+    2. 实现service方法，处理请求，并响应数据
+       servlet_name 给servlet程序起一个别名
+       servlet_mapping标签给servlet程序配置访问地址给哪个Servlet程序使用
+       url_pattern 标签配置访问地址
+       url中/hello  表示地址http/ip:port/工程路径/hello
+    3. 通过端口号定位tomcat,通过工程路径定位工程,找到servlet类，执行方法
+*** servlet的生命周期
+    1. 执行Servlet构造器方法 
+    2. 执行init初始化方法 1和2只有在创建时才会调用
+    3. 执行service方法 第三步每次访问，都会调用 
+    4. 执行destroy销毁方法 在web工程停止时调用
+*** servlet请求的分发处理
+    #+begin_src java
+      public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+          System.out.println("hello servelet");
+          HttpServletRequest httpServletRequest=(HttpServletRequest) servletRequest;
+          String method = httpServletRequest.getMethod();
+          if ("GET".equals(method)){
+                  doGet();
+          }else if ("POSE".equals(method)){
+                  doPost();
+          }
+      }
+    #+end_src
+*** servlet的使用
+    1. 一般在实际开发中，都是使用继承HttpServlet类的方式去实现Servlet程序
+    2. 根据业务需要，重写doGet或doPost方法
+    3. 在web.xml中配置Servlet中的访问地址
+*** 使用IDEA创建Servlet程序
+    1. new -> Servlet
+*** Servlet继承体系
+                       实现接口
+    Interface Servlet <--------Class GenericServlet
+    <-----------Class HttpServlet(继承自GenericServlet)
+    1. Genericservlet 实现了Servlet接口，做了很多空实现并持有一个ServletConfig类的引用
+    2. HttpServlet抽象类实现service()方法,并实现了请求的分发处理里面的doGet doPost， 负责抛出异常，说不支持GET/POST请求
+    3. 自定义的Servlet的程序，我们只需要根据,自己的业务需要重写doGet或doPost方法即可
+*** ServletConfig类
+    1. ServletConfig类从类名上来看，就知道Servlet程序的配置信息类.
+    2. ServeletConfig 的三大作用
+       1. 可以获取servlet程序的别名，servlet-name的值
+       2. 获取初始化参数init-param
+          #+begin_src xml
+            <servlet>
+                    <servlet-name>HelloServlet</servlet-name>
+                    <servlet-class>com.asatuoyan.demo.HelloServlet</servlet-class>
+            <!--        初始化参数-->
+                    <init-param>
+            <!--            参数名-->
+                        <param-name>username</param-name>
+            <!--            参数值-->
+                        <param-value>root</param-value>
+                    </init-param>
+                </servlet>
+                <servlet-mapping>
+                    <servlet-name>HelloServlet</servlet-name>
+                    <url-pattern>/hello</url-pattern>
+                </servlet-mapping>
+    </servlet>
+          #+end_src
+       3. 获取ServletContext对象
+    3. Servlet程序和ServletConfig对象都是由Tomcat负责创建，我们负责使用.
+       Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Servlet程序创建
+       时，就创建一个对应的Servlet的对象
+    4. 当我们重写init方法后，一定要写super.init(config) 父类中的保存的init在保存
+       时会消失
+*** 什么是ServletContext?
+    1. ServletContext是一个接口，它表示Servlet上下文对象
+    2. 一个web工程，只有一个ServletContext对象实例
+    3. ServeletContext对象是一个域对象
+    4. 什么域对象?
+       域对象，是一个可以像Map一样存取数据的对象，叫域对象。
+       这里的域对象指的是存取数据的操作范围。
+   |        | 存数据       | 取数据       | 删除数据        |
+   | Map    | put()        | get()        | remove()        |
+   | 域对象 | setAttribute | getAttribute | removeAttribute |
+*** ServletContext类的四个作用
+    1. 获取web.xml中配置的上下文参数context-param
+    2. 获取当前的工程路径 格式: /工程路径
+    3. 获取工程部署在服务器硬盘上的绝对路径
+    4. 像Map一样存取数据
+       xml中配置<context-param></context-param> 属于整个web工程
+    5. IDEA 中context项目部署的地址，映射到IDEA代码的WEB目录
+    6. ServletContext是在web工程部署启动的时候创建，在web工程停止的时候销毁
+
+** base标签的作用
+   1. a标签进行跳转时候，浏览器地址栏中的地址是完整的地址，但是所有相对路径在跳转时，都会参照当前浏览器中地址栏的地址进行跳转
+   2. 当我们使用请求转发开始地址跳转时，浏览器地址栏中的地址完整的，但是在参照相对路径后，得到的路径是没有工程路径的http://ip:prot/indexl.html
+   3. 通过base标签可以设置相对路径的参考对象
+      <base http="http://localhost:port/porject/index.html">
+      注意： base标签中的index.html可以省略，但是最后的斜杠不能省略
+** web中斜杠的不同意义
+   1. / 斜杠如果被浏览器解析，得到的地址是，http://ip:port/
+   2. / 斜杠如果被服务器解析，得到的地址是，http://ip:port/project_path
+      + <url-partern>/servlet</url-partern>
+      + servletContext.getRealPath("/")
+      + request.getRequestDispatcher("/")
+   特殊情况: 在response.sendRediect("/"); 把斜杠发送给浏览器进行解析
+** 两个输出流的说明
+   1) 两个输出流的说明
+      字节流: getOutputStream()  常用于下载
+      字符流: getWriter()  常用于回传字符串
+   两个流同时只能使用一个
+** 请求重定向
+   请求重定向是指客户端给服务器发出请求，然后服务器告诉客户端说，我给你一些地址，
+   你去新地址访问，叫请求重定向.(旧地址可能已经被废弃)
+   302 表示会重定向，响应头告诉新地址
+   请求重定向的特点:
+   1. 浏览器地址栏会发生变化
+   2. 两次请求不共享Request域中的数据
+   3. 不共享Request域中的数据
+   4. 不能访问WEB-INF下的数据
+   5. 可以访问工程外的资源
+   6. 可以直接使resp.sendRedirect（“http”）来进行重定向
+* http协议
+** 定义
+   所谓http协议，就是指，客户端和服务器端之间通信时，发送的数据，需要遵守的规则，叫
+   http协议
+** 请求的HTTP协议格式
+   客户端给服务器发送数据叫请求，服务器给客户端回传数据叫响应
+   GET请求
+   1. 请求行
+      1. 请求的方式  GET
+      2. 请求的资源路径[+?+请求参数]
+      3. 请求的协议和版本号         HTTP/1.1
+   2. 请求头
+      Key:Value 组成  不同的键值对表示不同的含义
+      Accept: 告诉服务器，客户端可以接收的数据类型
+      Accept-Language:  客户端可以接收的语言类型
+      Accept-Encoding: 告诉服务器，客户端可以接收的数据编码（压缩）格式
+      host： 表示请求的服务器ip和端口号
+      Connection: 表示告诉服务器请求连接如何处理
+               Keep-Alive: 告诉服务器回传数据后不要马上关闭，保持一小段时间连接
+               Closed：马上关闭  
+   POST请求
+   1. 请求行
+      1. 请求的方式  POST
+      2. 请求的资源路径 /path/
+      3. 请求的协议和版本号  HTTP/1.1
+   2. 请求头
+      1) key:value 不同的请求头，有不同的含义
+      2) Referer: 表示请求发起时，浏览器地址栏中的地址
+      3) Content-Type: 表示发送的数据类型
+         + application/x-www-form-ur | encoded
+           表示提交的数据格式是: name=value&name-value,然后对齐进行url编码
+           url编码是把非英文内容转换为: %xx%xx
+         + multipart/form-data
+           表示以多段的形式提交数据给服务器（以流的形式提交，用于上传）
+      4) Content-length: 表示发送的数据的长度
+      5) Cache-Control 表示如何控制缓冲，no-cache表示不缓冲
+   3. 请求体
+      请求体就是发送给服务器的数据
+      以key:value的形式发送数据
+      Accept: 表示客户端可以接收的数据类型
+** GET和POST区分
+   1. GET请求有哪些:
+      1. form标签 method-get
+      2. a标签
+      3. link标签引入css
+      4. script引入js
+      5. img标签引入img
+      6. iframe引入html页面
+      7. 在浏览器地址栏中输入地址后回车
+   2. POST请求有哪些
+      - form标签 method-get
+** 响应的HTTP协议格式
+   1. 响应行
+      1) 响应的协议和版本号  HTTP/1.1
+      2) 响应的状态码        200
+      3) 响应状态描述符      ok
+   2. 响应头
+      1) key:value 不同响应头有不同的含义
+      2) Server:  表示服务器的信息
+      3) Content-Type: 表示响应的数据类型
+      4) Content-Length: 响应体的长度
+      5) Date: 请求响应的时间(格林时间)
+      空行隔开
+   3. 响应体
+      回传给客户端的数据
+** 常用的响应码说明
+   200     表示请求成功
+   302     表示请求重定向
+   404     表示请求服务器已经收到，但是你要的数据不存在
+   500     表示服务器已经收到请求，但是服务器内错误（代码）
+** HttpServletRequest类
+*** HttpServletRequest类的作用
+    每次只要有请求进入Tomcat服务器，Tomcat服务器就会把请求过来的HTTP协议信息解析好封装到
+    Request对象中,然后传递到Service（doGet和doPost）中给我们使用，我们可以通过$$
+    HttpServletRequest对象获取到所有请求的信息
+*** HttpServletRequest类的常用方法
+    1. getRequestURI() 获取请求的资源路径
+    2. getRequestURL() 获取请求的统一资源定位服务(绝对路径)
+    3. getRemoteHost() 获取客户端的ip地址,如果是真实的客户端ip访问地址
+    4. getHeader()     获取请求头
+    5. getParameter()  获取请求的参数
+    6. getParameterValues() 获取请求的参数（多个值的时候使用）
+    7. getMethod() 获取请求的方式，GET或POST
+    8. setAttribute(key,values) 设置域数据
+    9. getAttribute(Key) 获取域数据
+    10. getRequestDispatcher() 获取请求转发对象
+    注意：设置请求体的字符集为UTF-8 从而解决POST请求的中文乱码问题
+    也就是请求参数之前调用才有效果,req.setCharacterEncoding
+*** 请求转发
+**** 定义
+     请求转发，服务器收到请求后，从一个服务器资源跳转到另一个服务器资源叫请求
+     转发
+     特点：
+       1. 浏览器地址没有变化
+       2. 他们是一次请求
+       3. 他们共享域中的数据
+       4. 可以转发到WEB-INFO 目录下
+       5. 请求转发不能访问外部地址
+** HttpServletResponse类
+   HttpServletResponse类和HttpServletRequest类一样，每次请求进来，Tomcat服务器
+   都会创建一个Response类传递给Servlet程序去使用，Httpservletrequest表示所有请求的
+   信息，response则表示所有响应的信息，如果需要设置返回给客户端的信息，都可以通过
+   response客户端来设置  
+* MIME类型说明
+** 说明
+   MIME是HTTP协议中的数据类型.MIME的英文全称是“Multipurpose internet Mail Extension"
+   多功能internet邮件扩充服务，MIME类型的格式是"大类型/小类型",并与第一种文件的扩展名相对应
+   | 文件              | MIME类型                           |
+   |-------------------+------------------------------------|
+   | 超文本标记语言    | .html,htm text/html                |
+   | 普通文本          | txt         text/plain             |
+   | RTF文本           | .rtf        application/rtf        |
+   | GIF图形           | .gif        image/gif              |
+   | JPEG图形          | .jpeg,jpg   imgage/jpeg            |
+   | au声音文件        | .au         audio/basic            |
+   | MIDI音乐文件      | midi,mid   audio/midi,audio/x-midi |
+   | RealAudio音乐文件 | .ra,.ram   audio/x-pn-realaudio    |
+   | MPEG文件          | .mpg,mpeg  video/mpeg              |
+   | AVI文件           | .avi       video/x-msvideo         |
+   | GZIP文件          | .gz        application/x-gzip      |
+   | TAR文件           | .tar       application/x-tar       |
+   |-------------------+------------------------------------|
+* jsp的作用
+** 什么是jsp，它有什么用?
+   jsp全称是java serverpages,java的服务器页面
+   因为Servlet程序回传html页面是一件非常繁琐的事情，开发成本和维护成本非常高
+   响应时需要，获取读取流resp.getWriter();
+** 存放目录
+   和html一个位置，访问地址是http://ip;port/project/a.jsp
+   jsp页面本质是一个servlet程序
+** jsp的本质是什么
+   本质是一个servlet程序，当我们第一次访问jsp页面时，tomcat服务器，会帮我们把
+   jsp页面翻译为一个java源文件。
+   通过跟踪源代码显示，它直接继承了HttpServlet类。
+** jsp头部的page指令
+   1. language属性 表示jsp翻译后是什么语言文件，暂时只支持java
+   2. contentType属性 表示jsp返回的数据类型是什么，也是源码中response.setContenttype参数值
+   3. pageEncoding属性 表示当前jsp页面文件本身的字符集
+   4. import属性 用于导类导包
+   |-- 以下的属性是给out输出流使用的----------------------|
+   1. autoFlush属性 out输出流满了之后，是否自动刷新缓冲区,默认值是true
+   2. buffer属性 设置out缓冲区的大小，默认值是8kb
+   |-----------------------------------------------------|
+   1. errorPage属性 设置当jsp页面运行时出错，自动跳转去的错误页面,映射到web目录
+   2. isErrorPage属性 设置当前jsp页面是否是错误信息页面,默认是false,如果是true，可以获取异常信息
+   3. session属性 设置访问当前jsp页面，是否会创建httpSession对象,默认是true
+   4. extends属性 设置jsp翻译成为servlet程序，翻译出的java类，默认继承谁
+** jsp中的常用脚本
+*** 声明脚本（很少使用）
+    声明脚本的格式是 <%! 声明java代码 %>
+    作用: 可以给jsp翻译出来的java类定义的属性和方法甚至是静态代码块，内部类等
+*** 表达式脚本
+    表达式脚本的格式： <%=表达式%>
+    1. 表达式脚本的作用是: 在jsp页面上输出数据
+    2. 表达式脚本都会被翻译成为out.print()，输出到页面时
+    3. 由于表达式脚本翻译的内容都在_jspService()方法中，所以jspService中的对象都
+       可以直接使用
+    4. 表达式脚本中的表达式不能以分号结束
+    练xi。
+    4. 输出整形<%=12 %>
+    5. 输出浮点型<%=12.12 %>
+    6. 输出字符串<%="字符串" %>
+    7. 输出对象<%="map"%>
+   
+*** 代表脚本
+    <% java代码 %>
+    代码脚本的作用是：可以在jsp，可以根据需要，编写我们自己的功能(写的是java语句)
+    代码脚本的特点是；
+    1. 代码脚本由于翻译到_jspService()方法中,所以在_jspService设计方法学中的现有对象
+       都可以直接使用
+    2. 代码脚本还可以由多个代码脚本块组合成一个完整的Java的脚本
+    3. 代码脚本还可以和表达式脚本一起组合使用，在jsp页面上输出.
+** jsp中的三种注释
+*** html注释
+    DEADLINE: <2021-11-24 Wed>
+    1.  <-- html注释 --> html注释会被翻译到java源代码，在_jspService方法中，以out.Writer输出到客户端.
+*** java注释
+    1. // 单行java注释
+    2. /*多行java注释/*(*//)
+    java注释会被
+*** jsp注释
+    <%-- jsp注释 --%>
+    jsp注释可以注释到jsp页面的中所有代码
+** jsp中的九大内置对象
+*** 简介
+    jsp中的内置对象，是指tomcat在翻译jsp页面成为Servlet源代码后，内部提供的九大对象，
+    叫做内置对象
+    1. request 请求对象
+    2. response 响应对象
+    3. pageContext jsp的上下文对象
+    4. session 会话对象
+    5. application ServletContext对象
+    6. config ServletConfig对象
+    7. out jsp输出流对象
+    8. page 指向当前jsp的对象
+    9. 只有配置当中的isErrorPage="true"
+*** 四个域对象
+**** 简介
+     域对象是可以像Map一样存取数据的对象，四个域对象功能一样，不同的是他们对数据的
+     存取范围,虽然四个域对象都可以存取数据，它们在使用上都有优先顺序,四个域在使用时，
+     优先顺序分别是，他们从小到大的顺序
+     pageContext => request => session => application
+**** pageContext(PageContextImpl类)
+     1. 当前jsp页面范围内有效
+**** request(HttpServletRequest类)
+     1. 一次请求内有效
+**** session(Httpsession类)
+     1. 一个会话范围内有效(打开浏览器，访问服务器，直到关闭浏览器)
+**** application(ServletContext类)
+     1. 整个web工程范围都有效（只要工程不停止，数据都在）
+*** response和out输出的区别
+    response中表示响应，我们经常用于设置返回给客户端的内容.out也是给用户输出使用的。
+    当jsp页面中的所有代码执行完成后会做以下两个操作:
+    1. 执行out.flush操作,会把out缓冲区的数据追加写入到response缓冲区末尾
+       追加写入到response缓冲区的末尾而
+    2. 会执行response的刷新操作，把全部数据写给客户端
+    3. 由于jsp翻译之后，底层源代码都是使用out来进行输出,所以一般情况下，在jsp页面中
+       统一使用out来进行输出,避免打乱页面输出内容的顺序
+    4. out.write() 输出字符串没有问题
+    5. out.print() 输出任意数据没有问题(转换成为字符串后调用的write输出)
+
+** jsp常用标签
+*** jsp的静态包含
+    一个单独的jsp页面，只维护一处，改一处其它都统一被修改。不是直接写入内容，维护
+    和修改时，都只需要改一份就足够了。
+    <%@ include file="被包含的jsp页面的路径"%>
+    地址中第一个斜杠表示http://ip:port/project ,映射到代码的web目录
+    静态包含的特点:
+    1. 静态包含不会翻译被包含的的jsp页面
+    2. 静态包含其实是把被包含的jsp页面代码拷贝到包含的位置执行输出
+*** jsp的动态包含
+    <jsp:include page="jsp_path"></jsp.include>
+    page属性是指定需要包含的jsp页面的路径,动态包含也可以像静态包含一样，把被包含的
+    内容执行输出到包含位置
+    动态包含的特点: 
+    1. 动态包含的jsp页面也翻译成为java代码
+    2. 动态包含底层代码使用如下代码去被包含的jsp页面执行输出
+    3. 主页面通过代码调用，将request,response,out对象都传递给了footer.jsp页面 
+*** jsp的请求转发
+    <jsp:forward page="请求转发的路径"></jsp:forward>
+* JSTL标签库(JSP Standard Tag Library)
+** 定义
+   EL表达式主要是为了替换jsp中表达式的脚本，而标签库则是为了替换代码脚本，这样
+   使得整个jsp页面变得更加的简洁
+** 组成
+   |----------------+----------------------------------------+------|
+   | 功能范围       | URI                                    | 前缀 |
+   |----------------+----------------------------------------+------|
+   | 核心标签库     | http://java.sun.com/jsp/jstl/core      | c    |
+   | 格式化         | http://java.sun.com/jsp/jstl/fmt       | fmt  |
+   | 函数           | http://java.sun.com/jsp/jstl/functions | fn   |
+   | 数据库(不使用) | http://java.sun.com/jsp/jstl/sql       | sql  |
+   | XML(不使用)    | http://java.sun.com/jsp/jstl/xml       | xml  |
+   |----------------+----------------------------------------+------|
+** JSTL标签库的使用步骤
+   1. 先导入jstl标签库的jar包
+   2. 使用taglib指令引入标签库
+      <%@ taglib prefix="c" url="http://java.sun.com/jsp/jstl/core"
+** JSTL_core标签
+*** set标签
+    <c:set scope="request" var="key" value="hello"></c:set> 
+    1. 作用: set标签可以往域中保存数据
+    2. scope 属性设置保存到哪个域
+       + page表示PageContest域
+       + request表示Request域
+       + session表示session域
+       + application表示ServletContext域
+*** if标签
+    <c:if test="${12==12}">你好世界</c:if>
+    - test属性表示判断的条件（使用EL表达式输出）
+    - 当满足条件时输出内部内容
+*** choose标签(多路判断选择类似于switch..case...default)
+    <c:choose><c:when test=""></c:when></c:choose>
+    1. choose标签表示开始选择判断，
+    2. when表示每一种判断情况
+       1. test表示当前这种情况的值
+    3. <c:otherwise>标签表示剩下的情况
+       1. 标签中不能使用html注释 要使用jsp注释
+       2. when标签的父标签一定是choose标签,也就是在otherwise中做多路判断，一定
+          要写choose
+*** forEach标签
+    - <c:forEach begin="1" end="10" var="i" > command</c:forEach>
+      1. begin 设置开始的索引
+      2. end属性设置结束的索引
+      3. var表示循环的变量（也是当前正在遍历的数据）
+    - <c:forEach items="${requestScope.arr}" var="item">${command}</c:forEach>
+      1. items 表示遍历的
+      2. var 表示当前遍历到的数据
+    - 注意： 默认从0开始，begin可以修改开始的索引
+    - step 表示遍历时的步长值，就是i每次自增多少
+    - varStatus 表示当前遍历到的数据的状态 输出时 带有$表示内部类 
+    #+begin_src html
+      <c:forEach items="${requestScope.mom}" var="entry">
+          <h1>${entry.key}=${entry.value} </h1>
+      </c:forEach>
+    #+end_src
+
+* Listener监听器
+** 什么是Listener
+   1. Listener监听器是javaWeb的三大组件之一，Servlet程序，filter过滤器，Listener监听器
+   2. 是javaEE的规范,就是接口
+   3. 监听器的作用是，监听某种事物的变化，通过回调函数返回,反馈给用户去做一些相应的处理
+** ServletContextListener监听器
+   ServletContextListener他可以监听ServletContext对象的创建和销毁(该对象在web工程启动时创建，在web工程停止时销毁),
+   监听到创建和销毁之后都会分别调用监听器的方法反馈
+   两个方法分别是:
+   1. contextInitialized(ServletContextEvent sce) 在对象创建之后马上调用做初始化
+   2. contextDestroyed(ServletContextEvent sce) 在对象销毁之后调用
+   如何使用该监听器，监听ServletContext对象
+   使用步骤如下:
+   1. 编写一个类实现该接口
+   2. 实现其两个回调方法
+   3. 到web.xml中去配置监听器   
+* EL表达式
+** 什么是表达式
+   1. 表达式的全称是: Expression Language 是表达式语言
+   2. 表达式的什么作用: EL表达式主要是代替jsp页面中的表达式脚本在js页面中进行持续的输出
+   3. 因为EL表达式在输出数据时候，要比jsp页面中的表达式要简洁
+      <%=req.getAttribute("key") %> 当值不存在EL输出为空
+      EL表达式输出key信息$(key)
+   4. 表达式的格式是 $()表达式
+   5. EL输出null值输出的是空串，jsp表达式输出null值的时候，输出的是null字符串
+** EL表达式的作用
+   EL表达式主要是在jsp页面中输出数据
+   主要是输出域对象中的数据。
+   当四个域中都有相同的key的数据的时候，EL表达式会按照四个域从小到大的顺序去进行输出.
+** EL表达式搜索域数据的顺序
+   pageContext
+   Request
+   Session
+   Application EL表达式会从四个域从小到大的顺序搜索
+** 输出
+   EL表达式在输出时，寻找对应属性的get方法 ;
+** 运算
+*** 关系运算
+    | 关系运算符 | 说明     | 范例     |
+    | eq         | 等于     | ${5==5}  |
+    | ne         | 不等于   | ${5!=5}  |
+    | lt         | 小于     | ${3<5}   |
+    | gt         | 大于     | ${5>3}   |
+    | le         | 小于等于 | ${5<=12} |
+    | ge         | 大于等于 | ${3>=5}  |
+ #+TBLFM: $1= 或eq
+*** 逻辑运算
+    | 逻辑运算符 | 说明                     |
+    | && 或 and  | 与运算                   |
+    | \vert\vert 或 or   | ${12==12 或运算符 12<11} |
+    | ! 或 not   | 取反                     |
+*** 算术运算
+    | 算术运算符 | 说明 |
+    | +          | 加法 |
+    | -          | 减法 |
+    | *          | 乘法 |
+    | / 或 div   | 除法 |
+    | % 或 mod   | 取模 |
+*** empty运算
+    empty运算可以判断一个数据是否为空，为空，则true，否则则false
+    以下几种情况为空
+    1. 值为null值的时候为空
+    2. 值为空串的时候为空
+    3. 值是Object数组，长度为零的时候
+    4. list集合，元素个数为零
+    5. map集合，元素个数为零
+*** 三元运算
+    表达式1?表达式2:表达式3
+    如1的值为真则返回表达式2的值，否则返回3的
+*** "."点运算和[]中括号运算符
+   1.  .点运算，可以输出Bean对象中某个属性的值
+   2. []中括号运算，可以输出有序集合中某个元素的值
+      并且[]中括号运算，还可以输出map集合中key里含有特殊字符的key的值
+      map['a.a'] a.a为特殊的key名 中括号内部必须加上单引号或者双引号
+** EL表达式的11个隐含对象
+   EL表达式中11个隐含对象，是EL表达式自己定义的，可以直接使用
+   | 变量             | 类型                 | 作用                                         |
+   | pageContext      | pageContextImpl类    | 获取jsp中的内置对象                          |
+   | pageScope        | Map<String,Object>   | 获取pageContext域中的数据                    |
+   | requestScope     | Map<String,Object>   | 可以获取Request域中的数据                    |
+   | sessionScope     | Map<String,Object>   | 它可以获取session域中的数据                  |
+   | applicationScope | Map<String,Object>   | 可以获取ServletContext中的数据               |
+   | param            | Map<String,String>   | 可以获取请求参数的值                         |
+   | paramValues      | Map<String,String[]> | 可以获取请求参数的值,获取多个值的时候使用    |
+   | header           | Map<String,String>   | 获取请求头的信息                             |
+   | headerValues     | Map<String,String[]> | 它可以获取值的的情况                         |
+   | cookie           | Map<String,Cookie>   | 它可以获取当前请求的Cookie信息               |
+   | initParam        | Map<String,String>   | 获取web.xml中配置的<context.param>上下文参数 |
+
+** EL表达式获取四个特定域中的属性
+   pageContext      =============         pageContext域
+   requestScope     =============         Request域
+   sessionScope     =============         Session域
+   applicationScope =============         ServletContext域
+   ${requestScope.key2} 选择性的输出Request域中的值
+** EL中request的使用
+   可以在jsp中设置pageContext.setAttribute("req",request)
+   1. 协议 ${pageContext.request.scheme}
+   2. 服务器ip ${pageContext.request.serverName}
+   3. 服务器端口 ${pageContext.request.serverPort}
+   4. 获取工程路径 ${pageContext.request.ContextPath}
+   5. 获取请求的方法 ${pageContext.request.method}
+   6. 获取客户端的ip地址 ${pageContext.request.remoteHost}
+   7. 获取会话的id编号 ${pageContext.session.id}
+
+** 其它EL隐含对象
+   ${paramValues.hobby[0]}
+   请求头中的[User-Agent]的值 ${header['User-Agent'][0]} 因为其中有-符号
+   请求头
+* 文件的上传和下载
+** 介绍
+   1. 要有一个form标签，method="post"
+   2. form标签的编码属性enctype值必须为multipart/form-data值
+      - multipart表示数据以多段的形式提交，而后以二进制流的形式发送。
+      - context-Type表示提交的数据类型
+      - boundary 表示每段数据的分隔符,由浏览器随机生成一个包含boundary的分隔符
+      - --*boundary* 表示一段数据的开始(*表示任意个数的字符)
+      - 空行之后表示当表单项的值，因为上传的内容很多，不显示内容
+      - -----*boundary*-- 表示数据的结束
+   3. 在form标签中使用input type=file 添加上传文件
+   4. 编写服务器代码，接收上传的数据(暂时使用servlet)
+   5. 解析得到的内容
+** 下载
+   1. 获取要下载的文件名
+   2. 读取要下载的文件内容(通过servletContext对象可以读取)
+   3. 把下载的文件内容回传给客户端
+   4. 在回传以前通过响应头告诉客户端回传的数据类型
+   5. 还要告诉客户断收到的数据可用于下载使用
+   6. 注意： 下载的文件名可以使用resp.setHeader指定，与原文件名不同
+* 书城项目
+** 创建数据库(adminer 4.8.1)
+   #+begin_src sql
+     drop database if exists book;
+     create database book;
+     use book;
+     drop table if exists t_user;
+     create table t_user(
+     `id` int primary key auto_increment,
+     `username` varchar(20) not null unique, 
+     `password` varchar(32) not null,
+     `email` varchar(200)
+     );
+     insert into t_user(`username`,`password`,`email`) values('admin','admin','admin@asa.com');
+     select * from t_user;
+
+   #+end_src
+** 编写数据库对应的JavaBean对象
+** 编写DAO持久层
+   编写工具类，JdbcUtils
+   1. 管理数据库连接池
+   2. 编写Service业务层
+   3. 编写Servlet层
+** 第三阶段
+*** 页面jsp动态化
+    1. 在htmk页面顶行添加page指令
+    2. 修改文件后缀名为: .jsp
+    3. 抽取页面中相同的内容
+    4. 动态的获取工程路径
+       #+begin_export html
+       <!--	<base>永远固定相对路径跳转的结果-->
+       <%
+	   //动态获取 getScheme为协议
+	   String basePath=request.getScheme()
+		   +"://"
+		   +request.getServerName()//服务器的ip
+		   +":"
+		   +request.getServerPort() //端口号
+		   +"/"
+		   +request.getContextPath() //工程路径
+		   +"/";
+
+       %>
+       #+end_export
+    5. 表单提交失败，给用户回显错误信息
+       1. 客户端表单项，还需要回显表单项信息(将回显的错误信息，
+          错误信息，保存到request域中)
+       2. 之后将数据传送给服务器端
+*** 代码优化
+**** BaseServlet的抽取
+     :描述: 一个模块一个Servlet
+     1. 在注册和登录页面的隐藏域添加标记
+	#+begin_export html
+	<input type="hidden" name="action" value="login">
+	<!-- 表示登录功能 -->
+	<input type="hidden" name="action" value="regist">
+#+end_export
+     2. 通过request标签获取action的值，如果它等于login，处理登录业务，否则注册业务
+**** 通过反射调用执行用户操作
+     1. 获取action的参数值
+     2. 通过反射获取action对应的业务方法
+     3. 通过反射调用业务方法
+     4. 将此方法写入baseServlet
+*** 使用BeanUtils注入参数
+    在工具类WebUtils中
+    1. copyParamToBeanm(Map value,Object bean)
+       前面写成Map层，那么会低耦合，但是写成HttpServletRequest,就会高，难以复用
+** 使用EL表达式替换表单回显示
+** 第五阶段
+*** 简介
+    1. 图书模块
+       1. 编写图书模块的数据库
+	  #+begin_src sql
+	    create table t_book(
+	    `id` int primary key auto_increment,
+	    `name` varchar(100),
+	    `price` decimal(11.2),
+	    `author` varchar(100),
+	    `sales` int,
+	    `stock` int,
+	    `img_path` varchar(200) 
+	    );
+	  #+end_src
+       2. 编写图书模块的JavaBean
+       3. 编写图书模块的Dao和测试Dao
+       4. 编写图书模块的Service和测试Service
+       5. 编图书模块的Web层，和页面联调节
+   2. 	  
+*** BookServlet程序
+**** 简介
+     1. 显示图书列表
+     2. 添加图书
+     3. 删除图书
+	1. 获取请求的参数id,图书编程
+	2. 调用bookService.deleteBookById(),删除图书
+	3. 重定向回图书列表管理页面/book/manager/bookServlet?action=list
+	4. 添加js功能防止误触(confrim有两个按钮，一个是确认，一个是取消)
+	5. 返回true表示点击确认，返回false表示点击取消
+     4. 修改图书
+	1. 点击修改以后跳转到manage/Servlet?action=getBook&id=BookId页面
+	2. public void getBook
+	   1. 获取图书编号
+	   2. 调用bookService得到修改的图书信息
+	   3. 将图书保存到request域中
+	   4. 请求转发到/pages/manager/book_edit.jsp页面
+	3. 提交修改后的数据给服务器保存修改
+	4. public void update
+	   1. 获取请求参数封装称为Book对象
+	   2. 调用bookService修改
+	   3. 重定向回图书列表管理页面
+	      地址： /工程名/manager/bookServlet?action=list
+	   4. 一个隐藏域决定添加或者修改
+	      1. 可以在请求发起时，附带当前操作的类型，并注入到隐藏域中
+	      2. ${empty param.id} 是否存在id参数，如果有说明修改，否则，添加
+	      3. request中是否存在对象book
+     5. 图书的分页
+	1. 根据分页视图分析出分页的对象模型Page类
+	   - pageNo  当前页码 客户端传递
+	   - pageTotal 总页码 总记录/每页数量
+	   - pageTotalCount 总记录数 sql语句:select count(*) from
+	   - pageSize 每页显示数量
+	   - items 当前页数据
+	     select * from table_name limit begin,size
+	     begin=(pageCount-1)*pageSize
+**** list图书列表
+     - BookServlet
+       1. 查询全部图书
+       2. 保存到request域中
+       3. 请求转发到pages/manager/manger.jsp页面中
+     - jsp页面
+       1. 从request域中获取全部的图书信息
+       2. 使用JSTL标签库遍历输出
+       3. 如果访问jsp无法直接得到数据，那么可以让程序先访问Servlet程序，再
+	  转发
+**** 处理分页
+     1. public void page(pageNo pageSize)
+     2. 调用bookService.page方法，根据需要返回page对象，在页面上输出回显.
+	- public Page page(pageNo,pageSize)方法处理分页业务
+	- 求三个属性，总记录数,总页码，当前页数据 由sql语句求得 q
+	- BookDAO queryForPageTotal() 总记录数 queryForItems()
+     3. 保存到request域中
+     4. 请求转发到pages/manager/book_manager.jsp页面中
+     5. 在服务器中做校验，避免直接输入地址
+     6. 要求显示5个连续的页码，当前页码在中间，除了当前页码之外，每个页码
+	都可以被点击(如果总页码小于等于5的情况,页码范围是1-总页码)
+     7. 分页做完以后，跳转列表页码的功能全部跳转到页码
+*** 前台和后台
+    - 一般不需要权限检查，就可以访问的功能。称为前台
+    - 后太：给管理员使用，才可以访问的得到的资源，或页面，或功能，是后台
+*** 表单重复提交
+    当用户提交完请求，浏览器会记录下最后一次请求的全部信息，当用户按下功能键
+    刷新时，请求转发会重复操作，导致表单重复提交
+*** ClientBookServlet
+    1. public void pageByPrice() 处理价格区间的分页
+      1. 获取请求的参数pageNo, pageSize, min, max
+      2. 调用bookService.pageByPrice():Page对象
+      3. 保存分页对象到request域中
+      4. 请求转发到index.jsp页面中
+    2. BookService层
+     1. 准备public Page pageByprice page(pageNo,pageSize,min,max)
+       1. 总页码，总记录数，当前页数据
+	  select count(*) from table_name where price between min and max
+       2. 当前页数据
+	  select * from table_name where price between min and max limit begin,size
+    3. BookDao
+      1. queryForPageTotal(min,max) 总记录数
+      2. queryForPageItems(begin,size,min,max) 求当前页数据 
+** Cookie
+*** 什么是Cookie
+     1. 是服务器通知客户端保存键值对的一种技术                                  
+     2. 客户端，有了Cookie后，每次请求都发送给服务器                            
+     3. 每个Cookie大小不能超过4kb                                               
+*** Cookied的创建修改删除
+    1. 创建Cookie对象                                                          
+       1. 通知客户端保存Cookie                                                    
+       2. 通过响应头SetCookie通知客户端保存Cookie                                 
+       3. 客户端：收到响应后，发现有set-Cookie响应头，就去看一下，没有就创建，    
+         有就修改                                                                
+    2. 修改Cookie
+       1. 方案一:
+	  1. 先创建一个同名的Cookie对象
+	  2. 在构造器，同时赋予新的Cookie值
+	  3. 调用response.addCookie(Cookie)
+       2. 方案二:
+	  1. 先找到需要修改的Cookie对象
+	  2. 调用setValue()方法赋予新的Cookie值
+	  3. 调用response.addCookie()通知客户端保存数据
+    3. 删除
+       1. 通过setMaxAge(0) 可以立即删除Cookie
+*** Cookie保存
+    保存Cookie时，如果值包含特殊字符，应该使用BASE64编码
+*** 查看Cookie
+    1. Firefox
+       1. F12 -> Application -> Cookie
+     
+*** Cookie的生命控制
+    Cookie的生命控制如何管理Cookie,什么时候销毁
+    1. java中可以setMaxAge()
+       - 正数，表示在指定的秒数后过期
+       - 负数，表示浏览器一关，Cookie就会被删除(默认值是-1)
+       - 零，表示马上删除Cookie
+*** Cookie有效路径Path的设置
+    Cookie的path属性，可以有效过滤哪些Cookie可以发送给服务器，哪些不发.
+    path属性是通过请求的地址来进行有效的过滤
+    CookieA path=/project
+    CookieB path=/project/abc
+    CookieA能过滤所有非/project/abc 工程路径后面必须有abc才能访问
+** Seession
+*** 什么是Session会话
+    1. Session就是一个接口(HttpSession)
+    2. Session就是会话，它是用来维护一个客户端和服务器之间关联的一种技术
+    3. 每个客户端都有自己的一个Session会话
+    4. Session会话中，我们经常用来保存用户登录之后的信息
+*** 如何创建Session和获取(id,是否为新)
+    1. 创建和获取Session对象，他们的API一致
+    2. 第一次是创建
+    3. 之后调用都是，获取创建好的Session对象
+    4. isNew() 判断到底是不是刚创建出来的
+       true 表示刚创建
+       false 表示获取之前的创建
+    5. 可以以指定Session的唯一标识id
+*** Sessuib生命周期控制
+    1. public void setMaxinactibeInterval(int interval) 设置Session的超时
+       长，Session就会被销毁
+    2. 默认时长1800秒，为60分钟
+    3. 因为在tomcat服务器的配置文件web.xml默认有以下配置，这就表示配置了当前
+       tomcat服务器下所有的Session超时配置默认时长： 30分钟
+    4. <session-config><session-timeout>20</session-timeout></session-config>
+    5. 如果只是想要修改单个Session的时长，只是需要使用上面的API即可
+    6. Seession的超时指的是，客户端两次请求的最大间隔时长
+    7. public void invalidate() 让当前Session会话马上超时无效
+
+** Session和Cookie
+   1. 在没有Cookie的情况下，发请求，服务器每次创建Session会话的时候，都会创建
+      一个Cookie对象，Cookie创建的key永远是 JSESSIONID值是新创建出来的Session的
+      ID值
+   2. 通过响应把新创建出来的Session的id值返回给客户端
+   3. 客户端有了Cookie之后，每次请求，都会把Session的id以Cookie的形式发送给
+      服务器
+   4. 服务器通过Cookie中的id值找到自己之前已经创建的Session对象，并且返回
+   5. 客户端没有Cookie的情况下，发请求。 服务器会再次创建一个新的Session对象
+   6. Session,底层是基于Cookie技术来实现的
+** 第六阶段
+*** 显示登录的用户名
+    1. 将已经登录的用户信息保存到session中
+    2. 在主页界面判断session是否为空
+    3. 在登录成功页面显示用户名
+    4. 如果为空，则显示登录
+    5. 不为空，则显示注销和用户名
+*** 注销
+    1. 销毁session中的用户信息(或者销毁session)
+    2. 重定向到首页
+*** 表单的重复提交----验证码
+**** 问题
+     1. 提交完表单，服务器使用请求来进行页面跳转，这个时候，用户按下，功能
+	键f5,就会发起最后一次的请求，造成表单重复提交的问题
+	- 使用重定向进行跳转
+     2. 用户正常提交服务器，但是由于网络延迟等原因，迟迟未接收到服务器的响应，
+	用户以为提交失败，就会着急，然后多点几次提交操作，也会造成表单重复提交
+     3. 用户正常提交服务器，服务器也没有延迟，但是提交完成后，用户回退浏览器，重新
+	重新提交，也会造成表单重复提交
+**** 验证码
+     1. 当用户第一次访问表单时，就要给表单生成一个随机的验证码字符串
+     2. 要把验证码保存到session域中
+     3. 要把验证码生成为验证码图片显示在表单中
+     4. RegisterSevlet程序
+	1. Session中验证码，并删除Session中的验证码
+	2. 获取表单中的表单项信息
+	3. 比较Session中的验证码和表单项的中的验证码是否相等
+	   1. 相等，容许操作
+	   2. 不相等，拒绝操
+*** 第三方验证码
+    google验证码kaptcha使用步骤如下:
+    1. 导入谷歌验证码的jar包
+    2. 在web.xml中去配置用于生成验证码的Servlet程序
+    3. 在表单中使用img标签显示验证码的图片并使用它
+    4. 在服务器获取谷歌生成的验证码和客户端发送过来的验证码比较使用
+*** 验证码的缓冲
+    1. 客户端: 浏览器为了让请求速度更快，就会把每次请求的内容缓冲到了浏览器
+       端(内存或者硬盘)
+    2. 要是再发一样的地址和参数的请求时，浏览器端会直接从缓冲找
+    3. 直接从浏览器的缓冲中获取原来的图片返回
+       所以必须跳过缓冲，缓冲的名称由最后的资源名和参数名
+    4. 可以在图片路径后追加时间作为区分
+** 图书购物模块
+*** 模型
+    由购物车的页面分析出购物车的模型
+    1. 购物车对象 items 购物车中商品信息(泛型) 购物车商品项目抽取和封装
+    2. 购物车对象Cart
+       - totalCoount 总商品数量
+       - totalPrice 总商品金额
+       - items 购物车商品
+    3. 购物车商品项 CartItems
+       - 编号 id
+       - 商品名称 name  
+       - 总商品数量 count
+       - 单价 price
+       - 金额 totalPrice
+    市面上购物车的实现版本
+    1. Session版本（把Cart信息保存到Session域中)
+    2. 数据库版本(把购物车版本保存到数据库)
+    3. redis+数据库+Cookie(使用Cookie+Redis缓冲，和数据库)
+*** 功能
+    CartServlet
+    1. 加入购物车 addItem()
+       1. 获取请求参数，商品编号
+       2. 调用bookService.queryBookById(id):Book得到图书的信息
+       3. 把图书信息，转换成为CartItem商品项
+       4. 调用Cart.addItem(CartItem)添加商品项
+       5. 重定向回商品列表页面
+	  Http协议的请求头，叫Referer它可以把请求时，浏览器地址栏中的地址发送给
+	  服务器
+    2. 删除商品项 deleteItem()
+    3. 清空购物车 clear()
+    4. 修改商品数量 updateCount()
+    Cart
+    1. additem(CartItem)
+    2. delteItem(id)
+    3. clear();
+    4. updateCount(id,count); 编号和数
+*** 购物车页面修改数量
+    1. 判断输入框中的内容是否和原来的相同 
+    2. 当用户鼠标离开输入框以后，提示用户是否确认
+    3. 确认以后，向服务器发起请求保存修改
+       参数： 商品编号，商品数量
+    4. JQuery中onchange 内容改变事件 blur失去焦点事件
+** 订单模块
+*** 界面
+    Order类 订单类
+    1. createTime 下单时间
+    2. price  金额
+    3. status 0未发货，1已发货 2已经签收
+    4. userId 用户编号
+    OrderItem 订单项
+    - id  主键
+    - name 商品名称
+    - count 数量
+    - 单价
+    - totalPrice 总价
+    - orderId 订单号
+*** 订单的功能
+    1. 生成订单
+       - 查询所有订单(管理员)
+       - 发货(管理员)
+       - 查看订单详细(管理员/用户)
+       - 查看我的订单(用户)
+       - 签收（用户)
+    2. OrderServlet
+       - createOrder()
+       - showAllOrders();
+       - sendOrder()
+       - showOrderDetail()
+       - showMyOrders() 
+       - receiverOrder() 签收订单
+*** OrderService
+    1. createOrder(Cart,userId); 生成订单
+    2. showAllOrders()
+    3. sendOrder(orderId)
+    4. showOrderDetail(orderId)
+    5. showmyorders(orderId)
+    6. receiverOrder(OrderId)
+*** OrderDAO
+    1. saveOrder(Order) 保存订单
+    2. queryOrders() 查询全部订单
+    3. changOrderStatus(orderId,status)
+*** OrderItemDAO
+    1. saveOrderItem(OrderItem)
+    2. queryOrderItemByOrderId(OrderIdr)
+*** 订单数据库
+    #+begin_src sql
+      use book;
+      create table if not exists t_order(
+      `order_id` varchar(50) primary key,
+      `create_time` datetime,
+      `price` decimal(11,2),
+      `status` int,
+      `user_id` int,
+      foreign key (`user_id`) references t_user(`id`)
+      );
+      create table if not exists t_order_item(
+      `id` int primary key auto_increment,
+      `name` varchar(100),
+      `count` int,
+      `price` decimal(11,2),
+      `total_price` decimal(11,2),
+      `order_id` varchar(50),
+      foreign key (`order_id`) references t_order(`order_id`)
+      );
+    #+end_src
+** Filter过滤器进行权限检查
+** ThreadLocal的使用
+   1. ThreadLocal的作用，他可以解决多线程的数据安全问题。它可以给当前线程，
+      关联一个数据（可以是普通变量，可以是对象，也可以是数组，集合）
+   2. ThreadLocal的特点: 
+      1. ThreadLocal可以当前线程关联一个数据，他可以想Map一样存取数据(key为当前线程)
+      2. 并且每一个ThreadLocal对象，只能为当前线程关联一个数据，如果要为当前线程关联多个数据
+	 就需要使用多个ThreadLocal对象实例
+      3. 每个ThreadLocal对象实例定义的时候，一般都是static类型
+      4. ThreadLocal保存的数据，在线程销毁后，会由JVM虚拟机自动释放
+** 使用线程管理事务
+   避免结帐时，代码执行过程中的错误，而数据库保存的数据错误。
+   要确保所有操作都要么成功，要么失败，就必须使用数据库的事务
+   要确保所有操作都在一个事务内，就必须要确保所有操作都使用同一个connection
+   连接对象,threadlocal要确保所有操作都使用同一个事务前提条件，所有操作都必须 
+   在同一个线程中完成
+** 第九阶段
+*** 使用AJAX验证用户名是否可用
+    1. 当注册程序时，使用ajax验证，当用户输入完成后，失去焦点，public void
+       ajaxExistsUsername(){}
+       1. 调用请求的参数 username
+       2. 调用UserService existsusername:boolean验证用户名是否可用
+       3. 把客户端的结果，封装为Map对象，然后回传给客户端
+*** 使用AJAX获取商品编号
+    1. 获取商品编号
+    2. 调用bookServive.queryBookById
+    3. 把book对象转换成为CartItem
+    4. 获取Session中的购物车对象Cart
+    5. 调用cart.addItem() 添加商品项
+    6. 返回购物车总的商品数量和最后添加的商品名称
+* JSON
+** 什么是JSON
+   是一种轻量级的数据交换格式，易于人的阅读和编写，同时也易于机器解析和生成。JSON
+   采用完全独立于语言的文本格式。而且很多语言都提供了对JSON的支持
+   1. 轻量级的数据交换格式
+   2. 轻量级指和xml做比较
+   3. 数据交换指客户端和服务器之间业务数据的传输格式
+** JSON
+*** 定义
+    json是由键值对组成，由花括号包围，每个键由引号引起来，键和值之间使用冒号进行分
+    隔，多组键值对使用逗号进行分隔
+    #+begin_src javascript
+      var jsonObj{
+        "key1":12,
+        "key2":"avc",
+        "key3":true,
+        "key4":[11,"arr",false],
+        "key5":{
+          "key5_1":551,
+          "key5_2":"key_5_2_value"
+        }
+      }
+    #+end_src
+** 访问
+   json本身就是一个对象
+   json中的key我们可以理解为对象中的一个属性。
+   json中的key访问就和访问对象中的属性一样
+** json的两个常用方法
+   - json存在的两种形式
+     - 对象的形式 json对象
+     - 字符串形式 json字符串
+   - 两种形式的转
+     - JSON.stringify() 把json对象转换成为json字符串
+     - JSON.parse() 把json字符串转换成为json对象
+   - 一般需要操作json数据的时候，需要json对象的形式
+   - 一般我们要在客户端和服务器之间进行数据交换时候使用json字符串
+** JSON在java中的使用
+*** javaBean和json的互转
+    gson.toJson(person) 转换java对象
+    gson.fromJson(personJsonString,Person) 1. 转换的字符串 2. 要转换的对象
+*** List和json的互转
+    1. 编写类继承gson中的TypeToken，然后使用该类的getType方法，填写到转换中
+*** map和json的互转
+    1. 编写类继承gson中的TypeToken，然后使用该类的getType方法，填写到转换中
+    2. 匿名内部类
+       new TypeToken<HashMap<Integer,Person()>>(){}.getType
+* AJAX
+** 什么是AJAX请求
+   AJAX即"Asyncchronous Javascript And XML" 
+   浏览器通过js异步发起请求，局部更新页面的技术
+   #+begin_src javascript
+     function ajaxRequest(){
+       var xmlhttprequest = new XMLHttpRequest();
+       xmlhttprequest.open("GET","http://ip:port//porject_path");
+       //onreadystatechanges在send方法之前使用
+       xmlhttprequest.onreadystatechange=function(){
+         if(xmlhttprequest.readyState==4 && xmlhttprequest.status==200){
+           document.getElementById("div").innerHTML=JSON.parse(xmlhttprequest/responseText);
+         }
+       }
+       xmlhttprequest.send;//发送请求
+     }
+   #+end_src
+  - AJAX请求的局部更新，浏览器地址栏不会发生变化
+    局部更新不会舍弃原理页面的内容
+** JQuery中的AJAX请求
+*** ajax方法
+    1. ajax方法
+       - url 表示请求的地址
+       - type 表示请求的类型GET或POST请求
+       - data 表示发送给服务器的数据类型
+	 1. name=value&name=value
+	 2. {key:value}
+       - success 请求响应，响应的回调函数
+       - dataType 响应的数据类型
+	 1. text
+	 2. xml
+	 3. json
+    2. get方法和$.post方法
+       - url 请求的地址
+       - data 发送的数据
+       - callback 成功回调函数
+       - type返回的数据类型
+    3. 表单序列化，serlalize()可以把所有表单项的内容都获取到，并以name=value
+       &name=value的方式提交
+* Filter过滤器
+** 作用
+   1. 拦截请求，过滤响应
+   2. 拦截请求常见的应用场景，权限检查，日期操作，事务管理
+   3. 根据我们学过的内容，用户会把登录之后内容保存到Session域中，所以要检查
+      用户是否登录，可以判断Session是否有用户登录的信息
+** Filter的生命周期
+   1. 构造器方法
+   2. init初始化方法
+      1和2只有在创建时才会调用
+   3. doFilter过滤方法
+      每次拦截时就会执行
+   4. destory销毁方法
+      停止web工程的时候，就会执行
+** FilterConfig类
+   FilterConfig类见名知意，Filter文件的配置文件
+   Tomcat每次创建Filter的时候，也会同时创建一个FilterConfig类，这里包含了
+   Filter配置文件的配置信息
+   1. 获取Filter的名称 filter-name 内容
+   2. 获取在Filter中配置的 init-param初始化参数
+   3. 获取ServletContext对象
+** FilterChain过滤器链
+   - Filter 过滤器
+   - Chain 链，链条
+   - FilerChain.doFilter()的作用
+     1. 如果有下一个过滤器，则执行它
+     2. 执行目标资源
+   - 在多个Filter过滤器执行的时候，他们执行的优先顺序是由他们的web.xml中从
+     上到下配置的顺序决定
+   - 多个Filter执行的特点,首先: 所有Filter和目标资源默认都执行在同一个线程中
+   - 以上多个Filter共同执行的时候，都使用同一个request对象
+** Filter的拦截路径
+   - 精确匹配
+     <url-pattern>/target.jsp</url-pattern/>
+   - 目录匹配
+     <url-pattern>/admin/*<url-pattern>
+     admin目录下的所有文件
+   - 后缀名匹配
+     <url-pattern>*.html</url-pattern>
+     后缀名匹配不能以/（斜杠打头）
+   - Filter过滤器只关系请求的地址是否，不关系资源是否匹配
+** 使用Filter过滤器给所有的Service方法都加上try-catch
+   现在有一个transactionFilter事务的Filter过滤器filterChain,doFilter()
+   将所有异常交给tomcat，让tomcat展示友好的错误信息页面,在web.xml中我们可以
+   通过错误页面配置来整理
+* 数据库连接池的问题
+** java Enterprise(maven web application)
+   当配置文件以后要手动复制到target classes目录下，与com同级目录
+* 解决中文乱码问题
+** 服务器和浏览器
+   response.setCharacterEncoding('UTF-8') 默认为ISO-8859-1
+   response.setHeader("Content-Type","text/html,charset=UTF-8")
+   # 同时设置了服务器和浏览器的字符集，此方法一定要在调用流对象之前调用才有效
+   response.setContentType("text/html;charset=UTF-8")
+** 下载
+   1. 需要对文件进行编码
+      #+begin_src java
+        response.setHeader("Context-Disposition","attachment; filename="+URLEncoder.encode("1.svg","UTF-8"));
+        //chrome设置 使用URL
+      #+end_src
+   2. 使用user-agent解决所有问题
+   3. <？charset?B?xxxxx?=
+      - =? 表示编码内容的开始
+      - charset 表示字符集
+      - B 表示BASE64编码
+      - xxxx 表示文件名BASE64编码后的内容
+      - ?= 表示编码内容的结束
+* ideal中的断点调试
+** 调试要素
+   首先需要两个元素，断点+Debug服务器
+   断点，只需要在代码需要停的行的左边上双击就可以
+   Debug启动运行代码
+** 方法栈窗口
+   1. 方法调用栈可以查看当前线程有哪些方法调用信息
+   2. 下面的调用上一行的方法
+* jar包
+** common-fileupload
+   common-fileupload.jar (上文件的jar依赖于commons-io.jar)
+   ServletFileUpload类，用于解析上传的数据
+   1. boolean ServletFileUpload isMultipartContext(HttpServletRequest req)
+      判断上传的数据是否多断的形式
+   2. public List<FileItem> parseRequest(HttpServlet req)
+      解析上传的数据
+   3. boolean FileItem.isFormField()
+      判断当前这个表单项，是否普通的表单项，还是上传的文件类型
+      true表示普通类型。false表示上传的文件类型
+   4. String FileItem.getFieldName()
+      获取表单项的name属性值
+   5. String FileItem.getString()
+      获取当前表单项的值
+   6. String FileItem getName()
+      获取上传的文件名
+   7. void FileItem.write(file)
+      将上传的文件写到参数file所指向的硬盘的位置
+
+** BeanUtils(依赖于logging)
+   一次性将所有请求参数注入到javaBean中
+** kaptcha验证码jar包
+** json jar包
+   gson google提供的
+* 问题
+** 异常导入包的版本问题
+   书城Caused by: 
+   java.lang.NoClassDefFoundError: 
+   org/apache/commons/collections/FastHashMap
+   此类在新版1.9.0中消失
+
+* i18n(internationalization)
+  Locale表示不同的时区，位置，语言
+  - zh_CN 中国，中文
+  - en_US 英文，美国
+  放到Properties属性文件中
+  1. 国际化配置文件命名规则，basename_locale.properties
+     i18n_zh_CN.properties
+  2. 英文的配置文件是: i18n_en_US.properties
+  3. ResourceBundle资源包根据你给的信息，读取配置文件信息
+     ResourceBundle.getBundle():ResourceBundle.class 
+     根据给定的baseName和Locate读取相应的配置文件,
+     得到文字信息,
+     ResourceBundle.getString(key) 得到不同的语言信息
+  4. 国际化三要素 Locate对象 ResourceBundle Properties配置文件
+  5. JSTL国际化标签库
+     使用标签设置local信息
+     1. 使用标签设置Local信息
+     2. 使用标签设置basename
+     3. 使用标签输出国际化信息
+	<fmt:setLocale value="${param.locale}"/>
+	<fmt:setBundle value="i18n"/>
+	<fmt:message key=""/>

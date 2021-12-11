@@ -1,0 +1,24 @@
+digraph CollectionAndMap{
+  subgraph cluster_iterator{
+    label="迭代器";
+
+    Iterator [style=filled,color=green];
+    Listiterator [style=filled,color=green];
+    Listiterator -> Iterator;
+  }
+
+ 
+  Collection [style=filled,color=lightblue]
+  Collection -> Iterator[label="获取"];
+  List [style=filled,color=lightblue];
+  List -> Listiterator;
+  List -> Collection;
+  Vector,ArrayList,LinkedList [style=filled,color=lightblue];
+  {Vector,ArrayList,LinkedList} -> List [color=red,style=dotted];
+  Set,HashSet,LinkedHashSet,SortedSet,TreeSet [style=filled,color=brown];
+  Set -> Collection;
+  HashSet -> Set [style=dotted];
+  LinkedHashSet -> HashSet;
+  SortedSet -> Set;
+  TreeSet -> SortedSet [color=brown,style=dotted];
+}

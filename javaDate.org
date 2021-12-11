@@ -1,0 +1,7 @@
+* Date类的使用
+** java.util.Date
+    1. 直接new Date创建一个基于当前系统时间的实例
+    2. getTime() 获取当前系统时间距离1970年开头的毫秒数
+    3. new Date(long date) 创建一个基于指定时间戳的date实例
+** java.sql.Date
+    - 只有年月日三个时间 

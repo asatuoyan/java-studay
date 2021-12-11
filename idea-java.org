@@ -1,0 +1,104 @@
+* 优点和配置
+  快捷键和代码模版本 全面的语言支持
+  /bin idea64.vmoptions 配置idea对内存的使用
+  config 
+  - 文件的模板
+  - 插件
+  - 删除配置，就可以还原
+* 创建和删除模块
+  1. eclipse  workspace   project
+     idea 中  project     module
+  2. eclipse 中可以在一个窗口中管理多个项目
+     idea
+  3. project struct 中删除模块修改模块
+     ctrl+shift+alt+s
+* 设置
+  general -  忽略大小写
+          - editor tabs 文件名多行显示
+	  - fonts consoles
+  colorscheme 单独设置编辑区和控制台字体
+	    - languages defaults
+  editor file and code templates
+         - 修改类头的文档注释信息@
+	 file-encoding 设置当前代码的编码集
+  
+  build execution deployment
+  - compiler 自动编译
+  设置省电模式，不会自动进行编译  
+* 快捷键
+  多行注释 ctrl+shift+/
+  单行注释 ctrl+/
+  向上移动行 alt+up
+  向下移动行 alt+down
+  向下移动行 shift+enter 插入一行，但是不移动光标
+  查看源码  ctrl+选定的结构 或者ctrl+shift+t
+  智能纠错 alt+enter
+  返回前一个编辑的页面 alt+left
+  进入到下一个变得页面 alt+right
+  查看继承关系 f4
+  格式化代码 ctrl+shift+f
+  提示方法的参数类型  ctrl+alt+/
+  选中数行，整体后移 tab
+  整体代码的前移  shift+tab
+  查看类的结构 ctrl+o
+  重构，修改变量名和方法名 alt+shift+right
+  大写转小写/小写转大写 ctrl+shift+y
+  生成构造/get/set/toString alt+shift+s
+  查看文档说明 f2
+  收起所有方法 alt+shift+c
+  打开所有方法 alt+shift+x
+  打开代码所在的硬盘文件夹 ctrl+shift+x
+  生成try-catch等 alt+shift+z
+  局部变量替换为成员变量 alt+shift+f
+  查找替换（当前） ctrl +F
+  查找替换（全局) ctrl +h
+  查找文件 double shift
+  查看类的继承结构图 ctrl+shift+u
+  查看方法的多层重写结构 ctrl+alt+h
+  添加到收藏 ctrl+alt+f
+  抽取方法 alt+shift+m
+  打开最近修改的文件 ctrl+e
+  关闭当前代码栏 ctrl+w
+  
+* 模板
+** 两种模板
+   setting > editor > general > postfix completion(不可修改)
+   setting > editor > live templates(可以修改)
+** 语句
+   sout
+   soutp  parameter
+   soutm  TemplatesTest
+   soutv  varibles
+   ifn    if(xxx=null)
+   inn    if(xxx!=null)
+   xxx.null 
+   xxx.nn  if(xxx!=null)
+** 循环
+   fori 遍历
+   iter 增强for循环
+   itar 普通for循环
+** list集合的遍历
+   list.fori 普通for循环遍历
+   list.forr 逆序遍历集合
+** 特殊
+   prsf private static final
+   psf public static final
+   psfi  public static final int
+   psfs public static final String
+* 版本控制
+* debug
+  build,execution,deployment
+  window系统 debugger中可以修改 java中可以改为shared memory
+  step into f5
+  step over f6
+  force step into shift+alt+f7
+  step out f7
+  条件断点 Debuger 右键单击，设置条件
+* doc
+  tools generate javadoc
+  zh_CN
+  -encoding UTF-8 -charset UTF-8
+* 缓冲和索引的清理
+  每次加载时，都会创建索引。索引主要用来加快文件的查询，从而加快文件的查询，
+  代码提示等操作
+  file > invalidate and restrat

@@ -1,0 +1,609 @@
+* 配置
+** 步骤
+   1. 根据xml全局配置文件创建SqlSessionFactory对象
+   2. sql映射文件,配置每个sql，以及sql的封装规则等
+   3. 将sql映射文件注册在全局配置文件中
+   4. 写代码
+      1) 根据全局配置文件得到SqlSessionFactory
+      2) 使用sqlSession工厂，获取到sqlSession使用它来执行增删改查，
+	 一个sqlSession就是代表和数据库的一次会话，用完关闭
+      3) 使用sql的唯一标志来告诉Mybatis执行那个sql,sql都是保存在sql映射文件中的
+      4) 接口与配置文件进行动态绑定
+      5) namespace指定为接口的全类名
+      6) 然后将接口和sqlXml 配置中的方法id绑定
+
+** 接口
+   - SqlSession代表和数据库的一次会话，用户必须关闭
+   - SqlSession和connection一样都是非线程安全的。每次使用都应该获取
+     新的对象
+   - mapper接口没有实现类，但是mybatis会为这个接口生成一个代理对象
+     1. sqlSession.getMapper(EmployeeMapper.class);返回代理对象
+	将接口和xml文件进行绑定
+     2. 两个重要的配置文件
+	mybatis的全局配置文件，包含数据库连接池信息，事务管理器信息等....
+	系统运行环境信息
+     3. sqlSession和sql映射文件
+** Mybatis全局配置文件
+*** Configuration
+    - properties
+      mybatis可以使用properties来引入对外部properties配置文件的内容
+      - resource 引入类路径下的资源
+      - url 引入网络路径或磁盘路径下的资源
+    - setting
+      改变mybatis的运行时行为
+      - name 设置项的名字
+      - value 设置项的取值
+    - typeAliases
+      别名处理器xml引用全类名的使用别名.可以为java类型起别名
+      1. type 指定要求别名的类型全类名,默认为类名小写
+      2. alias 指定新的别名
+      3. 如果bean包下，有很多类，可以批量写别名
+	 - package 为某个包下的所有类批量起别名
+	 - name 指定包名 会为当前包以及下面的所有后代包中的每一个类都起一个
+	   默认的别名
+	 - 别名不区分大小写，批量起名，会产生别名冲突，使用注解，来为
+	   指定新的别名@Alias注解批量起别名
+    - typeHandlers 类型处理器
+      JSR-310(日期处理类) 为这些类添加类型处理器
+
+*** enviroments
+    1. mybatis可以配置多种环境
+    2. enviroment可以配置具体的环境信息 default指定使用某种环境.可以快速切换
+       * transactionManager(必备) 事务管理器
+       * id代表当前环境的唯一标识
+       * type 事务管理器的类型 JDBC(DdbcTransactionFactory)
+	 MANAGED(使用J2EE服务器进行事务的控制)
+	 自定义事务管理器，实现TransactionFactory接口 type为全类名
+    3. dataSource(必备)
+       type: 数据源类型，UNPOOLED POOLED JNDI(此三者都是别名)
+       - POOLED(PooledDataSourceFactory)
+       - JNDI(JndiDataSourceFactory)
+       - UNPOOLED(UnpooledDataSourceFactory)
+       - 自定义数据源，实现DataSourceFactory接口
+    4.
+*** databaseIdProvider
+    1. Mybatis在移植性方面的考虑
+    2. 只需要告诉数据库的厂商的标识
+    3. 作用得到数据库的厂商的标识(驱动)，mybatis根据数据库厂商的标识来执行不同
+       的标识
+       type="DB_VENDOR" VendorDatabaseIdProvider
+    4. 向<select></select> 向用户表示这条sql在mysql环境下执行
+*** mapper
+    - resource: 引用类路径下的映射文件
+    - url 引用网络路径或者磁盘路径下的sql映射文件
+    - class 直接应用接口
+      - 有sql映射文件，映射文件必须和接口同名，并且与接口放在同一目录下
+      - 没有sql映射文件，所有sql都是利用注解写在接口上
+	#+begin_src java
+	  @select("select * from emp")
+	  public Employee getEmployee(Integer id);
+	#+end_src
+      - 推荐，比较重要的DAO接口我们来写sql映射文件
+      - 不重要的，简单的Dao接口可以使用注解
+      - 批量注册
+*** 配置文件的顺序
+    不能乱
+** mybatis映射文件
+   mybatis容许增删改直接定义以下类型的返回值
+   Integer,Long,Boolean(0返回false,非0返回true)
+   1. mysql支持自增主键，自增主键值的获取,mybatis也是利用
+      statement.getGenreatedKeys()
+   2. <insert id="addEmp" parameterType="com.asatuoyan.mybatis.bean.Employee"
+   useGeneratedKeys="true">
+   使用自动增长的主键策略
+   1. KeyProperty,指定对应的主键属性，也就是mybatis获取的主键值以后，将这个值
+      封装给javaBean的哪个属性
+   2. 对于oracle不支持自增，Oracle使用序列来模拟自增
+   3. 每次输入的数据的主键是从序列中拿到值，如何获取到这个值
+   4. 也可以直接从序列中拿到值 select EMPLOYEE_SEQ.current
+   5. AFTER运行顺序
+      先运行插入的sql(从序列中取出新值作为id)
+* plugins
+** Executor
+   修改，查询，
+** ParameterHandler
+   设置参数
+** ResultHandler
+   处理结果集合，并封装成为java对象
+** StatementHandler
+* mybatis参数处理
+** 参数
+    - 单个参数 #{参数名}，取出参数值,mybatis不会做特殊处理
+    - 多个参数 封装map key: param1...param10 或者参数的索引 #{param1}
+                       value: 传入参数值
+    - 命名参数，明确的指定封装参数时，param的key @param
+    - 如果多个参数正好是业务逻辑的数据模型，我们就可以直接传入pojo模型
+    - #{属性名}取出传入pojo的属性值
+    - 如果多个参数不是业务模型的数据，没有对应的pojo,为了方变，我们可以
+      传入map
+    - #{key}. 取出map中对应的值 ，也可以放入map
+    - 经常使用，推荐编写一个TO,来专门数据传输对象
+    - 特别注意： 如果是Collection(List,Set)类型或者是数组
+      Key Collection(collection) 如果是List还可以使用这个key(List)
+      - 
+
+** 源码如何处理参数
+   1. 获取每个标了param注解的参数的@Param的值 id ,lastName
+   2. 每次解析一个参数给map中保存信息，(key,参数索引，value,name的值)
+      name的值，标注了param注解，注解的值
+      没有标注，全局配置 useActualParamName() name=参数名
+   3. name=map.size(), 相当于当前元素的索引
+   4. 参数为null直接返回, 如果只有一个元素，并且没有Param注解
+   5. 单个元素直接返回
+   6. 多个元素 name集合的value作为key names集合的key又作为取值的参考
+      param.put(entry.getValue)
+      {id=args[0]:1,lastName=args[1]:Tom}
+
+** #{}和${}的区别
+   #{} 是以预编译的形式，将参数设置到sql语句中，PreparedStatement，防止sql注入
+   ${} 取出的值直接拼接在sql语句中，会有安全问题
+   大多情况下，我们取参数的值都应该用#[]
+   比如分表，分库操作(按照年份拆分)
+   原生jdbc不支持占位符的情况，就可以使用${}进行取值
+   select * from ${year}_salary order by ${f_name} ${order}
+   
+** #{} 更多用法
+   1. 可以取值的时候可以指定的数据的
+      javaType,jdbcType,mode(存储过程),numericScale
+      resultMap typeHandler jdbcTypeName expression
+   2. jdbcType 通常会被设置
+      在数据为null的时候，有些数据库可能不能识别mybatis对null的处理，比如
+      oracle（报错)
+   3. orcale错误类jdbcType Other 无效的类型，因为mybatis对所有的null都映射
+      的是jdbc Other类型
+* select元素
+** 简介
+   + id: 唯一标识符
+     - 用来引用这条语句，需要和接口名一致
+   + parameterType 参数类型
+     - 可以不传，Mybatis会根据TypeHandler自动推断
+   + resultType: 返回值类型
+     - 别名或者全类名，如果返回值是集合，返回值写集合中元素的类型。不能和resultMap
+       同时使用
+   + jdbcType
+     - 是数据库中的类型
+     - javaType
+       是java中的数据类型
+   + 多条记录封装map,map的值Employee,键是Integer.键是这条记录的主键，值是记录
+     封装后的javaBean
+     注解@MapKey("id") 告诉mybatis封装这个map的时候使用哪个属性作为主键
+   + 
+** 自动映射     
+   1. 全局setting设置
+      - autoMappingBehavior默认PARTIAL,开启映射的功能。唯一的要求是列名和
+	javaBean属性名一致
+      - 如果autoMappingBehavior设置为null则会取消自动映射
+      - 数据库命名规范，POJO属性符号驼峰命名法，如A_COLUMN->aColumn,我们可以
+	开启自动驼峰命名规则映射功能，mapUnderscoreToCamelCase=true 
+** resultMap(自动映射：自定义，实现高结果集映射)
+   1. 如果查出的数据中，列名和java的属性名不一样,自定义
+   2. 自定义某个javaBean的封装规则
+   3. id 唯一 方便引用
+      column 指定哪一个列
+      property 指定哪一列
+   4. association 用来指定联合的java对象
+      - property 指定
+      - javaType指定联合对象的类型
+	  #+begin_src xml
+	<!--    查出employee的同时，查出员工对应的部门-->
+	    <resultMap id="MyEmpC" type="com.asatuoyan.mybatis.bean.Employee">
+		<!--        指定主键列的封装规则-->
+		<id column="id" property="id"></id>
+		<result column="lastname" property="lastName"></result>
+		<!--        其它不指定的列会自动封装 ,我们只要写resultMap 就把全列的规则都写上-->
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
+	<!--        方案一-->
+	<!--        <result column="did" property="department.id"/>-->
+	<!--        <result column="dept_name" property="department.departmentName"/>-->
+	<!--        -->
+		<association property="department" javaType="com.asatuoyan.mybatis.bean.Department">
+		    <id column="did" property="id"></id>
+		    <result property="departmentName" column="dept_name"></result>
+		</association>
+	    </resultMap>
+	    <select id="getEmpAndDeptById" resultMap="MyEmpC">
+		select e.id AS id,e.lastname AS lastname,e.gender AS gender,e.email as email ,e.dept_id as did,d.dept_name as dept_name from emp as e,tbl_dept as d
+		where e.dept_id=d.id AND e.id=#{id}
+	    </select>
+      #+end_src
+   5. 使用association进行分步查询 
+      1. 先按照员工id查询员工信息
+      2. 根据查询的员工信息中的d_id值去查部门信息
+      3. 部门设置到员工中
+      4. 分布查询可以延迟加载
+	 组合不同的查询
+   6. 每次查询Employee对象的时候，都将部门信息一起查询出来，部门信息在我们
+      使用的时候再去查询（就是延迟查询)
+   7. 基于分段查询的基础之上加上配置
+      - lazyLoadingEnabled value="true" 默认为false
+      - aggressiveLazyLoading value="true" 开启时，自动加载所有列
+      - 显示设置能防止根新代来的问题
+      - 按照需要加 
+   #+begin_src xml
+     <resultMap id="MyDept" type="com.asatuoyan.mybatis.bean.Department">
+	     <id column="did" property="id"></id>
+	     <result column="dept_name" property="departmentName"></result>
+     <!--        定义集合的关联的属性 集合里面每一个元素的类型-->
+     <!--        指定集合里面元素的类型 ,嵌套结果集合 定义关联的类型，封装对象-->
+	     <collection property="emps" ofType="com.asatuoyan.mybatis.bean.Employee">
+     <!--            定义集合中的元素封装规则-->
+		 <id column="eid" property="id"></id>
+		 <result column="lastname" property="lastName"></result>
+		 <result column="email" property="email"></result>
+		 <result column="gender" property="gender"></result>
+	     </collection>
+	 </resultMap>
+   #+end_src
+   1. 如果在resultMap中的collection中想要传递多列的值,colum的写法
+      column="{key=column1,deptId=id"
+      fetchType="lazy" 延迟加载，不用全局修改
+   2. resultMap中的最后一个部分<discriminator javaType=""></discriminator>
+      根据这个鉴别器，判断employee的值来决定封装行为
+* 动态sql
+** OGNL表达式
+   1. 碰到特殊字符可以写转义字符(Html标记语言)
+   2. 会自动转换字符串和数字
+** if
+   1. 要求查询员工，需要携带了哪个字段的查询条件就带上哪个字段的值
+   2. xml中不能使用&&，会有报错
+   3. 查询的时候如果某些条件没带，可能sql拼接会有问题
+   4. mybatis使用where标签时也可以将所有查询条件包括在内 <where></where>
+      mybatis会将拼装的sql多出来的and或者or去掉,但是where标签只会去掉
+      开头的and
+      #+begin_src xml
+	<select id="getEmployeeByConditionIf" resultType="mybatis.bean.Employee">
+		SELECT * FROM emp
+		WHERE
+		      1 =1 
+		<if test="id!=null">
+		    AND id =#{id}
+		</if>
+		<if test="lastName=!null and lastName != ''">
+		   AND lastname like #{lastName}
+		</if>
+		<if test="email !=null and email.trim()!=&quot;&quot;">
+		   AND email =#{email}
+		</if>
+		<if test="gender==0 or gender ==1">
+		    AND  gender =#{gender}
+		</if>
+	    </select>
+      #+end_src
+** 自定义字符提取
+   trim 标签 
+   - prefix="" trim标签中是整个字符串拼串后的结果
+     prefix就是给拼串后的字符串加一个前缀
+   - prefixOverrides 去掉整个字符串前面多余的字符
+   - suffix="" 给拼串后的结果加一个后缀
+   - suffixOverrides 去掉整个字符串后面多余的结果
+** choose 分支查询
+   #+begin_src xml
+     <select id="getEmployeeByConditionChoose" resultType="mybatis.bean.Employee">
+	     select * from emp
+	     <where>
+		 <choose>
+		     <when test="id!=null">
+			 id=#{id}
+		     </when>
+		     <when test="lastName!=null">
+			 lastname like #{lastName}
+		     </when>
+		     <when test="email!=null">
+			 email=#{email}
+		     </when>
+		     <otherwise>
+			 1=1
+		     </otherwise>
+		 </choose>
+	     </where>
+	 </select>
+   #+end_src
+** trim和set
+   - trim 字符串截取
+   - set封装修改命令
+   - where封装查询命令 自动去掉前面的AND
+   - set标签后自动去除后面的,(逗号)
+** foreach
+   - collection 指定要遍历的集合
+     list类型的参数会特殊处理封装在map中，map的key就叫list
+   - item 将当前遍历出的元素赋值给指定的变量 
+     #{就能取出变量值}
+     separator 表示元素和元素之间的分隔符
+     open 给遍历出所有的结果拼接一个开始的字符
+     close 给遍历出的所有元素拼接一个结束的字符
+     index：索引，遍历list的时候是索引 ,item就是值
+                  遍历map的时候就是map的key item就是map的valu
+** foreach批量保存
+   #+begin_src xml
+     <!--    批量保存  -->
+	 <insert id="addEmps">
+	     INSERT INTO emp(lastname,email,gender,dept_id)
+	     VALUES
+	     <foreach collection="emps"  separator="," item="emp">
+		 (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.department.id})
+	     </foreach>
+	 </insert>
+   #+end_src
+   1. 在链接属性（jdbc.url)中加入allowMultiQueries,可以容许同时执行多条语句
+      insert into emp(emploem) values()
+      insert into emp(employee) values()
+** oracle中的批量保存
+   #+begin_src xml
+     <mapper>
+     <insert id="addEmps" databaseId="oracle">
+       BEGIN
+       <foreach collection="emps" separator=",">
+	 <!-- oracle 不支持此种方式批量保存 -->
+	 INSERT INTO emp(lastname,email,gender,dept_id)
+	 VALUES(emp.nextval,#{lastName},#{email},#{gender},#{dept_id})
+       </foreach>
+       END;
+     </insert>
+     <!-- 第二种插入方式，利用中间表进行插入 -->
+     <insert id="addEmps">
+       insert into employee(id,lastname,email,dept_id)
+       <foreach collection="emps" item="emp" separator="union" open="select emp.nextval,lastName,email from(" close=")">
+	 select #{emp.lastname} lastName #{emp.email} email,#{emp.gender} gender,
+		#{emp.dept_id} deptId from dual
+	 </foreach>
+       )
+       </insert>
+       </mapper>
+   #+end_src
+** 两个内置参数
+   不只是方法传递过来的参数可以用来判断，取值。。
+   mybatis默认还有两个内置参数,
+   - _parameter 代表整个参数
+     - 单个参数，_parameter就是这个参数
+     - 多个参数，参数会被封装为一个map,_parameter就是这个map_
+   - _databaseId 如果配置了DatabaseIdProvider,
+     那么databaseId代表当前当前数据库的 别名oracle
+     <if test="_databaseId=="mysql">
+     <if test="_parameter.lastName!=null">
+** bind
+   - bind 可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量值
+   - %${lastName}% 可以在sql中拼串
+   - <bind name="__lastName" value="'_'+lastName+'%'">
+     将拼接好的值赋予_lastName
+** sql( 抽取可重用的片段)
+   #+begin_src xml
+     <mapper>
+       <sql id="insertColnum">
+	 employ_id,lastname,email
+       </sql>
+       <!-- 引用外部定义的sql -->
+       <include refid="">
+       </mapper>
+   #+end_src
+   1. sql经常将要查询的列名，或者插入用的列名抽取出来方便
+   2. include标签来引用已经抽取的sql
+      可以标签中，通过property name="lastName" 来自定义属性
+      然后在sql中使用${lastName}来调用
+   3. include还可以自定义一些property,sql标签就能使用自定义的属性
+      取值的正确方式${}
+* Mybatis-缓存机制
+** 简介
+   + mybatis包含一个缓存机制，它可以配置和定制。
+   + 默认定义了两级缓存
+     - 默认情况下，只有(SqlSession级别的缓存，也称为本地缓存)开启
+     - 二级缓存需要手动开启和配置，它是基于nampspace级别的缓存
+     - 为了提高扩展性。Mybatis定义了缓存接口Cache,我们可以通过实现
+       Cache接口来自定义二级缓存
+   + 一级缓存 本地缓存
+     与数据库同一次会话中的查询到的数据会放在本地缓存中
+   + 二级缓存 全局缓存
+** 一级缓存失效情况
+   1. 一级缓存失效情况
+      - sqlSession不同
+      - sqlSession查询条件不同
+      - sqlSession查询期间执行了增加删除修改操作
+      - sqlSession手动清空一级缓存中的数据
+	sqlSession.clearCache
+** 二级缓存介绍
+   - 基于namespace的缓存，一个namespace对应一个缓存
+   - 一个会话，查询一条数据，这个数据就会被放在当前会话的一级缓存中
+   - 如果会话关闭，一级缓存的数据会被保存到二级缓存中，新的会话就可以参照
+     二级缓存中的数据
+   - 不同namespace会放在自己对应的缓存中
+** 全局二级缓存配置
+   - 确认开启的信息，必须都显式配置出来
+     使用<cache><cache>在mapper中开启
+     属性
+     - eviction 缓存的回收策略,缓存的内容超出以后,如何回收
+       - LRU - 最近最少使用，移除最长时间实际不被使用的对象
+       - FIFO - 先进先出，按对象进入缓存的顺序来移除它们
+       - SOFT - 软引用，移除基于垃圾回收器状态和软引用规则的对象
+       - WEAK - 弱引用，更积极移除基于垃圾收集器状态和弱引用规则的对象
+       - 默认为LRU
+     - flushInterval 缓存刷新间隔
+       - 默认为不清空 ,可以设置一个毫秒值
+     - readOnly 是否只读
+       - true 只读，mybatis会认为所有从缓存中获取数据的操作都是只读操作,
+	 不会修改数据，直接就会将数据在缓存中的引用教给用户，不安全，速度块
+       - false 非只读，mybatis觉得获取的数据可能会被修改，mybatis会利用
+	 序列化和反序列化的技术克隆一份新的数据,安全，速度漫
+       - 默认值为false
+     - size 表示缓存中存放多少元素
+     - type  指定自定义的缓存全类名
+     - POJO需要实现序列化接口
+     - 查出的数据默认会被放在一级缓存中。必须关掉会话，数据才会放在二
+       级缓存中
+** 和缓存有关的设置和属性
+   1. cacheEnabled=true,false 关闭二级缓存
+   2. 每个select标签都有useCache="true" 属性
+      false 关闭 关闭二级缓存
+   3. FlushCache="true",每个增加删除修改都有此标签，增删该执行完成
+      后就会清除缓存,此缓存一级和二级缓存都会情空，查询之后，就会都情空
+   4. clearCache，不会影响二级缓存
+   5. localCacheScope 本地缓存作用域
+      - Session 当前会话的所有数据保存在会话缓存中
+      - STATEMENT 可以禁用一级缓存
+** 缓存原理
+   1. 一级缓存 每个sqlSession都有与之对应的一级缓存
+   2. 二级缓存 以namespace为基础的缓存
+   3. 当一级会话关闭以后,一级缓存数据进入二级缓存
+   4. 新会话，会去查询二级缓存中是否有对应的数据
+   5. 一级和二级缓存就是一个map
+** mybatis整合ehcache
+   1. 导入第三方缓存包即可
+   2. 导入与第三方缓存整合的适配包
+   3. mapper.xml中使用自定义缓存
+      <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+** Mybatisz整合spring
+* MyBatis-逆向工程
+** MyBatis Generator
+   + 简称MBG,是一个专门为MyBatis框架使用者定制的代码生成器。可以快速的根据
+     表生成对应的映射文件，接口，以及bean类，支持基本的增删改查，以及QBC风格
+     的条件查询。但是表连接，存储过程等这些复杂sql需要手动编写
+   + 配置文件
+     - MyBatisSimple 简单的增删改查
+     - MyBatis3 
+** 
+* MyBatis-工作原理
+** sqlSession
+   1. 接口层
+   2. 数据处理层
+   3. 框架支撑层
+   4. 引导层
+** 执行流程
+*** 获取executor
+    1. 获取sqlSessionFactory对象
+       - 执行build,建立xml文件解析器
+       - 解析每个标签的并把详细信息保存在Configuration
+       - 解析mapper.xml中不能使用
+       - mapper.xml中的每个元素信息解析出来并保存在全局配置中，将增删改查的每个
+         标签每个属性都解析出来,封装成一个MappedStatement,代表一个增删改查标签
+       - 然后将mapper的详细信息添加到Configuration
+       - 调用build传入Configuration,返回DefaultSqlSessionFactory(SqlSessionFactory接口)
+    2. 获取sqlSession对象
+       - 使用sqlSessionFactory.openSession()
+       - 调用openSessionFromDataSource
+	 - 首先从Configuration中拿到默认的Executor类型（mybatis设置项的内容)
+	 - 之后将ExecutorType作为参数传入openSessionFactoryFromDataSource
+	 - 通过config得到env,根据环境获取事务工厂，使用事务工厂(envDataSource,level, autoCommit)
+	 - 事务工厂产生事务tx,tx根据执行器的类型使用不同的执行器executor
+	   - ReuseExecutor
+	   - BATCHExecutor
+	   - SimpleExecutor
+	 - 以上Executor的子类建立后，如果有开启二级缓存，则新建一个CachingExecutor
+	   ，使用它来包装执行器
+	 - 接下来，interceptorChain(拦截器链)，如果调用了拦截器.就执行每个
+	   拦截器，并且返回
+	 - 创建DefaultSqlSession.包含Configuration和Executor
+    3. 获取接口的实现对象
+       - sqlSession调用getMapper方法,
+       - 调用configuration得到mapper配置
+       - 调用mapperRegistory属性，getMapper(type)
+       - 根据接口类型获取MapperProxyFactory
+       - 创建MapperProxy,实现动态代理
+    4. 执行增删改查方法
+*** 如何执行增删改查方法
+   1. 使用动态代理MapperProxy调用invoke方法
+   2. 在执行之前，将方法包装为MapperMethod来执行方法
+   3. MapperMethod解析到sql语句的类型，根据类型进入增删查改对应的方法
+      1. 查询方法
+	 - 无论是查询单个或者多个最终调用的都是defaultSqlSession的SelectList
+	 - 从全局配置中拿到id对应的增删改查的详细信息的MapStatment对象
+	 - 查询当前的参数是否是一个集合,并且封装sql中定制的信息，则包装集合
+	 - 缓存中保存的key
+	 - 如果有二级缓存，拿到缓存
+	 - 会调用真正的executor（全局配置中的executor).从一级缓存中拿
+	 - 没有调用queryFromDataSource,查出以后保存到一级缓存中
+	 - executor调用doQeury，创建StatementHandler处理器
+	 - new PreparedStatementHandler对象,此时调用拦截器
+	 - 进行参数预编译。产生PreparedStatement对象，调用ParameterHandler预编译参数设置参数
+	 - 查出数据使用resultSetHandler处理结果,使用TypeHandler获取value值
+	 - 返回结果
+      2. 删除方法
+      3. 修改方法
+      4. 添加方法
+** 查询流程总结
+   1. 根据，配置文件初始化出Configuration对象
+   2. 创建一个DefaultSqlSession对象，他里面包含Configuration以及Executor(根据
+      全局配置文件的中的ExecutorType创建出对应的Executor)
+   3. DefaultSqlSession.getMapper(),拿到Mapper接口对应的MapperProxy
+      - 执行增删改查方法,调用DefaultSqlSession的增删改查,会创建一个
+        Statement对象
+      - 会创建一个StatementHandler分类(同时也会创建一个ParameterHandler和
+	ResultSetHandler)
+      - 调用StatementHandler预编译参数以及设置参数值
+      - 调用StatementHandler的增删改查方法
+      - 使用ResultSetHandler封装结果
+   注意: 四大对象每个创建的时候都有一个流程，执行拦截器链,后返回创建出的
+   对象。
+** 插件开发
+   1. 获取到所有Interceptor(拦截器，(插件需要实现的接口))
+   2. 调用interceptor.plugin(target) 返回target包装后的对象
+   3. 插件机制，我们可以使用插件为目标对象创建一个代理对象，AOP(面向切面编程)
+      我们的插件可以为对象创建出代理对象，代理对象就可以拦截到四大对象的
+      核心方法
+** 插件编写
+   1. 编写Interceptor的实现类
+   2. 拦截目标方法的执行,调用invocation.proceed()的执行
+   3. 返回执行后的返回值
+      #+begin_src java
+	@Overide
+	public Object intercept(Invocation invocation) throws Throwable{
+	    Object proceed =inovation.proceed();
+	    return proceed;
+	}
+	// plugin包装目标对象，包装，为目标对象创建一个代理对象
+	public Object plugin(Object target){
+	    Object wrap=Plugin.wrap(target.this);
+	    // 返回为target创建的动态代理
+	    return wrap;
+	}
+
+	@overide
+	public void setProperties(Properties properties){
+	    System.out.println("插件配置的信息"+properties);
+	}
+      #+end_src
+   4. 使用@Intercepts完成插件的签名，指定拦截的对象的哪个方法
+   5. 在mybatis-config配置文中使用
+      <plugins interceptor="插件的全类名">
+         <property name="username" value="root">
+	 <property name="password" value="123456">
+      </plugins>
+   6. 
+* MyBatis代理
+** 代理对象多个插件执行顺序
+   1. 按照插件配置顺序创建代理对象。执行的目标时候之后，按照逆序执行
+   2. 因为包装时候从里往外包装，调用的时候需要从外边开始调用
+** 动态改变sql运行的参数
+   1. 拿到StatementHandler里面的parameterHandler里面的parameterObject
+   2. SystemMetaObject.forObject(target)拿到metaObejct
+   3. metaObject.getValue("parameterHandler.parameterObject")
+   4. 修改paramterHandler的值修改为想要的值
+** PageHepler插件进行分页
+   1. 导入插件包
+   2. 向全局配置中添加插件
+** 批量执行
+   1. sqlSessionFactory(ExecutorType)拿到可以执行批量操作的员工
+   2. 然后执行批量操作
+** 存储过程
+   1. MyBatis支持对存储过程的调用
+** oracle分页
+   1. oracle分页操作要借助行号查询rownum
+   2. 传入开始行号，结束行号，总数
+      #+begin_src sql
+	create or replace procedure
+	       hello_test(
+	       p_start in int,p_end in int,p_count out int,p_emps out sys_refcursor
+	       ) as
+	       begin
+	       select count(*) into p_count from employees;
+	       open p_emps for
+	       select * from(select rownum rn,e.* from employees e where rownum<=p_end) where rownum>=p_start;
+	       end hello_test
+       
+	     
+	
+      #+end_src
+* MyBatis枚举类型的默认处理
+  1. 默认保存的枚举的名字
+  2. 改变使用枚举类型EnumOrdinalTypeHandler
+  3. 可以使用另外的枚举类型处理器保存索引
+     EnumTypeHandler
+  4. 自定义枚举类型使用，实现TypeHandler<EmpStaus>
