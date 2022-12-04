@@ -181,4 +181,31 @@
 没有进行优化
 *** TreeMap
 - 向TreeMap中添加的
-
+* Generic(泛型)
+** 自定义泛型类/接口
+#+BEGIN_SRC java
+  public class Order<T>{
+      //声明类的泛型参数以后，就可以在类的内部使用泛型参数
+      T salary;
+      public T getSalary(){
+          retrun salary;
+      }
+  }
+#+END_SRC
+** 自定义泛型方法
+#+BEGIN_SRC java
+  public <E> E method(E e){
+      return null;
+  }
+#+END_SRC
+** ？通配符的使用
+1. 当声明泛型类时，依旧不确定要传入的参数，就可以使用通配符
+2. 因为不知道该类的元素类型，所以不能进行写入，唯一可以写入的是null类型，传递给add的类型
+   必须是一个未知类型的子类
+3. 不能使用在声明泛型方法，声明泛型类，创建对象上
+4. ? extends base  问号的类型必须是base的extended类，比base功能更多，更加具体
+5. ? super base 问号的类型必须是base的base类,比base功能更少，更加抽象化
+6. <? extends class/interface>
+   * 使用时指定的类型必须是继承某个类，或是实现某个接口,即>=
+7. <? super class/interface>
+   * 使用时指定的类型必须操作的类或接口，或者是操作的类的父类或者接口的父接口<=

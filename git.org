@@ -100,4 +100,8 @@
 8. s 代表 git add --patch S stage all 缓存修改
 9. u  git -reset -patch U unstage all 取消缓存修改
 10. 可以通过按住C-SPC来选择一个区域，然后同时添加它到stage chages中
-11. c 可以提交修改
+11. c 可以提交修改 修改之后可以加入修改的内容概述
+    
+#+BEGIN_SRC shell
+  git add --patch  #将文件添加到缓存区
+#+END_SRC
