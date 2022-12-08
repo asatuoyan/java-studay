@@ -90,5 +90,14 @@
 ** status buffer
 1. C-m g s 进入git status,同时可以得到类似于git diff git cached以及其它命令类似的信息
 2. d d 当两次键入d时，显示commit的diff 按一次时可以展示一个diff popup的内容
+   - d 之后再次按下s可以用index来显示diff(差异)
+   - d r 可以使用type range 来取得一个不同阶段的Diff
 3. l 来显示日志信息
-4. 
+4. s 按下s来将unstaged
+5. C-c C-c 可以保存当前窗口的默认行为,
+6. C-t 可以展示在所有窗口中都可用的命令
+7. ？ 可以通过问号来查询你需要的令命
+8. s 代表 git add --patch S stage all
+9. u  git -reset -patch U unstage all
+10. 可以通过按住C-SPC来选择一个区域，然后同时添加它到stage chages中
+ 
