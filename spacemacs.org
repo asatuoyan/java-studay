@@ -1,0 +1,34 @@
+* Org tutorial
+** Outlines/headers
+** shortcut used
+M-m is a leader key 
+1. M-m TAB switch alternate-buffer
+2. M-RET M-RET insert a new item to list
+3. M-m j i create a mini buffer then type title that you search
+** Links,Images and other Markup
+- The org link format is [[link][link text]]
+- you can link to images in the same way without the text
+- Images can have a caption and a name.
+  #+Caption: this is a image
+  #+name: test_image
+  #+ATTR_HTML: :width 300px
+  [[~/Pictures/desktop/dog-in-harmony.svg]]
+** table
+| col   | col2  | col3  |
+|-------+-------+-------|
+| hello | hello | hello |
+M-d delete from cursor inline
+** Tasks
+*** TODO This is task you must to do
+shift arrow key(->) switch status for TODO OR DONE 
+*** DONE This is a done task
+CLOSED: [2022-12-10 Sat 21:39]
+*** capture TODO
+M-RET c can capture TODO task
+*** TODO This is a new task mode with [2/4] [50%]
+SCHEDULED: <2022-12-10 Sat> DEADLINE: <2022-12-11 Sun>
++ [X] subtask 1 
++ [X] subtask 2
++ [ ] subtask 3
++ [ ] subtask 4
+

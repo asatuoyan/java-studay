@@ -221,3 +221,95 @@
 ** LinkedList
    * 将要添加的元素封装到一个node中,node中first和last同时指向第一个元素
    * 添加第二元素后,第一个元素的last指向第二个元素，第二元素的first指向第一个元素
+** HashMap
+*** HashMap创建和put过程
+- 创建对象的过程中，底层会初始化数组Entry[] table=new Entry[16]
+  添加或者修改的过程:
+  1. 要将(key1,value1)添加到过程中，首先要key1所在类的Hashcode方法，计算key1对应的
+     Hash值1，Hash1经过算法(Hash())处理之后，得到Hash2,Hash2再次经过某种算法(indexFor)之后，
+     这确定了其在数组table中的索引位置
+  2. 如果索引位置上没有元素，则key1 value1添加成功
+  3. 如果此索引位置上有元素，则需要比较要添加元素与已经存储于此位置上值比较Hash值2
+     - 如果两个Hash值并不相同,则key1 value1 添加成功
+     - 如果两个Hash2是也相同，则使用equals比较两个对象
+       1. 如果两个对象equals true,默认情况value1替换原来的value2，认为修改行为
+       2. 如果两个对象不同,则添加成功
+  4. 如果该索引位置的元素已经达到了数组的0.75倍，则对数组进行扩容，默认扩容原来的2倍
+     - 当进行初始化时，将数组长度不断做做移动 即扩容2倍
+  5. key为null的情况下，value默认放在key为0的位置
+  6. 如果put是修改操作，会返回旧的value值
+  注意: Jdk8中只有当首次添加key-value时进行判断，如果发现当前table尚未初始化，则
+  对当前数组进行初始化
+*** JDK8和JDK7的不同之处
+  1. 在jdk8中，当我们创建了HashMap实例以后，底层并没有初始化table数组，当首次添加(key,
+value)时，再进行初始化.
+  1. 在jdk8中，底层定义了node内部类，替换了jkd7的entry内部类，此时使用node[]数组
+  2. 红黑树比正常链表多一倍的空间
+* File类与IO流
+** File的实例化与常用方法
+*** File类的理解
+java.io包中，本章中涉及的相关流也都声明在java.io包下。
+- File类的一个对象，对应操作系统下的一个文件或者文件目录
+- File的方法使用
+  #+BEGIN_SRC java
+    //public File(String pathname) pathname可以是绝对路径或者是相对路径
+    //public File(String parent,String child) 以parent为父路径，child为子路径创建子路径
+    //public File(File parent,String child) 以File对象和子路径创建file
+    File file=new File("/home/akinjoker/hello.txt");
+    File file1=new File("/home/akinjoker/","study-org");
+    File file2=new File(File1,"test,org");
+  #+END_SRC
+- 在IDEA中使用单元测试方法，相对路径是相对于当前moudle
+- 使用main主程序，相对路径则是相对于当前工程来讲
+- 并没有涉及到对文件内容的读写操作，要想实现对于文件内容的读写，就要实现IO流
+- File类的对象，通常是作为IO流操作的文件的端点出现
+  - 代码丑奴儿该面 将File类作为参数传递到IO流相关类的构造器中
+*** 获取文件和目录的基本信息
+#+BEGIN_SRC java
+  //public String getName() 获取文件名
+  //public String getPaht() 获取路径
+  //public String getAbsolutePath() 获取绝对路径
+  //public File getAbsoluteFile() 以绝对路径的文件名
+  //public String getParent() 上层文件目录
+  //public Long getLength() 获取文件大小
+  //public Long lastModified()  获取最后修改的字节
+  //public String[] list() 返回一个File数组，表示该目录中的所有子文件或者目录
+  //public File[] list() 返回一个File数组 表示该目录中的所有子文件或者目录
+  //public boolean renameTo(File dest)把文件重命名为指定的文件路径 
+#+END_SRC
+*** 判断功能的方法
+#+BEGIN_SRC java
+- public boolean exists() ：此File表示的文件或目录是否实际存在。
+- public boolean isDirectory() ：此File表示的是否为目录。
+- public boolean isFile() ：此File表示的是否为文件。
+- public boolean canRead() ：判断是否可读
+- public boolean canWrite() ：判断是否可写
+- public boolean isHidden() ：判断是否隐藏
+
+#+END_SRC
+*** 创建或者删除文件
+#+BEGIN_SRC java
+- public boolean createNewFile() ：创建文件。若文件存在，则不创建，返回false。
+- public boolean mkdir() ：创建文件目录。如果此文件目录存在，就不创建了。如果此文件目录的上层目录不存在，也不创建。
+- public boolean mkdirs() ：创建文件目录。如果上层文件目录不存在，一并创建。
+- public boolean delete() ：删除文件或者文件夹
+#+END_SRC
+
+** File的实用案例
+#+BEGIN_SRC java
+#+END_SRC
+
+** IO流的API
+|----------+--------------+--------|
+| 抽象基类 | 字节流       | 字符流 |
+| 输入流   | InputStream  | Reader |
+| 输出流   | OutputStream | Writer |
+|----------+--------------+--------|
+1. 节点流
+   - FileInputStream
+   - FileOuputStream
+   - FileReader
+   - FileWriter
+     
+** 文件输入流和输出流
+
