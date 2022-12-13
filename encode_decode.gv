@@ -1,0 +1,11 @@
+digraph encode_decode{
+  node [style=filled];
+  "utf-8.file" [color=lightblue];
+  InputStreamReader [color=orange];
+  "utf-8.file" -> InputStreamReader [color=red,label="字节流"];
+  Project [color=green];
+  InputStreamReader -> Project [label="字符流"];
+  OutputStreamWriter [color=orange];
+  Project -> OutputStreamWriter [label="字符流"];
+  OutputStreamWriter -> "gbk.txt" [label="字节流"];
+}

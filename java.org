@@ -312,3 +312,170 @@ java.io包中，本章中涉及的相关流也都声明在java.io包下。
    - FileWriter
      
 ** 文件输入流和输出流
+*** 使用缓冲流读取文件内容
+#+begin_src java
+  BufferedReader reader=null;
+        try {
+            reader= new BufferedReader(new FileReader("hello.txt"));
+            String data;
+                while ((data=reader.readLine())!=null){
+                    System.out.println(data);//每次读取一行，然后将一行数据打印
+                }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                assert reader != null;
+                reader.close();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+  }
+#+end_src
+*** 使用缓冲流复制文件内容
+- Note taken on [2022-12-11 Sun 20:44] \\
+  bufferedWriter.flush()可以删除内存中缓存的数据，并且将数据写入到磁盘上
+#+begin_src java
+  BufferedReader reader=null;
+		BufferedWriter writer=null;
+		try {
+			reader= new BufferedReader(new FileReader("hello.txt"));
+			writer=new BufferedWriter(new FileWriter("hello_copy.txt"));
+			String data;
+			while ((data=reader.readLine())!=null){
+				//writer.write(data+"\n"); //每次读取一行文件的内容，但是必须加上换行符，否则写入时无法自动换行
+				writer.write(data);
+				writer.newLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				assert reader != null;
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			try {
+				assert writer != null;
+				writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	   }
+#+end_src
+** 文件的编码和解码
+*** 概述
+- 编码时使用的字符集和解码时使用的字符集必须一致或者后者兼容前者(解码集兼容编码集)
+*** 在存储的文件中的字符
++ ASCII 主要用来存储abc等英文字符和1,2,3等常用的标点字符
++ ISO-8859-1 拉丁码，欧洲主要使用，兼容了拉丁码
++ UTF-8 字符集
+  * Unicode是字符集，UTF-8、UTF-16、UTF-32是三种`将数字转换到程序数据`的编码方案。
+	顾名思义，UTF-8就是每次8个位传输数据，而UTF-16就是每次16个位。其中，UTF-8 是在
+	互联网上`使用最广`的一种 Unicode 的实现方式。
+  * 互联网工程工作小组（IETF）要求所有互联网协议都必须支持UTF-8编码。
+	在开发Web应用时，要使用UTF-8编码。UTF-8 是一种`变长的编码方式`。
+	它可以使用 1-4 个字节表示一个符号它使用一至四个字节为每个字符编码，编码规则：
+	1. 128个US-ASCII码，只需要一个字节编码
+	2. 拉丁文等字符，需要两个字节编码
+	3. 大部分常用字，使用三个字节编码
+	4. 少数Unicode字符，使用四字节编码
++ GBK 中文相关的字符集
+  - GB2312 7000个简体汉字
+  - GBK 最常用的中文码表。是在GB2312标准基础上的扩展规范，使用了`双字节`编码方案，
+	共收录了`21003个`汉字，完全兼容GB2312标准，同时支持`繁体汉字`以及日韩汉字等。
+  - GB18030 多字节编码，最新的中文码表。收录汉字`70244个`，采用`多字节`编码，每个字可以由1个、
+	2个或4个字节组成。支持中国国内少数民族的文字，同时支持繁体汉字以及日韩汉字等。
++ 内存的字符
+  一个char占用两个字符,存储的文件当中根据字符集的不同，所占用的空间不同
+** 对象流及其使用
+*** 作用
+- ObjectInputStream 可以读写基本数据类型的变量，引用数据类型的变量
+- ObjectOutputStream 
+*** 对象序列化机制是什么
+**** 概述
+对象的序列化机制允许把内存中的Java对象转换成平台无关的二进制流，而允许把这种二进制流持久
+的保存在磁盘上，或通过网络将这种二进制流传输到另一个节点上
+**** 序列化过程
+使用ObjectOutputStream流实现，将内存中的Java对象保存在文件中或通过网络传输出去
+**** 反序列化过程
+使用ObjectInputStream流来实现，将网络中传输过来的对象转换为内存或者磁盘中的对象
+*** 自定义类实现序列化机制
++ 自定义类需要实现接口 Serializable
++ 要求自定义类表明一个全局常量，static final long serializbale 
+** 
+* 网络编程
+** 概述
+Java是Internet上的语言，它从语言级上提供了了对网络应用程序的支持，程序员能够很容易开发
+常见的网络应用
+Java提供的网络类库，可以实现无痛的网络连接，联网的底层细节被隐藏在
+*** 软件架架构
+C/S架构，全称为Client/Server结构,是指客户端和服务器结构
+B/S架构，全称为Browser/Server结构,是指浏览器和服务器结构
+** 目的
++ 目的传输信息,直接或间接地通过网络协议与其它计算机实现数据交流，进行
+** 实现网络传输的三个要素
+*** IP地址
++ 网络上计算机的地址
++ 由于分配的频段不够
++ 本地回路地址 127.0.0.1
+*** 
+** InetAddress
+#+begin_src java
+  InetAddress intet=InetAddress.getByName("www.atguigu.com");
+  System.out.println(indet);
+#+end_src
+- getLocalHost() 获取本地ip
+- getByName() 获取指定ip
+** TCP协议和UDP协议
+*** TCP
+1. 需要客户端，服务端建立连接
+2. 采用三次握手，点对点通信，可靠
+3. 在连接中可进行大量数据数据的传输
+4. 传输完毕，需要释放已建立的连接，效率低
+** Socket类
++ 一个ip地址和端口号构成了一个Socket
++ 
+* 反射
+** 背景
+- 对象的运行时的类型，编译时的类型不一致。
+- 编译时无法预知对象和类的真实信息，程序只能依靠运行时信息来发现该对象的真实信息
+** 反射概述
+- 反射体现了动态性，可以在运行时动态的获取对象所属的类，动态的调用相关方法，所以我们在
+  设计框架时，需要大量的使用反射.
+** Class的实例可以加载哪些结构
+1. 类
+2. 接口
+4. ElementType.class
+5. Override.class
+6. int[][].class
+7. Class.class
+** 类的加载
+1. 加载
+   - 装载
+   - 链接
+	 1. Verify 确保加载的类符合JVM规范，以cafebabe开头
+	 2. Prepare 正式为内存分配并设置类变量默认初始值的阶段，这些内存都将方法区分配内存
+	 3. Resolve 虚拟机常量池内将变量引用，替换常量池内的地址
+   - 初始化 显式赋值，和构造器中赋值的阶段
+** 类的加载器分类
++ BootstrapClassLoader 引导类加载器，启动类加载器
+  + 使用C/C++语言编写，不能通过Java代码获取其实例
+  + 负责加载Java的核心库(JAVA_HOME/jre/lib/rt,jar)
++ 继承于ClassLoader的类加载器
+  + ExtensionClassLoader 扩展类加载器
+	- 继承于ClassLoader
+	- 父类加载器为启动类加载器
+	- 赋值加载系统属性所指定的目录中的加载类库
+  + SystemClassLoader/ApplicationClassLoader 系统类加载器，应用类加载器
+	- 我们自定义的类，默认使用的类的加载器
+  + 用户自定义类的加载器
+** 用户自定义类的加载器
++ 需求，同时加载多个版本的包，同一个类在一个应用程序中加载多份，数据的加密
+** 通过配置ClassLoader加载指定的配置文件
+#+begin_src java
+  ClassLoader.getSystemClassLoader().getResourceAsStream("info.properties");
+  //默认路径为模块下src路径下
+#+end_src
