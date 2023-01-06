@@ -1,0 +1,62 @@
+#+TITLE:Debian Package 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* 介绍
+** 概述
+1. .deb文件(程序文件包)
+2. 可靠和方便两种格式之一
+3. 概况
+   - Debian有很多软件包
+   - 覆盖12种架构，包括两种非Linux架构
+   - 衍生的发行版多
+** Debian 软件包格式
++ .deb 文件： 其实是一种ar压缩包，包含文件有:
+  - debian-binary: deb文件格式版本,"2.0\n"
+  - control.tar.gz: 软件包的元数据(metadata)，包括control,md5sums,(pre|post)
+	(rm|inst),triggers,shlibs...
+	* md5sums 包含data.tar.gz中每个文件的md5sum
+  - data.tar.gz: 软件包的数据文件,包含所有安装在目标路径的文件,本文件必须是是.deb包
+	中的最后一个文件
+* 创建源码包
+** 概述
+1. 一个源码包可以生成若干个程序文件包
+2. 两种软件包（不确定选择非原生）
+   - 原生软件包: 专门为Debian定制开发的软件
+   - 非原生软件包: 在Debian之外开发的软件
+3. 主要文件: dsc(元数据)
+4. 与源码格式相关的其他文件
+   - 1.0或3.0(原生): package_version.tar.gz
+   - 1.0(非原生):
+	 - pkg_ver.orig.tar.gz:上游源代码
+	 - pkg_debver.diff.gz: 专为Debian准备的更新补丁
+   - 3.0（quilt）
+	 - pkg_ver.orig.tar.gz:上游源代码
+	 - pkg_debver.debian.tar.gz: 包含Debian补丁的压缩包
+** 步骤（创建debian包目录）
+1. 下载上游代码
+2. 重命名源码包
+   <source_package>_<upstream_version>.orig.tar.gz
+3. 解压缩
+4. 重命名目录<source_package>-<upstream_version>
+5. cd <source_package>-<upstream_version> && dh_make
+6. 如果需要其它dh_make来处理某些特定源码包种类，还需要安装对应软件包
+7. debian/目录被创建，里面会有一些文件
+** debian/包目录下的文件
+所有的打包工作应该通过修改debian/目录下的文件来进行
+- 主要文件
+  - control--软件包的元数据（依赖包，之类）
+  - rules--规定了如何构建软件包
+  - copyright--软件包的版权信息
+  - changelog--debian软件包的更新历史记录
+- 其它文件:
+  1) 兼容文件
+  2) 监测文件
+  3) dh_install*的保存目录
+	 *.dirs,*.docs,*.manpages,...
+  4) 维护脚本
+	 *.postinst,*.prerm...
+  5) 源码/格式
+  6) 补丁/--如果需要修改上游源代码

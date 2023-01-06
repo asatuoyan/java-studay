@@ -1,0 +1,11 @@
+#+TITLE:xfce4桌面使用中碰到的问题 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* 桌面图标不能正常加载，但是窗口加载正常
+1. 用户家目录中的关于桌面的权限不够,可以使用以下命令解决
+   #+begin_src shell
+	 chown -R /home/username
+   #+end_src
