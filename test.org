@@ -161,7 +161,13 @@ versatility. If you do any kind of writing at all, chances are that Org mode
 will make it easier and more fun. This tutorial was written in Org mode.
 
 committed: press c and c again. Two windows pop up: one showing the changes
-you've made since the last edit (in this case, the whole document) and another
+you've made since the las#+TITLE:test 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 你好
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+edit (in this case, the whole document) and another
 prompting for a commit message. Write "Initial commit", press ESC to exit back
 to normal mode and press ~, c~ confirm and quit the commit
 message. To abort, press ~, a~.

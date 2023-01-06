@@ -19,14 +19,15 @@ M-m is a leader key
 | hello | hello | hello |
 M-d delete from cursor inline
 ** Tasks
-*** TODO This is task you must to do
+*** DONE This is task you must to do
+CLOSED: [2022-12-29 Thu 23:03]
 shift arrow key(->) switch status for TODO OR DONE 
 *** DONE This is a done task
 CLOSED: [2022-12-10 Sat 21:39]
 *** capture TODO
 M-RET c can capture TODO task
-*** TODO This is a new task mode with [2/4] [50%]
-SCHEDULED: <2022-12-10 Sat> DEADLINE: <2022-12-11 Sun>
+*** DONE This is a new task mode with [2/4] [50%]
+CLOSED: [2022-12-29 Thu 23:03] SCHEDULED: <2022-12-10 Sat> DEADLINE: <2022-12-11 Sun>
 + [X] subtask 1 
 + [X] subtask 2
 + [ ] subtask 3

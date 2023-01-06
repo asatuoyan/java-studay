@@ -218,9 +218,7 @@
 ** JavaScript 事件对象
    事件对象，是封装有触发的事件信息的一个javascript
    - 如果获取javascript事件对象呢?
-     这个event就是javascript传递参数事件处理函数的事件对象，以及使用
-   - 
-
+     这个event就是javascript传递参数事件处理函数的事件对象，以及使用 
 * xml
 ** 简介
    xml是可扩展的标记性语言
@@ -487,6 +485,83 @@
    4. 不能访问WEB-INF下的数据
    5. 可以访问工程外的资源
    6. 可以直接使resp.sendRedirect（“http”）来进行重定向
+** 请求转发(服务器端内部转发)
+- 一次请求响应,转发在服务器内部完，客户端无法获取该咨询，地址栏不可变
+#+begin_src java
+  @Override
+	public void service(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		System.out.println("password: "+password);
+		System.out.println("username: "+username);
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter writer = response.getWriter();
+		//请求分发，是处于服务器内部的变化，因为客户端不知道，所以客户端地址无变化
+		request.getRequestDispatcher("index.html").forward(request,response);
+		if ("username".equals(username)){
+			if ("password".equals(password)){
+				writer.println("<script>alert(\"登录成功\")</script>");
+			}else {
+				writer.println("<script>alert(\"密码错误\")</script>");
+			}
+		}else{
+			writer.println("<script>alert(\"用户名错误\")</script>");
+		}
+		writer.flush();
+	}
+#+end_src
+** 请求重定向
+1. response.sendRedirect("index.html") 通知客户端再一次发起请求，请求的页面是index.html
+2. 两次请求响应，对于两次请求，服务器无法区分是来自于两个客户端还是一个客户端
+** 会话
+*** 会话的保存作用域
+1. page
+2. request 一次请求响应范围有效
+3. session 一次会话范围有效
+4. application 
+5. 目前使用前后端分离或者使用thymeleaf技术,不再使用JSP技术,page这个属性域不再维护
+* XML
+** 概述
+1. XML Eternal Markup language 可扩展的标记语言
+2. Html是XML的子集
+3. XML的组成，有三个部分： XML声明,文档类型定义，XML正文
+   - 文档类型定义： 规定了XML正文部分书写规则
+   - XML文档是固定写法，并且永远放在第一行
+   - XML正文
+   - XML只有声明和正文两个部分，可以没有类型定义部分
+   - XML文档格式良好和XML文档有效 
+** XML文档实例
+#+begin_src xml
+<?xml version="1.0" encoding="UTF-8"?>
+			<!--DOCTYPE: 表示开始进行文档类型定义
+				students 表示当前文档的根元素是students
+				ELEMENT: 表示开始定义元素
+				student (sname,age,address) 表示student里面依次有且只有一个sname,age,addreee
+	  REQUIRED 相当于数据库的not null
+	  -->
+  <!DOCTYPE students[
+			<!ELEMENT students (student*)>
+			<!ELEMENT student (sname,age,address)>
+			<!ELEMENT sname (#PCDATA)>
+			<!ELEMENT age (#PCDATA)>
+			<!ELEMENT address (#PCDATA)>
+			<!ATTLIST student sid ID #REQUIRED>
+  ]>
+	<students>
+	  <student sid="001">
+		<sname>jim</sname>
+		<age>18</age>
+		<address>USA</address>
+	  </student>
+	  <student>
+		<sname>kin</sname>
+		<age>30</age>
+		<address>Toboo</address>
+	  </student>
+	</students>
+#+end_src
+
 * http协议
 ** 定义
    所谓http协议，就是指，客户端和服务器端之间通信时，发送的数据，需要遵守的规则，叫
@@ -783,7 +858,16 @@
           <h1>${entry.key}=${entry.value} </h1>
       </c:forEach>
     #+end_src
-
+* 视图渲染
+** 概述
+- 将动态数据添加到静态页面中，然后将页面响应到服务器上
+** 配置themeleaf
+1. 添加jar包
+2. 配置web.xml
+** 取域中的值
+Object Graphic Navigation Language 对象组导航语言
+1. 当获取session中的值时 ${session.value}
+2. 获取request域中值时，不需要${value}
 * Listener监听器
 ** 什么是Listener
    1. Listener监听器是javaWeb的三大组件之一，Servlet程序，filter过滤器，Listener监听器
@@ -1523,7 +1607,16 @@
    java.lang.NoClassDefFoundError: 
    org/apache/commons/collections/FastHashMap
    此类在新版1.9.0中消失
-
+** 重复建立JavaWeb项目出现重复的artifact部署包
+1. 删除全部的exploade，然后重新运行所有的包
+** application content
+1. 应用程序的访问路径
+** tomcat port config
+1. source code(绿色版) 在 tomcat/conf/server.xml 中进行设置
+** ideal facets
+1. 向web工程添加框架支持，然后向该模块添加web explode
+** TODO SQL语法错误
+1. 由于在baseDAO处理语句使用update t_table 导致修改设置表名不一致的情况.
 * i18n(internationalization)
   Locale表示不同的时区，位置，语言
   - zh_CN 中国，中文

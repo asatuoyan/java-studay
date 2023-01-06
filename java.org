@@ -479,3 +479,127 @@ B/S架构，全称为Browser/Server结构,是指浏览器和服务器结构
   ClassLoader.getSystemClassLoader().getResourceAsStream("info.properties");
   //默认路径为模块下src路径下
 #+end_src
+** 反射的应用
+*** 创建运行时类的对象
+**** 方法一：调用Class对象的newInstance()对象
+1) 获取该类型的Class对象
+2) 调用Class对象的Instance() 方法创建对象
+**** 方法二：获取构造器对象来进行实例化
+- Note taken on [2022-12-13 Tue 20:18] \\
+  如果构造器的权限修饰符修饰的范围不可见，也可以调用setAccessible(true)
+1) 通过Class类的getDeclaredConstructor(Class ... parameterTypes)取得本类的指定形参类型的构造器
+2) 向构造器的形参传递一个对象数组进去，里面包含了构造器所需的各个参数
+3) 通过Constructor实例化对象
+   #+begin_src java
+	  Class<?> clazz=Class.forName("com.asatuoyan.Person");
+	 Constructor constructor=clazz.getDeclaredConstructor(String.class,int.class);
+	 System.out.println(obj);
+   #+end_src
+*** 反射调用方法
+1. 通过Class实例获取getDelclaredMethod(Class ... parameterTypes);
+2. 如果方法不可访问，设置setAccessible为true;
+3. 然后通过该方法的invoke调用，向invoke中传递该方法的参数值，该方法返回值为该类中方法的返回值
+#+begin_src java
+  Class clazz=Person.class;
+  Method showNationMehtod=clazz.getDeclaredMethod("showNation",String.classs,int.class);
+  showNationMehtod.setAccessible(true);
+  showNationMehtod.invoke(name,age); //返回值为该方法的返回值
+#+end_src
+*** 反射调用属性
+*** 获取注解的信息
+#+begin_src java
+  Class clazz=Customer.class;
+  Field nameField=clazz/getDeclaredField("name");
+  nameField.getDeclaredAnntotation(); //获取的注解
+#+end_src
+*** 获取泛型父类信息
+Type:
+  1. Class
+  2. ParameterizedTypel
+	 - Father<String,Integer>
+	 - ArrayList<String>
+  3. TypeVariable
+	 - T,U,E,K,V
+  4. WildcardType
+	 - ArraryList<>
+	 - ArraryList<? super 下限>
+	 - ArraryList<? extends 上限>
+  5. GenericArrayType
+	 - 例如 T[]
+*** 获取父类的泛型实参
+#+begin_src java
+  //1. 先获取Class对象
+  Class clazz=Son.class;
+  //2. 获取泛型的父类
+  /* 获取泛型父类的名 */
+  Class sc=clazz.getSupperclass();
+  System.out.println(sc);
+  Type type=clazz.getGenericSuperclass();
+  ParameterizedType pt=(ParameterizedType)type;//强转为带有参数的类型
+  // 3. 获取父类泛型的实参列表
+  Type[] typeArray=pt.getActualTypeArguments();
+  for(Type t: typeArray){
+	  System.out.println(t);
+  }
+#+end_src
+*** 获取内部类或者外部类信息
+- public Class<?>[] getClasses() 返回所有内部类和内部接口，包括超类继承的公共类和接口成员
+  以及该类声明的公共类和接口成员
+- public Class<?>[] getDeclaredClasses(): 返回Class对象的一个数组，这些对象表示为此
+  Class对象表示的类的成员的所有类和接口，包括该类所声明的公共，保护，默认访问及私有类的接口
+  但不包括继承的类和接口
+- public Class<?> getDeclaringClass() 如果类是一个内部类或者一个内部接口，则返回它的
+  内部类或者内部接口，否则返回null
+- Class<?> getEnclosingClasses() 返回某个内部类的外部类
+* JDK17上
+** 重要的时间节点
+|   1996 | JDK1.6 | 说明           |
+|--------+--------+----------------|
+|   2004 | JDK5.0 | 里程碑         |
+|   2014 | JDK8.0 | LTS            |
+| 2017.9 | JDK9.0 | 每半年一个版本 |
+| 2018.9 | JDK11  | LTS            |
+| 2021.9 | JDK17  | LTS            |
+|--------+--------+----------------|
+** 加载文件
+1. 直接使用IO流读取
+2. 调用类对象的getResourceAsStream();
+3. 调用类加载器的getResourceAsStream();
+4. 2,3要求被读取的文件一定要编译在.class文件中
+** 关注的新特性
+1. 新的语法规则
+   自动装箱，自动拆箱，注解，enum,Lambda表达式，方法引用，switch表达式,try=catch变化，
+   record等
+2. 增加或者过时的API，删除的API
+   StringBuilder ArrayList 新的日期API Optional等
+3. 底层的优化，JVM参数的调整，GC的变化，内存结构(永久代--->元空间)
+*** JDK8Lambda
++ 速度更快
++ 代码更少（增加了新的语法：lambda表达式）
++ 强大的Stream API
++ 最大化减少空指针异常 NullPointer
++ Nashorn引擎，允许在JVMs上允许JS应用
+  JDK17使用GraalVM虚拟机
+*** Lambda表达式使用
+#+begin_src java
+  Comparator<integar> com=Integer::compare; 
+  // 语法格式二: 需要一个参数，但是没有返回值 当接口中只有一个抽象方法
+  // 当有一个参数时，可以省略参数列表中的小括号
+  Conusmer<String> cust= (s) -> System.out.println(s);
+  cust.accept("谈一场轰轰烈烈的恋爱");
+#+end_src
+*** Lambda格式说明
+- ->（箭头）左边 要重写的接口中的抽象方法的形参列表
+- -> (箭头)右边 lambda,对应接口的实现类要重写的方法体，如果方法体只有一行执行语句，则
+  一对{} 可以省略，如果有return关键字，则可以一并省略
+  （O1,o2）-> {方法体} o -> 方法体
+*** Lambda表达式本质
++ Lambda表达式作为接口的实现类的对象
++ lambda表达式是一个匿名函数
++ api中函数接口所在的包
+*** 四大函数接口
+1. Consume<T> 消费型接口 void accept(T t) 对应的抽象方法
+2. Supplier<T> 供给型接口 T get()
+3. Function<T,R> 函数型接口 R apply<T t>
+4. Predicate<T>  判断型接口 boolean test(T t)
+** Stream
