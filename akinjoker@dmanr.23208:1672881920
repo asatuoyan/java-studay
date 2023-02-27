@@ -1,0 +1,25 @@
+#+TITLE:Debian Binary Package Building
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+----
+* 介绍
+** Debian
++ GNU/Linux通用发行版
++ 特性:
+  1. textbf
+  2. 自由--开发者和用户以社会契约的方式联系在一起，共同推广 1993 年开始的免费软件精
+	 神开发者和用户以社会契约的方式联系在一起，
+  3. 独立--—没有（单独一家）公司在照看 Debian我们集思广益群策群力
+	 （高行动力 + 民主决策）
+** Debian软件包
++ .deb文件
++ 可靠方便的软件发行方式
++ deb包应用最广泛的包格式之一
+** Deb软件包格式
++ .deb文件： ar 压缩包 里面包含如下文件
+  1. debian-binary : deb 文件格式的版本
+  2. control.tar.gz 软件包的元数据（metadata）
+	 - md5sums 包含所有data.tar.gz中文件的md5sum
+	 - 'perm'和'postinst'可以移除老的文档文件，并且添加链接从文档到/usr/doc
+  3. data.tar.gz包含安装在目标路径的所有文件，它必须被放在deb压缩包的最后
+ 

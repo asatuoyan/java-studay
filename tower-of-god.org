@@ -1,0 +1,9 @@
+#+TITLE:神之塔 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* 故事大纲
+* 第一卷
+* 第二卷

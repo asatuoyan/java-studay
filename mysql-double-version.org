@@ -1,0 +1,14 @@
+#+TITLE: Mysql Double Version
+* 第二个mysql版本安装
+#+begin_src shell
+ tar -zxvf mysql-5.7.41-linux-glibc2.12-x86_64.tar.gz #解压5.7文件
+ mv mysql-5.7.41-linux-glibc2.12-x86_64 mysql5 #重命名文件
+ mv mysql5 /opt/mv mysql5 /opt/ #移动到安装目录下
+ cd /opt/
+ useradd -r -g mysql -s /bin/false mysql5 #向mysql组下添加mysql5用户，并且
+ #该用户没有登录权限
+ln -s /opt/mysql5/ mysql5 #连接到mysql5
+
+#+end_src
+
+#+RESULTS:

@@ -1,0 +1,30 @@
+#+TITLE:javaweb project build 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* 导入项目依赖
+* 配置依赖的设置及引入
+** 准备JDBC
+*** 导入数据库连接池
+*** 准备ConnUtil工具类来获取连接
+1. 属性
+   - dataSource
+   - Driver
+   - URL
+   - USER
+   - PASSWD
+   - threadLocal 确保同一个线程中使用同一个连接，确保事务的提交和回滚不会出现问题
+2. 方法
+   1. loadProperties() 主要负责加载jdbc配置信息.设置属性
+   2. inintDataSource() 初始化数据库连接池
+   3. getConnection() 从当前线程获取连接，如果当前线程没有连接，则从连接池中获取连接
+   4. closeConnection() 关闭数据库连接
+3. 静态代码块
+   加载资源，初始化数据库.
+*** 事务的管理
+*** 通过监听器来获取容器中对象的配置信息的位置
+*** Ioc容器注入
+1. 使用HashMap来保存找到的配置中的对象和对象的名
+** 初始化thymeleaf模板引擎

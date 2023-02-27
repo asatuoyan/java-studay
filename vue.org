@@ -1,0 +1,23 @@
+#+TITLE:vue-study 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* Vue
+1. 通过网页或者直接下载js文件引入vue.js
+2. 例如：
+   #+begin_src html
+     <div id="app">
+       <p>{{ hi }}</p>
+       </div>
+     <script>
+     Vue.createApp({
+     data(){
+       return{
+       hi : "hellovue";
+     }
+     }
+     }).mount('app');
+     </script>
+   #+end_src

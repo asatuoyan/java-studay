@@ -1,0 +1,200 @@
+#+TITLE:Spring 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* IOC
+** 概述
+1. IOC(Inverse of Control)
+2. Control
+   选择实现类的权力
+3. Inverse
+   移交该权力给第三方，即为控制反转
+4. 依赖注入
+   Dependency injection，是一个用来替代IOC的概念
+** IOC的类型
+*** 构造函数注入
+1. 通过构造函数的参数给本地参数赋值，实现注入。
+*** 属性注入
+1. 如果不是该函数的每个场景都需要该实例，则可以通过Setter方法
+   完成调用类所需依赖的注入
+2. 即在实例化本类时，并未指定任何扮演者入场
+*** 接口注入
+1. 将调用类所有依赖注入的方法抽取到接口中,通过实现该接口提供对应
+   的注入方法
+2. 与属性注入无本质区别，不推荐
+*** 通过容器完成依赖注入
+** Java的反射类
+*** 类加载器
+**** 类加载器的工作机制
+1. 类加载器就是寻找类的字节码文件并且构造出类在JVM内部表示对象的组件，
+   在Java，类加载器把一个类装入JVM中。需要经过以下步骤
+   - 加载： 查找导入class文件
+   - 链接： 执行校验，准备，解析步骤
+   - 校验： 检查载入Class文件
+   - 准备： 给类的静态变量分配存储空间
+   - 解析，将符号引用转换成直接引用
+2. 初始化：对类的静态变量，静态代码完成初始化
+**** 类加载的全盘委托机制
+1. 当JVM加载一个类时，除非显式的使用另一个ClassLoader，否则该
+   类所需要的类也从该ClassLoader引入.委托机制先从父类加载目标
+   类，只有在找不到的情况下才从自己的类路径中查找并装载目标类
+**** 类实例，类描述对象及类装载器之间的关系
+1. 每个类被装载并且解析后，在JVM中拥有一个对应的java.lang.Class类
+   描述对象，该类的实例都拥有指向这个类描述对象的引用，而类描述
+   对象又拥有指向ClassLoader的引用
+2. 每个类在JVM中对应的java.lang.Class对象，它提供了类结构信息的
+   描述。数组，枚举，注解及基本Java类型（如int,double），甚至
+   void都拥有对应的Class对象，Class没有public的构造方法，Class
+   对象是在装载类时由JVM调用类装载器中的defineClass()方法自动构造
+3. 图片实例
+   [[./images/classloader2.png]]
+** 资源访问(Resource接口)
+*** 在spring中作用
+1. 加载各种资源
+2. web应用可以通过该接口的各种实现类，以不同的渠道加载资源
+*** 资源表达式前缀（帮助接口识别要调用的实现类）
+1. classpath: 类路径，只会在第一个加载的类路径下寻找
+2. file: 绝对路径或者相对路径
+3. http http服务器 UrlResource
+4. ftp ftp服务器 UrlResource
+5. classpath*: 会扫描所有的包及类路径
+** BeanFactory（heart of spring）
+*** 概述
+1. Spring通过配置文件描述Bean与Bean之间的依赖关系，利用Java语言的
+   反射功能实例化Bean并建立Bean之间的依赖的关系
+2. 提供了Bean实例缓存，生命周期管理，Bean实例代理，事件发布，资源
+   加载等服务
+3. BeanFactory IOC的配置机制，管理不同的Java对象成为可能。ApplicationContext建立在
+   BeanFactory的基础之上，提供更多很面向应用的功能（国际化支持和框架事件系统）。
+4. BeanFactory面向spring本身，ApplicationContext面向Spring的开发者。大部分场合可以
+   使用ApplicationContext
+*** BeanFactory介绍
+1. Spring称被BeanFactory生产和管理的Java对象为Bean。
+   此类Bean要求提供一个默认不带参数的构造器。
+2. ListableBeanFactory: 该接口定义了访问容器中Bean方法
+   - 查看Bean的个数，获取某一类型Bean的配置名
+3. HierarchicalBeanFactory: 父子级联的IOC容器接口，子容器通过接口访问父容器
+   - ConfigurableBeanFactory 增强了IOC容器的可定制性。定义了设置类加载器，属性编辑器，
+      容器初始化后置处理器等方法
+   - ApplicationContext 实现了HierarchicalBeanFactory接口()
+4. AutowireCapableBeanFactory 定义了Bean进行自动装配的方法
+5. SingletonBeanRegistry 定义了容许在运行期间向容器注册单实例Bean的方法
+6. BeanDefinitionRegistry: spring配置文件中每个Beand节点元素在spring容器里通过一个
+   BeanDefinition对象表示，描述了Bean的配置信息。而BeanDefinition Registry接口提供了
+   向容器手工册BeanDefinition对象的方法
+*** 初始化BeanFactory
+1. XmlBeanDefinitionReader通过Resource加载spring配置信息，并且启动Ioc容器，然后通过
+   BeanFactory.getBean(beanName)获取Bean,BeanFactory启动时，并不会从配置文件中定义Bean,
+   初始化动作发生于第一个调用时。对于单实例（Singleton）的Bean来说，BeanFactory会缓存
+   Bean实例，第二次使用getBean()获取Bean时，直接从IOC容器的缓存中获取Bean实例
+2. Spring在DefaultSingletonBeanRegistry类中提供了一个用于缓存单实例Bean的缓存器，
+   HashMap实现的缓存器，单实例以beanName为列保存在HashMap中
+** ApplicationContext(body of spring)
+*** 类体系结构
+1. 主要实现类有ClassPathXmlApplicationContext和FileSystemXmlApplicationContext,前者
+   默认从类路径加载配置文件，后者默认从系统中装载配置文件
+2. 继承了HierarchicalBeanFactory和ListableBeanFactory接口，还通过其它接口扩展了
+   BeanFactory的功能
+   - ApplicationEventPublisher: 容器拥有应用事件的生产功能，容器的启动事件，关闭事件等。
+     实现了ApplicationListener事件监听接口的Bean可以接收到容器事件，并且对事件进行响应
+     处理
+   - 在ApplicationContext抽象实现类AbstractApplicationContext中存在一个
+     ApplicationEventMulticaster，它负责保存所有的监听器，以便容器产生事件时，通知
+     监听者
+   - MessageSource 为应用提供i18n国际化消息访问功能
+3. MessageSource
+   为应用提供i18n国际化消息访问功能
+4. ResourcePatternResolver 所有ApplicationContext实现类都实现了类似于
+   PathMatchingResourcePatternResolver的功能
+5. LifeCycle: 该接口提供了start()和stop()两个方法，主要用于控制异步处理过程，在具体使用时，
+   该接口同时被ApplicationContext实现具体Bean实现,以达到管理，控制JMX，任务调度的目的
+6. ConfigurableApplicationContext扩展于ApplicationContext，它新增了两个主要的用于：
+   refresh close()，让applicationContext具有启动，刷新和关闭应用的能力.
+   refresh() 在应用关闭情况下，refresh即可启动应用
+   在启动的状况下调用refresh()即可清除缓存并且重新装载配置信息，而调用close()即可关闭应用
+*** FileSystem和ClassPath （XmlApplicationContext)
+1. 都可以显示使用带资源类型的前缀的路径，区别在于如果不显式指定资源类型前缀，则分别将路径
+   解析为文件系统路径和类路径
+2. ApplicationContext与BeanFactory不同，它会在初始化容器时，就实例化所有的Bean.因此容
+   器的初始化时间会比BeanFactory长一点
+3. Spring支持基于类注解的配置方式，主要功能来自Spring的一个名为JavaConfig的子项目。
+   JavaConfig现已升级为Spring核心框架的一部分。一部分@Configuration注解的POJO即可提供
+   Spring所需的Bean信息。
+*** AnnotationConfigApplicationContext
+1. AnnotationConfigApplicationContext基于注解的专门的配置类，将加载Bean.class中的
+   Bean的定义并调用Bean.class中的方法实例化Bean，启动容器并装配Bean。
+2. Spring4.0 支持使用Groovy DSL来进行Bean定义配置，其与基于XML文件的配置类似
+3. 基于Groovy的配置方式可以很容易地开发者复杂Bean的初始化过程，比基于于XML文件，注解的
+   配置的方式更加灵活。
+4. Spring为基于Groovy的提供了ApplicationContext的实现类。GenericGroovyApplicationContext.
+   来看一个如何GenericGroovyApplicationContext启动Spring容器的实例，
+*** WebApplicationContext类体系结构
+1. WebApplicationContext是专门为Web应用准备的，它容许从相对于Web根目录的路径中装载配置
+   文件完成初始化工作。从WebApplicationContext中可以获得SereletContext的引用。
+2. 整个Web应用对象将作为属性放置到ServletContext中，以便Web应用环境可以访问Spring应用
+   ，Spring专门为此提供了一个工具类WebApplicationContextUtils。通过该类
+   getWebApplicationContext(ServletContext sc)方法，可以从ServletContext中获取
+   WebApplicationContext实例
+3. 在非Web应用的环境下，Bean只有singleton和prototype两种作用域,WebApplicationContext
+   为Bean添加了三个新的作用域: request,session和global session
+4. 在非web应用的环境下，Bean只有singleton和prototype两种作用域。 
+*** 基本容器和扩展容器(HierarchicalBeanFactory)
+1. 通过HierarchicalBeanFactory接口，SpringIOC容器可以建立依赖关系。sub可以访问base,但是
+   base不能访问sub。在容器内bean的id必须唯一，但是子容器可以拥有一个和父容器相同的Bean。父子
+   容器层级体系增强了Spring容器架构的扩展性和灵活
+2. 层级体系增强了Spring容器架构的扩展性和灵活性，因为第三方可以通过编程添加已经存在一个或
+   多个特殊用途的子容器。
+* SpringMVC
+** @RequestMapping映射
+*** 关于RequestMapp映射的三个常用注解
+1. 使用注解来代替Controller(handler)中的方法来转发到目标视图
+   #+begin_src xml
+     <!-- path代表了在地址栏的访问路径，view-name代表thymeleaf要解析的视图名称
+          即html文件的名称
+      -->
+     <mvc:controller path="/add.html" view-name="add">
+   #+end_src
+2. 当添加<mvc:controller>后，controller中标记的@RequestMapping不能正常使用。
+   是因为RequestHandlerMapping（负责请求映射的类）没有启动，需要使用注解开启
+   #+begin_src xml
+     <!-- 此注解开启以后，可以通过标注@RequestMapping的方式进行请求映射 -->
+     <mvc:annotation-driven/>
+     <!-- 此注解开启以后，可以访问静态资源 -->
+     <mvc:default-servlet-handler/>
+   #+end_src
+** Spring过滤器和springMVC拦截器
+*** 比较
+1. 相同
+   - 必须先拦截，才可以执行后续操作
+   - 对请求进行统一处理
+   - 执行必要操作，放行
+2. 不同
+   1. 工作平台不同,过滤器工作在Servlet上 拦截器工作在SpringMVC上
+   2. 过滤 web应用 拦截 spring负责范围内
+   3. IOC过滤，需要专门调用
+      拦截，直接在ioc中，可以从ioc中装配
+   4. 尽量使用拦截器
+*** 拦截器
+1. 执行步骤，prehandler,posthandler afterCompletion
+   prehandle 拦截之前执行
+   posthandle 拦截后执行
+   afterCompletion 视图渲染之后执行
+** springMVC处理静态资源的过程
+1. 静态资源本身是交给默认的Servlet处理，默认Servlet即tomcat的Servlet，tomcat中的web.xml作用
+   于当前部署在tomcat上的所有工程，当前工程中web.xml继承于tomcat中的web.xml.当配置发生冲突
+   时，使用就近原则，以当前工程为准.tomcat默认servlet-mapping为/,所以工程中如果配置了
+   dispatcherServlet
+2. 当加入标签<mvc:default-servlet-handler/>后,就会交给
+   default-servlet(defaultServletHttpRequestHandler)来处理，
+   如果默认servlet处理不了，就会产生404页面.
+3. 如果只加入<mvc:annotation-driven/>,请求会交给disPathcherServlet来处理。
+4. 如果一起加入以上两个注解，则会先由dispatcherServlet来处理，处理不了则由defaultServlet来处理
+** springMVC处理json
+** 
+* Exception
+** java.lang.NoSuchMethodEception
+1. 由于同一个包的不同版本被引入，但是JVM加载器又从该类不存在的版本引入,运行时就会抛出
+   NoSuchMethodException
+2. 

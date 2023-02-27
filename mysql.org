@@ -1,3 +1,42 @@
+
+* 数据库的分类
+** 解决功能性的问题
+Java,Jsp,RDBMS,Tomcat,HTML,Linux,Jdbc,SVN
+** 解决扩展性的问题
+Struts,Spring,SpringMVC,Hibernate,Mybatis
+** 解决性能的问题
+NoSQL,Java线程,Hadoop,Nginx,MQ,ElasticSearch
+- nginx 解决服务器进行负载均衡
+* NoSQL数据库
+- 不依赖业务逻辑方式进行存储，而是以简单的key-value模式存储，因此大大增加
+  了数据库的扩展能力
+- 不遵循SQL标准
+- 不支持ACID 原子性 持久性 隔离性 一致性
+- 远超SQL的性能
+**   使用场景
+- 对数据高并发的读写
+- 海量数据的读写
+- 对数据高可扩展性
+** NoSQL不适用场景
+- 需要事务支持
+- 基于sql的结构化查询存储，处理复杂的关系，需要即时查询
+** Memcached
+- 很早出现的NoSql数据库
+- 数据都存储在内存中，一般不持久化
+- 支持简单的key-value模式
+- 一般是作为缓存数据库辅助持久化
+** Redis
+- 几乎覆盖了Memcached的大部分功能
+- 数据都在内存中，支持持久化，主用作备份恢复
+- 除了支持简单的key-value模式，还支持多种数据结构的存储，比如list,set,hash,zset等
+- 一般是作为缓存数据库辅助持久化的数据库
+** MongoDB
+- 高性能，开源，模式自由(schema free)的文档型数据库
+- 数据都在内存中，内存不足
+- 虽然是key-value模式，但是对value(json)提供把不常用的数据存储到磁盘
+  并且提供了丰富的查询功能
+- 支持二进制数据及大型对象
+- 可以根据数据的特点代替RDBMS，成为独立的数据库，或者配合RDBMS
 * mysql命令参数详解
 ** 选项
    -u 用户名
@@ -92,6 +131,16 @@
      -- soource后跟导入路径
      desc employees
    #+end_src
+** 表连接
+*** 外连接
+1. 左外连接，左表为全表，且当右表数据为空时，该列存在，反之，当右表中数据在左表无对应数值时，
+   该列不存在
+2. 右外连接，右表为全表
+*** 内连接
+1. 表示两个表的交集，当左表或者右表数据不存在时，该行不存在
+*** 自然连接 
+1. sql99提供了特殊语法，自动a查询两张表中相同的字段，然后进行等值连接
+
 * DDL(Data Definition Language, 数据定义语言)
 ** 简介
    1. 定义了不同的数据库，表，视图，索引等数据库对象，还可以用来创建，
@@ -162,10 +211,22 @@ create table [数据名.]表名(
    # 如果是多个字段的默认是字段名列表的第1个字段名
 
 #+end_src
+** 模糊查询
+*** like关键字
+#+begin_src sql
+    SELECT
+        last_name,salary
+    FROM
+        employees
+    WHERE
+        last_name LIKE "__n_l%" --表匹配n前面两个字符，然后n后面再间隔一个
+        -- 字符是l，匹配类似于 aansl,ssnsl
+    OR last_name like "__$_%" ESCAPE '$';
+    -- $_ 此时$表示转义字符，匹配类型为 ki_s 等字符
+#+end_src
 ** 分页
 #+begin_src sql
   select * from studentv limit 3,5 --偏移三个，查询五个
-		 
 #+end_src
 * DCL(Data Control Language, 数据控制语言)
 ** 概述
@@ -181,7 +242,109 @@ create table [数据名.]表名(
   flush privileges;
 
 #+end_src
-
+* 单行函数
+** 概述
+1. 操作数据对象
+2. 接受参数返回结果
+3. 只对一行进行变换
+4. 每行返回一个结果
+5. 可以嵌套
+6. 参数可以是一个列或者一个值
+** 数值函数
+* 聚合函数（分组函数）
+** 介绍
+作用于一组数据，并且一组数据返回一个值.聚合函数的类型有以下几种
+ - AVG()
+ - SUM()
+ - MAX()
+ - MIN()
+ - COUNT()
+** 聚合函数语法
+#+begin_src sql
+    SELECT [column,] group function(column),...
+    FROM table
+    [WHERE condition]
+    [GROUP BY column]
+    [ORDER BY column]
+#+end_src
+** AVG和SUM函数
+#+begin_src sql
+    SELECT AVG(salary),MAX(salary),MIN(salary),SUM(salary)
+    FROM employees
+    WHERE job_id LIKE '%REP%';
+#+end_src
+** MIN和MAX函数
+可以对任意数据类型的数据使用MIN和MAX函数
+#+begin_src sql
+    SELECT MIN(hire_date),MAX(hire_date)
+    FROM employees;
+#+end_src
+** COUNT函数
+- COUNT(*)返回表中记录总数，适用于任意数据类型
+#+begin_src sql
+    SELECT COUNT(*)
+    FROM employees
+    WHERE department_id=50;
+#+end_src
+- COUNT(expression)返回expression不为空的记录总数
+  #+begin_src sql
+    SELECT COUNT(commission_pct)
+    FROM employees
+    WHERE department_id=50;
+  #+end_src
+- 用count(*),count(1),count(列名)谁好吗
+  MylSAM引擎的表在内部有着一计数器维护着行数.Innodb引擎的表用count(*),count(1)直接读取a行数,复杂度是O(n),innodb会具体的遍历列来获取行数。
+- 问题: 能不能使用count（列名）替换count(*)?
+  不要使用count(*)来替代count(*),count(*)是SQL92定义的标准统计行数的语法，和数据库无关，与NULL和非NULL无关
+count(column_name)不会统计此列为NULL值的行
+** GROUP BY
+- 可以使用GROUP BY子句将表中的数据分成若干组
+#+begin_src sql
+    SELECT column,group_function(column)
+    FROM table
+    [WHERE condition]
+    [GROUP group_by_expression]
+    [ORDER BY column];
+#+end_src
+- 在SELECT列表中所有未包含在组函数都应该包含在GROUP_BY子句中
+* 子查询
+** 子查询的基本使用
+1. 子查询在主查询之前一次执行完成
+2. 子查询的结果被主查询（外查询）使用
+3. 注意
+   + 子查询包含在括号内
+   + 子查询放在比较条件右边
+   + 单行操作符对应单行子查询，多行操作符对应多行子查询
+** 分类方式
+- 按照内查询是否被执行多次，将子查询分为相关（或者关联）子查询和不相关子查询。
+- 如果子查询从数据表中查询了数据，而且只执行一次，然后这个数据结果作为子查询的条件执行，那么这样的子查询叫做不相关子查询
+- 子查询需要执行多次，即采用循环的方式，先从外部循环开始，每次都传入子查询进行查询，
+  然后再将结果反馈给外部，这种嵌套查询的方式称为相关子查询
+** 单行比较操作符
+=,>,>=,<,<=,<>;
+| 操作 | 含义                   |
+| <    | less than              |
+| <=   | less than and equal    |
+| <>   | not equal to           |
+| >    | greater than           |
+| >=   | greater than and equal |
+| =    | equal to               |
+** HAVING中的子查询
+1. 首先执行子查询
+2. 向主查询中的HAVING子句返回结
+** CASE中的子查询
+在CASE表达式中使用单例子查询：
+** 多行子查询
+*** 介绍
+- 集合比较子查询
+- 内查询返回多行
+- 使用多行比较操作符
+*** 多行比较操作符
+| 操作 | 含义                                                     |
+| IN   | 等于列表中的任意一个                                     |
+| ANY  | 需要和单行比较操作符一起使用，和子查询返回的某一个值比较 |
+| ALL  | 需要和单行比较操作符一起使用，和子查询返回的所有值比较   |
+| SOME | 实际上是ANY的别名，作用相同，一般使用ANY                 |
 * 注意
 ** DQL(数据查询语言)
 *** 简介
@@ -304,7 +467,6 @@ create table [数据名.]表名(
       使用`（着重号）引起来
    6. 保持字段名和类型的一致性，在命名字段并为其指定数据类型的时候一定要保证一致性。假如数据
       类型在一个表里是整数，那在另一个表里可就别变成字符型了
-   7.
 * 展示可用的字符集合
 - 大小写铭感 修改校对集合
 - 修改已有表格的字符集

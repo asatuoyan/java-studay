@@ -1,0 +1,12 @@
+#+TITLE: virtualbox
+* ssh登录
+1. 安装一些包，并且确保核心唯一
+   #+begin_src shell
+dnf install gcc make perl kernel-devel kernel-headers bzip2 dkms
+dnf update kernel-*
+rpm -qa | grep kernel-[0-9]     # 查看是否有多个内核同时安装
+yum -y upgrade kernel kernel-devel
+# 接下来安装虚拟机增强工具
+# 安装openssh-sever and openssh-client
+# 配置虚拟机端口和主机端口的之间的转发关系
+   #+end_src

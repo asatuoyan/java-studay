@@ -96,35 +96,7 @@
    timer C-c C-x 标记待做事项的事件
 ** export to other Exports
 1. C-c C-e 打开一个window显示导出格式
-
-** org-capture [记笔记]
-   
-* emacs lisp
-** 概述
-   1. Emacs Lisp(Lisp Processing)缩写，Lisp语言的核心是列表(List)。在Lisp中每个小括号
-代表了list,当执行lisp时，会将列表的第一个元素作为函数名，之后的元素作为参数。
-   #+begin_src emacs-lisp
-	 (+ 4 (- 5 1))
-   #+end_src
-   #+RESULTS:
-   : 8
-   2. 单引号表示不执行后面的元素而直接返回它本身,
-   #+begin_src lisp
-     '(one two three)
-     ;; 此时表达了一个包含三个元素的数组
-   #+end_src
-   #+begin_src emacs-lisp
-	 (org-version)
-	 (emacs-version)
-   #+end_src
-   #+RESULTS:
-   : GNU Emacs 28.2 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.35, cairo version 1.16.0)
-   :  of 2022-12-20, modified by Debian
-** COMMENT require
-   请求文件功能，如果没有设置默认文件，则使用请求的文件名作为默认文件名
-   中加载.
-** defun-advice
-   可以增强函数增强功能，但是不用修改函数代码
+** org-capture [
 * Source code的使用
 #+begin_src shell :var ARG1="FOO" ARG2="BAR"
   echo $ARG1 $ARG2
@@ -149,7 +121,8 @@
   3 * 2 + &= 6 + 1 \\
           &= 7
 \end{align*}
-* Literate programming
+* Literat
+e programming
 * Todo stuff!
 ** TODO explain todo lists
 DEADLINE: <2023-01-01 Sun>
@@ -159,6 +132,9 @@ CLOSED: [2022-12-29 Thu 22:52]
 :ID:       51964960-47da-4686-945f-bcba9b7d1031
 :END:
 * org-capture
+* 标记和交换标记位置
+1. 按下C-SPC标记命令，然后你可以按下C-x C-x交换当前光标和当前位置
+2. 你可以保存许多标记位置，然后通过C-u C-SPC可以标记一次或者多次
 * global menu
 1. f10可以使用global menu
 2. org menu中浏览cutomize-browse org group
@@ -166,4 +142,9 @@ CLOSED: [2022-12-29 Thu 22:52]
 
 =org2blog=
 =org-publish=
+* what is region
+1. buffer中光标和标记之间距离叫做区域，在region中工作的命令叫做center-region,count-words-region,
+   kill-region,and print-region
+
+   
 

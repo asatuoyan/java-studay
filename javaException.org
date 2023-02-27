@@ -1,1 +1,7 @@
 * Error And Exception
+** ClassNotFoundException
+1. 查看包是否导入
+2. 查看编译后的target文件lib是否有对应的包生成，如果没有，可以直接将对应的jar包
+   放入其中
+** ClasNoDefFoundError
+1.

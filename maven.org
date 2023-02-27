@@ -204,7 +204,13 @@
       2) user settings: 指定conf/settings.xml的位置，进而获取本地仓库的位置
    3. 设置通过Maven创建的工程JDK版 
    4. 基本操作
+** 根据坐标创建Maven工程
++ groupId 公司或组织的Id
+  公司或者组织名的倒序，通常会加上项目名称
++ artifactId: 一个项目或者是项目中的一个模块，将来作为Maven工程的工程名
++ version 版本号
+  - 
 ** 需要设置依赖排除的场合
    1. 需要设置排除的依赖
-   2. <dependency> 内部exclusions指定排除的包
+   2. <dependency> 内部exclusions指定排除的包 
 

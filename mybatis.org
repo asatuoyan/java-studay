@@ -370,7 +370,7 @@
    #+begin_src xml
      <mapper>
        <sql id="insertColnum">
-	 employ_id,lastname,email
+	        employ_id,lastname,email
        </sql>
        <!-- 引用外部定义的sql -->
        <include refid="">
@@ -607,3 +607,6 @@
   3. 可以使用另外的枚举类型处理器保存索引
      EnumTypeHandler
   4. 自定义枚举类型使用，实现TypeHandler<EmpStaus>
+
+
+  

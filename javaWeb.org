@@ -521,6 +521,61 @@
 3. session 一次会话范围有效
 4. application 
 5. 目前使用前后端分离或者使用thymeleaf技术,不再使用JSP技术,page这个属性域不再维护
+** JDK中反射技术获取参数名称
+1. 默认获取为arg0 arg1 arg2 arg3
+2. 从JDK8开始，我们反射技术也可以获取形参名称（缺点是文件体积变大）
+3. 可以通过添加参数
+   java compiler > java compiler > addtional command line...
+   - parameters
+   - 需要设置file settings
+* JavaWeb三大组件
+** Servlet 
+** Filter
+*** 概述
+1. 过滤器有多个
+2. 当请求发送过来时，执行doFilter(req,resp)
+   chain(代表过滤器有很多个)
+3. 过滤器不建议使用注解
+*** Filter的配置
+1. 可以使用注解 @WebFilter
+2. XML配置
+*** Filter和Servlet的初始化顺序问题
+1. 在tomcat启动时，filter就已经初始化了
+2. Servlet是默认访问时，才会初始化
+3. Filter拦截请求
+4. chain.doFilter(req,resp)
+5. doGet(req,resp,chain) Filter响应后执行代码
+6. 当程序停止时，先销毁servlet后销毁filter
+*** 多个过滤器
+** Listener监听器
+2. 获取request域中值时，不需要${value}
+**** 什么是Listener
+   1. Listener监听器是javaWeb的三大组件之一，Servlet程序，filter过滤器，Listener监听器
+   2. 是javaEE的规范,就是接口
+   3. 监听器的作用是，监听某种事物的变化，通过回调函数返回,反馈给用户去做一些相应的处理
+**** ServletContextListener监听器
+   ServletContextListener他可以监听ServletContext对象的创建和销毁(该对象在web工程启动时创建，在web工程停止时销毁),
+   监听到创建和销毁之后都会分别调用监听器的方法反馈
+   两个方法分别是:
+   1. contextInitialized(ServletContextEvent sce) 在对象创建之后马上调用做初始化
+   2. contextDestroyed(ServletContextEvent sce) 在对象销毁之后调用
+   如何使用该监听器，监听ServletContext对象
+   使用步骤如下:
+   1. 编写一个类实现该接口
+   3. 到web.xml中去配置监听器 
+   2. 实现其两个回调方法
+
+** 事务
+*** 业务功能
+1. JDBC默认情况下，执行一个SQL会自动提交
+2. 默认dao功能，其中包含了一个dao方法
+3. 事务应该建立在注册这个方法上，而不是其中三个方法分别建立事务
+4. 所以事务管理应该基于业务方法，也就是事务管理建立在业务丑奴儿该，而不是Dao层
+5. 可以过滤层使用专门的组件transActionManager 事务管理器
+   - void beginTras() 开启事务
+   - void commit 提交事务
+   - void rollback 回滚事务
+	 
 * XML
 ** 概述
 1. XML Eternal Markup language 可扩展的标记语言
@@ -568,7 +623,7 @@
    http协议
 ** 请求的HTTP协议格式
    客户端给服务器发送数据叫请求，服务器给客户端回传数据叫响应
-   GET请求
+GET请求
    1. 请求行
       1. 请求的方式  GET
       2. 请求的资源路径[+?+请求参数]
@@ -582,7 +637,7 @@
       Connection: 表示告诉服务器请求连接如何处理
                Keep-Alive: 告诉服务器回传数据后不要马上关闭，保持一小段时间连接
                Closed：马上关闭  
-   POST请求
+POST请求
    1. 请求行
       1. 请求的方式  POST
       2. 请求的资源路径 /path/
@@ -618,10 +673,11 @@
       1) 响应的协议和版本号  HTTP/1.1
       2) 响应的状态码        200
       3) 响应状态描述符      ok
+         400 404 302(重定向) 403(没有权限) 500(服务器代码错误) 200
    2. 响应头
       1) key:value 不同响应头有不同的含义
-      2) Server:  表示服务器的信息
-      3) Content-Type: 表示响应的数据类型
+      2) Server: Apache-coyote/1.1  表示服务器的信息
+      3) Content-Type:  text/html;character=UTF-8表示响应的数据类型
       4) Content-Length: 响应体的长度
       5) Date: 请求响应的时间(格林时间)
       空行隔开
@@ -664,9 +720,8 @@
    HttpServletResponse类和HttpServletRequest类一样，每次请求进来，Tomcat服务器
    都会创建一个Response类传递给Servlet程序去使用，Httpservletrequest表示所有请求的
    信息，response则表示所有响应的信息，如果需要设置返回给客户端的信息，都可以通过
-   response客户端来设置  
-* MIME类型说明
-** 说明
+   response客户端来设置  k
+** MIME类型说明
    MIME是HTTP协议中的数据类型.MIME的英文全称是“Multipurpose internet Mail Extension"
    多功能internet邮件扩充服务，MIME类型的格式是"大类型/小类型",并与第一种文件的扩展名相对应
    | 文件              | MIME类型                           |
@@ -684,7 +739,7 @@
    | GZIP文件          | .gz        application/x-gzip      |
    | TAR文件           | .tar       application/x-tar       |
    |-------------------+------------------------------------|
-* jsp的作用
+* jsp
 ** 什么是jsp，它有什么用?
    jsp全称是java serverpages,java的服务器页面
    因为Servlet程序回传html页面是一件非常繁琐的事情，开发成本和维护成本非常高
@@ -802,7 +857,6 @@
     3. 主页面通过代码调用，将request,response,out对象都传递给了footer.jsp页面 
 *** jsp的请求转发
     <jsp:forward page="请求转发的路径"></jsp:forward>
-* JSTL标签库(JSP Standard Tag Library)
 ** 定义
    EL表达式主要是为了替换jsp中表达式的脚本，而标签库则是为了替换代码脚本，这样
    使得整个jsp页面变得更加的简洁
@@ -860,6 +914,7 @@
     #+end_src
 * 视图渲染
 ** 概述
+
 - 将动态数据添加到静态页面中，然后将页面响应到服务器上
 ** 配置themeleaf
 1. 添加jar包
@@ -867,23 +922,18 @@
 ** 取域中的值
 Object Graphic Navigation Language 对象组导航语言
 1. 当获取session中的值时 ${session.value}
-2. 获取request域中值时，不需要${value}
-* Listener监听器
-** 什么是Listener
-   1. Listener监听器是javaWeb的三大组件之一，Servlet程序，filter过滤器，Listener监听器
-   2. 是javaEE的规范,就是接口
-   3. 监听器的作用是，监听某种事物的变化，通过回调函数返回,反馈给用户去做一些相应的处理
-** ServletContextListener监听器
-   ServletContextListener他可以监听ServletContext对象的创建和销毁(该对象在web工程启动时创建，在web工程停止时销毁),
-   监听到创建和销毁之后都会分别调用监听器的方法反馈
-   两个方法分别是:
-   1. contextInitialized(ServletContextEvent sce) 在对象创建之后马上调用做初始化
-   2. contextDestroyed(ServletContextEvent sce) 在对象销毁之后调用
-   如何使用该监听器，监听ServletContext对象
-   使用步骤如下:
-   1. 编写一个类实现该接口
-   2. 实现其两个回调方法
-   3. 到web.xml中去配置监听器   
+* 数据库设置的三范式
+1. 列不可再分
+   例如收货地址 省市县要分为不同的列
+2. 一张表一件事
+   学员表： 学号，姓名，出生年月，选修科目
+   学员信息表 学员选修情况表
+3. 一张表中的一个列直接依赖主键，而不是间接依赖
+   | id | 学号 | 科目号 | 成绩` |
+   |  1 |    1 | jim    | 60    |
+   在上述表中，姓名和科目名称这两列分别依赖于学号，科目号
+  | id | 学号 | 科目号 | 成绩 |
+  |  1 |    1 |     1  | 90   |
 * EL表达式
 ** 什么是表达式
    1. 表达式的全称是: Expression Language 是表达式语言
@@ -902,8 +952,31 @@ Object Graphic Navigation Language 对象组导航语言
    Request
    Session
    Application EL表达式会从四个域从小到大的顺序搜索
-** 输出
+** 元字符
+1. 对正则表达式的字符进行描述的字符叫做元字符
+2. 注意org中js没有babel
+   #+begin_src javascript
+     var reg=/./gim;//匹配除了换行符以外的字符
+     var str="hello\nworld_2023";
+     var reuslt=str.replace(reg,"A");
+     console.log(result);
+    #+end_src
    EL表达式在输出时，寻找对应属性的get方法 ;
+   #+begin_src java :results output
+      public class Main {
+      public static void main(String[] args){
+          String str="abc b aaa";
+          String reg="[a]*";
+           String str1 = str.replaceAll(reg, "A");
+           System.out.println(str1);
+        }
+     }
+   #+end_src
+
+   #+RESULTS:
+   : AAbAcA AbA AA
+  
+
 ** 运算
 *** 关系运算
     | 关系运算符 | 说明     | 范例     |
@@ -1015,6 +1088,15 @@ Object Graphic Navigation Language 对象组导航语言
 
    #+end_src
 ** 编写数据库对应的JavaBean对象
+** 设计数据库
+用户 密码 邮箱 角色
+图书 Book 名称 价格 作者 销量 库存 图书封面
+购物车项 CartItem
+图书id,图书封面，图书名称，图书单价，数量，用户id
+订单 OrderBean
+订单号 订单日期 订单金额 订单数量 订单状态 用户id
+订单项 OrderItem
+图书id 图书封面 图书名称 图书单价 数量 订单id
 ** 编写DAO持久层
    编写工具类，JdbcUtils
    1. 管理数据库连接池
@@ -1462,6 +1544,10 @@ Object Graphic Navigation Language 对象组导航语言
     1. 编写类继承gson中的TypeToken，然后使用该类的getType方法，填写到转换中
     2. 匿名内部类
        new TypeToken<HashMap<Integer,Person()>>(){}.getType
+** JSON的转换
+1. js object - js string
+   JSON.parse(str) 
+2. java object - java string
 * AJAX
 ** 什么是AJAX请求
    AJAX即"Asyncchronous Javascript And XML" 
@@ -1501,6 +1587,17 @@ Object Graphic Navigation Language 对象组导航语言
        - type返回的数据类型
     3. 表单序列化，serlalize()可以把所有表单项的内容都获取到，并以name=value
        &name=value的方式提交
+* VUE
+* Servlet
+** Tomcat/BS架构
+1. 浏览器服务器模式
+2. CS客户端服务器模式
+3. Servlet是由两个单词组成，服务器应用程序，其实就是所谓的服务器端组件
+** Servlet生命周期
+实例化： 文件调用构造方法，进行实例化
+初始化： 调用init() 初始化
+服务: 容器调用service方法
+销毁: 容器停止时，销毁方法
 * Filter过滤器
 ** 作用
    1. 拦截请求，过滤响应

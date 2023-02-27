@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-01-25 Wed 18:06 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>设计模式</title>
+<meta name="author" content="akinjoker" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">设计模式</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org2cfe764">1. 内容介绍</a>
+<ul>
+<li><a href="#org86eda5c">1.1. 概述</a></li>
+<li><a href="#org7fa3b3e">1.2. 重要</a></li>
+</ul>
+</li>
+<li><a href="#orgcf653d0">2. 设计原则介绍</a>
+<ul>
+<li><a href="#orgd2aa462">2.1. 单一职责原则(Single Responsibility)</a>
+<ul>
+<li><a href="#orgda39bf9">2.1.1. 基本介绍</a></li>
+<li><a href="#orgedcb611">2.1.2. 核心思想</a></li>
+</ul>
+</li>
+<li><a href="#orge73c5af">2.2. 接口隔离原则(Interface Segregation Principle)</a>
+<ul>
+<li><a href="#orgd16c947">2.2.1. 介绍</a></li>
+</ul>
+</li>
+<li><a href="#org5f40419">2.3. 依赖性倒转原则(Dependence inversion Principle)</a></li>
+<li><a href="#org9620dd8">2.4. 里式替换原则</a>
+<ul>
+<li><a href="#orgd74e1a4">2.4.1. 继承的问题</a></li>
+<li><a href="#org5ab6a8e">2.4.2. 概述</a></li>
+</ul>
+</li>
+<li><a href="#org516cb2d">2.5. 开闭原则</a>
+<ul>
+<li><a href="#org4969b5c">2.5.1. 概述</a></li>
+</ul>
+</li>
+<li><a href="#orgf7d7b29">2.6. 迪米特法则</a>
+<ul>
+<li><a href="#org98d998d">2.6.1. 基本介绍</a></li>
+</ul>
+</li>
+<li><a href="#org5bac5f6">2.7. 合成复用原则（Composite Reuse Principle）</a>
+<ul>
+<li><a href="#org046454a">2.7.1. 基本介绍</a></li>
+</ul>
+</li>
+<li><a href="#orgc177afd">2.8. 设计原则的核心思想</a></li>
+</ul>
+</li>
+<li><a href="#org3cb6a10">3. UML类图(Unified modeling language UML)</a>
+<ul>
+<li><a href="#orgdc52fca">3.1. 基本介绍</a></li>
+<li><a href="#org564a274">3.2. 术语</a></li>
+</ul>
+</li>
+<li><a href="#orgf19325c">4. 设计模式概述</a>
+<ul>
+<li><a href="#orgbf507f8">4.1. 设计模式介绍</a></li>
+</ul>
+</li>
+<li><a href="#orge252cee">5. 单例模式</a>
+<ul>
+<li><a href="#org811ff1e">5.1. 饿汉式（静态常量）</a>
+<ul>
+<li><a href="#org665375d">5.1.1. 例子</a></li>
+<li><a href="#org3afc54f">5.1.2. 缺点</a></li>
+</ul>
+</li>
+<li><a href="#orgd787924">5.2. 饿汉式（静态代码快）</a>
+<ul>
+<li><a href="#orga695963">5.2.1. 例子</a></li>
+</ul>
+</li>
+<li><a href="#org419cfee">5.3. 懒汉式（线程不安全）</a>
+<ul>
+<li><a href="#orgdba0e04">5.3.1. 例子</a></li>
+</ul>
+</li>
+<li><a href="#org2d821cc">5.4. 懒汉式（线程安全，同步方法）</a>
+<ul>
+<li><a href="#orgc6265df">5.4.1. 列子</a></li>
+<li><a href="#org73b94f0">5.4.2. 优缺点</a></li>
+</ul>
+</li>
+<li><a href="#orgde49687">5.5. 懒汉式（线程安全，同步代码块）</a></li>
+<li><a href="#org42d5e86">5.6. 双重检查</a>
+<ul>
+<li><a href="#orge80cee7">5.6.1. 例子</a></li>
+<li><a href="#orgf3198c2">5.6.2. 优缺点</a></li>
+<li><a href="#orgb300452">5.6.3. 指令重排</a></li>
+</ul>
+</li>
+<li><a href="#org3abfa73">5.7. 静态内部类</a>
+<ul>
+<li><a href="#orga1dfd62">5.7.1. 例子</a></li>
+<li><a href="#orga0eaa1d">5.7.2. 好处</a></li>
+</ul>
+</li>
+<li><a href="#org29f9626">5.8. 枚举</a>
+<ul>
+<li><a href="#org3f27f0c">5.8.1. 例子</a></li>
+<li><a href="#org3f7db4e">5.8.2. 优点</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgca31d00">6. 工厂模式</a>
+<ul>
+<li><a href="#org91001b4">6.1. 需求</a></li>
+<li><a href="#org8f78d97">6.2. 分类</a></li>
+</ul>
+</li>
+<li><a href="#orgbdef789">7. 建造者模式</a>
+<ul>
+<li><a href="#org60dcc97">7.1. 基本介绍</a></li>
+<li><a href="#orgdab9325">7.2. 建造者模式的四个角色</a></li>
+</ul>
+</li>
+<li><a href="#org09381b0">8. UML图测试</a></li>
+</ul>
+</div>
+</div>
+<hr />
+<div id="outline-container-org2cfe764" class="outline-2">
+<h2 id="org2cfe764"><span class="section-number-2">1.</span> 内容介绍</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org86eda5c" class="outline-3">
+<h3 id="org86eda5c"><span class="section-number-3">1.1.</span> 概述</h3>
+<div class="outline-text-3" id="text-1-1">
+<ol class="org-ol">
+<li>设计模式的核心思想</li>
+<li>能够以类图说明设计原则
+<ul class="org-ul">
+<li>单一职责</li>
+<li>接口隔离</li>
+<li>依赖倒转</li>
+<li>里氏替换</li>
+<li>开闭原则 ocp</li>
+<li>迪木特原则</li>
+<li>合成复用原则</li>
+</ul></li>
+<li>在项目开发中，哪里用到了ocp原则</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org7fa3b3e" class="outline-3">
+<h3 id="org7fa3b3e"><span class="section-number-3">1.2.</span> 重要</h3>
+<div class="outline-text-3" id="text-1-2">
+<ol class="org-ol">
+<li>对软件工程中普遍存在的各种问题，所选出的解决方案</li>
+<li>使用设计模式让软件的扩展性和维护性更好,灵活性
+可读性，可靠性。使得程序高内聚，低耦合</li>
+<li>代码重用性，相同功能的代码，不用多次编写</li>
+<li>可读性，编程的规范性，便于其他程序员的阅读和理解</li>
+<li>扩展性，增加新的功能时，成本低，非常方便（可维护性）</li>
+<li>可靠性，当我们增加新的功能后，对原来的功能没有影响</li>
+<li>设计模式包含了面向对象的精髓，面向对象的分析和设计</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcf653d0" class="outline-2">
+<h2 id="orgcf653d0"><span class="section-number-2">2.</span> 设计原则介绍</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgd2aa462" class="outline-3">
+<h3 id="orgd2aa462"><span class="section-number-3">2.1.</span> 单一职责原则(Single Responsibility)</h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-orgda39bf9" class="outline-4">
+<h4 id="orgda39bf9"><span class="section-number-4">2.1.1.</span> 基本介绍</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+对类来说，即一个类应该只负责一项职责，如类A负责两个不同的职责，那么
+当一个职责的需求变更而改变A时，可能造成职责2执行错误，所以需要将
+类A的颗粒度分解为A1,A2
+</p>
+</div>
+</div>
+<div id="outline-container-orgedcb611" class="outline-4">
+<h4 id="orgedcb611"><span class="section-number-4">2.1.2.</span> 核心思想</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<ol class="org-ol">
+<li>降低类的复杂度，一个类一个职责</li>
+<li>降低变更带来的风险</li>
+<li>通常应该遵守，只有逻辑足够简单，或者类的方法足够少，才可以在方法
+级别保持单一职责原则</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orge73c5af" class="outline-3">
+<h3 id="orge73c5af"><span class="section-number-3">2.2.</span> 接口隔离原则(Interface Segregation Principle)</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-orgd16c947" class="outline-4">
+<h4 id="orgd16c947"><span class="section-number-4">2.2.1.</span> 介绍</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+1） 客户端不应该依赖它不需要的接口，即一个类对另一个类的依赖应该建立
+在最小的接口上
+</p>
+<ol class="org-ol">
+<li>即A类通过使用接口作为形参来间接依赖另一个类，此时这个方法只会用到接口实现中的
+部分方法</li>
+<li>可以将每个方法都写一个接口，当使用接口时。接口的实现类只需要实现需要使用的方法即可</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org5f40419" class="outline-3">
+<h3 id="org5f40419"><span class="section-number-3">2.3.</span> 依赖性倒转原则(Dependence inversion Principle)</h3>
+<div class="outline-text-3" id="text-2-3">
+<ol class="org-ol">
+<li>高层模块不应该依赖底层模块，二者都应该依赖其抽象</li>
+<li>抽象不应该依赖细节，细节依赖依赖抽象</li>
+<li>依赖倒转原则是基于的设计理念：相对于细节的多变性，抽象的东西要稳定的多。以抽象为基础搭建
+的架构比以细节为基础的架构要稳定的多，在Java中，抽象指的是接口或抽象类，细节指的是具体的
+实现类</li>
+<li>使用接口或者抽象类的目的是设计好规范，而不涉及任何具体的操作，把展示细节的认为交给它们的实现
+类进行</li>
+<li>依赖倒转的中心思想是面向接口编程</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org9620dd8" class="outline-3">
+<h3 id="org9620dd8"><span class="section-number-3">2.4.</span> 里式替换原则</h3>
+<div class="outline-text-3" id="text-2-4">
+</div>
+<div id="outline-container-orgd74e1a4" class="outline-4">
+<h4 id="orgd74e1a4"><span class="section-number-4">2.4.1.</span> 继承的问题</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<ol class="org-ol">
+<li>继承包含这样一层含义，基类中凡是已经实现好的方法，实际上是在设定规范
+和契约，虽然它不强制要求所有子类必须遵循这些契约，但是如果子类对已经
+实现的方法任意修改，就会对整个继承体系造成破坏</li>
+<li>继承在给程序设计便利的同时，也带来了弊端，比如继承会给程序带来
+侵入性，程序的可移植性降低，增加对象间的耦合。如果一个类被其它
+类所继承，则当这个类需要修改时，必须考虑到所有的子类，并且父类
+修改后，所有涉及到子类的功能都可能出现故障</li>
+<li>在编程时，如何正确使用继承?
+里式替换原则</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org5ab6a8e" class="outline-4">
+<h4 id="org5ab6a8e"><span class="section-number-4">2.4.2.</span> 概述</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<ol class="org-ol">
+<li>Liskov Substitution Principle 姓里的女士提出的</li>
+<li>如果每个类型为T1的对象o1,都有类型为T2的对象o2，使得t1定义的所有
+对象o1在替换成o2时，程序P的行为都没有变化，那么类型T2是类型T1
+的子类型，所有引用的基类的地方必须能够透明的使用其子类对象</li>
+<li>在使用继承时，尽量不要重写其父类方法</li>
+<li>继承让两个类耦合性增强了，在适当的情况下，可以通过聚合，组合，依赖
+来解决问题</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org516cb2d" class="outline-3">
+<h3 id="org516cb2d"><span class="section-number-3">2.5.</span> 开闭原则</h3>
+<div class="outline-text-3" id="text-2-5">
+</div>
+<div id="outline-container-org4969b5c" class="outline-4">
+<h4 id="org4969b5c"><span class="section-number-4">2.5.1.</span> 概述</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<ol class="org-ol">
+<li>开闭原则（Open Closed Principle）是编程中最基础，最重要的设计
+原则</li>
+<li>一个软件实体如类，模块和函数应该对扩展开放，对修改关闭(使用方关闭)
+，用抽象构建框架，用实现扩展细节。</li>
+<li>当软件需要变化时，尽量通过扩展软件实体的行为来实现变化，而不是通过
+修改已有代码来实现变化</li>
+<li>编程中遵循其它原则，以及使用设计模式的目的就是遵循开闭原则</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf7d7b29" class="outline-3">
+<h3 id="orgf7d7b29"><span class="section-number-3">2.6.</span> 迪米特法则</h3>
+<div class="outline-text-3" id="text-2-6">
+</div>
+<div id="outline-container-org98d998d" class="outline-4">
+<h4 id="org98d998d"><span class="section-number-4">2.6.1.</span> 基本介绍</h4>
+<div class="outline-text-4" id="text-2-6-1">
+<ol class="org-ol">
+<li>一个对象应该对其他对象保持最少的了解</li>
+<li>类与类的关系越密切，耦合度越大</li>
+<li>迪米特法则（Demeter Principle）又叫最少知道原则，即一个类对自己依赖的类知道的越少越好。也
+就是说，对于被依赖的类不管多么复杂，都应该将逻辑封装在类的内部，对外除了提供public方法，
+不对外泄露信息</li>
+<li>只与直接的朋友通信</li>
+<li>直接朋友： 每个对象都会与其它对象由耦合关系，只要两个对象有耦合关系，我们就说两个对象之间
+是朋友关系。耦合的方式很多，依赖关联，组合，聚合等。其中，我们称出现的成员变量，方法参数，
+方法的返回值中的类为直接的朋友，而且现在局部变量中的类不是直接的朋友。陌生的类最好不要
+以局部变量的形式出现在类的内部</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org5bac5f6" class="outline-3">
+<h3 id="org5bac5f6"><span class="section-number-3">2.7.</span> 合成复用原则（Composite Reuse Principle）</h3>
+<div class="outline-text-3" id="text-2-7">
+</div>
+<div id="outline-container-org046454a" class="outline-4">
+<h4 id="org046454a"><span class="section-number-4">2.7.1.</span> 基本介绍</h4>
+<div class="outline-text-4" id="text-2-7-1">
+<p>
+原则尽量使用合成/聚合的方式，而不是使用继承。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc177afd" class="outline-3">
+<h3 id="orgc177afd"><span class="section-number-3">2.8.</span> 设计原则的核心思想</h3>
+<div class="outline-text-3" id="text-2-8">
+<ol class="org-ol">
+<li>找出应用中的变化之出，独立它们，不要和那些不需要变化的代码混合
+在一起。</li>
+<li>针对接口编程，而不是针对实现编程</li>
+<li>为了交互对象之间的松耦合而努力</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org3cb6a10" class="outline-2">
+<h2 id="org3cb6a10"><span class="section-number-2">3.</span> UML类图(Unified modeling language UML)</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgdc52fca" class="outline-3">
+<h3 id="orgdc52fca"><span class="section-number-3">3.1.</span> 基本介绍</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+1） 是一种用于软件系统分析和设计的语言工具，它用于帮助软件开发人员
+进行思考和记录思路的结果
+</p>
+<ol class="org-ol">
+<li>UML本身是一套符号的规定，就像数学符号和化学符号一样。这些符号
+用于描述软件模型中的各个元素和它们之间的关系，比如类，接口，
+实现，泛化，依赖组合，聚合等。</li>
+<li>使用UML来建模，常用工具有Rational Rose，也可以使用一些插件来
+建模</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org564a274" class="outline-3">
+<h3 id="org564a274"><span class="section-number-3">3.2.</span> 术语</h3>
+<div class="outline-text-3" id="text-3-2">
+<ol class="org-ol">
+<li>Note 对你的UML图进行注释</li>
+<li>Class表示类，可以添加属性和方法</li>
+<li>表示接口 Interface</li>
+<li>表示类之间的关系 Relation
+<ul class="org-ul">
+<li>Dependency 依赖 如果A类中使用了B类
+<ol class="org-ol">
+<li>类的成员属性</li>
+<li>方法的返回值</li>
+<li>方法接收到的参数类型</li>
+<li>方法中使用</li>
+</ol></li>
+<li>Association 关联
+<ul class="org-ul">
+<li>关联关系是依赖的特例</li>
+<li>关联关系具有多重性，一对一 一对多 多对多</li>
+</ul></li>
+<li>Generalization 泛化
+<ul class="org-ul">
+<li>如果A类继承了B类，A和B存在泛化关系</li>
+</ul></li>
+<li>Realization 实现</li>
+<li>Aggregation 聚合
+类与类之间的关系是否可以分开，可以分开叫聚合，人和身份证</li>
+<li>Composite 组合
+类与类之间的关系不能分开，叫做组合,比如人和人头的关系</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf19325c" class="outline-2">
+<h2 id="orgf19325c"><span class="section-number-2">4.</span> 设计模式概述</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgbf507f8" class="outline-3">
+<h3 id="orgbf507f8"><span class="section-number-3">4.1.</span> 设计模式介绍</h3>
+<div class="outline-text-3" id="text-4-1">
+<ol class="org-ol">
+<li>模式不是代码，而是问题的解决方案</li>
+<li>本质提高软件的维护性，通用性</li>
+<li>设计模式类型
+<ol class="org-ol">
+<li>创建型模式： 单例模式，抽象工厂模式，原型模式，建造者模式，工厂模式</li>
+<li>结构模式： 适配器模式，桥接模式，装饰模式，组合模式，外观模式，享元模式，代理模式</li>
+<li>行为型模式：模板方法模式，命令模式，访问者模式，迭代器模式，观察者模式，中介者模式，
+备忘录模式，解释器模式，状态模式，策略模式，职责链模式</li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orge252cee" class="outline-2">
+<h2 id="orge252cee"><span class="section-number-2">5.</span> 单例模式</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org811ff1e" class="outline-3">
+<h3 id="org811ff1e"><span class="section-number-3">5.1.</span> 饿汉式（静态常量）</h3>
+<div class="outline-text-3" id="text-5-1">
+</div>
+<div id="outline-container-org665375d" class="outline-4">
+<h4 id="org665375d"><span class="section-number-4">5.1.1.</span> 例子</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> Singleton<span style="color: #d75fd7;">(){</span>
+    <span style="color: #d75fd7;">}</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">final</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">singleton</span> <span style="color: #8787d7;">instance</span>=<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #d75fd7;">()</span>;
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+        <span style="color: #268bd2; font-weight: bold;">return</span> instance;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3afc54f" class="outline-4">
+<h4 id="org3afc54f"><span class="section-number-4">5.1.2.</span> 缺点</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<ol class="org-ol">
+<li>可用，造成内存浪费</li>
+<li>虽然避免了线程同步，但是导致类加载的原因很多，不能确定有其它方式导致类加载。初始化instance
+就没有达到lazy loading效果</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd787924" class="outline-3">
+<h3 id="orgd787924"><span class="section-number-3">5.2.</span> 饿汉式（静态代码快）</h3>
+<div class="outline-text-3" id="text-5-2">
+</div>
+<div id="outline-container-orga695963" class="outline-4">
+<h4 id="orga695963"><span class="section-number-4">5.2.1.</span> 例子</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> Singleton<span style="color: #d75fd7;">(){}</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #8787d7;">instance</span>;
+    <span style="color: #268bd2; font-weight: bold;">static</span><span style="color: #d75fd7;">{</span>
+        instance=<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #2aa198;">()</span>;
+    <span style="color: #d75fd7;">}</span>
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+        <span style="color: #268bd2; font-weight: bold;">return</span> instace;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org419cfee" class="outline-3">
+<h3 id="org419cfee"><span class="section-number-3">5.3.</span> 懒汉式（线程不安全）</h3>
+<div class="outline-text-3" id="text-5-3">
+</div>
+<div id="outline-container-orgdba0e04" class="outline-4">
+<h4 id="orgdba0e04"><span class="section-number-4">5.3.1.</span> 例子</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> Singleton<span style="color: #d75fd7;">(){}</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #8787d7;">instance</span>;
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+        <span style="color: #268bd2; font-weight: bold;">if</span><span style="color: #2aa198;">(</span>instance==<span style="color: #d75fd7;">null</span><span style="color: #2aa198;">){</span>
+            instance=<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #67b11d;">()</span>;
+        <span style="color: #2aa198;">}</span>
+        <span style="color: #268bd2; font-weight: bold;">return</span> instance;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org2d821cc" class="outline-3">
+<h3 id="org2d821cc"><span class="section-number-3">5.4.</span> 懒汉式（线程安全，同步方法）</h3>
+<div class="outline-text-3" id="text-5-4">
+</div>
+<div id="outline-container-orgc6265df" class="outline-4">
+<h4 id="orgc6265df"><span class="section-number-4">5.4.1.</span> 列子</h4>
+<div class="outline-text-4" id="text-5-4-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #8787d7;">instance</span>;
+    <span style="color: #268bd2; font-weight: bold;">private</span> Single<span style="color: #d75fd7;">(){}</span>
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #268bd2; font-weight: bold;">synchronized</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+        <span style="color: #268bd2; font-weight: bold;">if</span><span style="color: #2aa198;">(</span>instance ==<span style="color: #d75fd7;">null</span><span style="color: #2aa198;">){</span>
+            instance =<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #67b11d;">()</span>;
+        <span style="color: #2aa198;">}</span>
+        <span style="color: #268bd2; font-weight: bold;">return</span> instance;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org73b94f0" class="outline-4">
+<h4 id="org73b94f0"><span class="section-number-4">5.4.2.</span> 优缺点</h4>
+<div class="outline-text-4" id="text-5-4-2">
+<ol class="org-ol">
+<li>解决了线程安全问题</li>
+<li>效率太低，每个线程获取实例时候，执行getInstance()都要进行同步，
+而其实一次实例化代码就够了，后面想要获得该类实例，直接进行return,
+方法进行同步的效率太低</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgde49687" class="outline-3">
+<h3 id="orgde49687"><span class="section-number-3">5.5.</span> 懒汉式（线程安全，同步代码块）</h3>
+<div class="outline-text-3" id="text-5-5">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #8787d7;">instance</span>;
+    <span style="color: #268bd2; font-weight: bold;">private</span> Singleton<span style="color: #d75fd7;">(){}</span>
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+        <span style="color: #268bd2; font-weight: bold;">if</span><span style="color: #2aa198;">(</span>instance ==<span style="color: #d75fd7;">null</span><span style="color: #2aa198;">){</span>
+            <span style="color: #268bd2; font-weight: bold;">synchronized</span> <span style="color: #67b11d;">(</span>Singleton.<span style="color: #268bd2; font-weight: bold;">class</span><span style="color: #67b11d;">){</span>
+                instance=<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #875f00;">()</span>;
+            <span style="color: #67b11d;">}</span>
+        <span style="color: #2aa198;">}</span>
+        <span style="color: #268bd2; font-weight: bold;">return</span> instance;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org42d5e86" class="outline-3">
+<h3 id="org42d5e86"><span class="section-number-3">5.6.</span> 双重检查</h3>
+<div class="outline-text-3" id="text-5-6">
+</div>
+<div id="outline-container-orge80cee7" class="outline-4">
+<h4 id="orge80cee7"><span class="section-number-4">5.6.1.</span> 例子</h4>
+<div class="outline-text-4" id="text-5-6-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #8787d7;">instance</span>;
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">Singleton</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+           <span style="color: #268bd2; font-weight: bold;">if</span><span style="color: #2aa198;">(</span>instance ==<span style="color: #d75fd7;">null</span><span style="color: #2aa198;">){</span>
+               <span style="color: #268bd2; font-weight: bold;">synchronized</span> <span style="color: #67b11d;">(</span>Singleton.<span style="color: #268bd2; font-weight: bold;">class</span><span style="color: #67b11d;">){</span>
+                   <span style="color: #268bd2; font-weight: bold;">if</span><span style="color: #875f00;">(</span>instance==<span style="color: #d75fd7;">null</span><span style="color: #875f00;">){</span>
+                       instance=<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">()</span>;
+                   <span style="color: #875f00;">}</span>
+               <span style="color: #67b11d;">}</span>
+           <span style="color: #2aa198;">}</span>
+           <span style="color: #268bd2; font-weight: bold;">return</span> instance;
+      <span style="color: #d75fd7;">}</span>
+    <span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf3198c2" class="outline-4">
+<h4 id="orgf3198c2"><span class="section-number-4">5.6.2.</span> 优缺点</h4>
+<div class="outline-text-4" id="text-5-6-2">
+<ol class="org-ol">
+<li>Double-Check概念是多线程开发时用到的，我们进行了两次(singleton
+==null)检查，这样就可以保证线程安全了</li>
+<li>实例化对象只用执行一次，</li>
+<li>有指令重排问题，需要volatile关键字，避免指令重排
+mem=allocate() 为单列对象分配内存空间
+instance=mem;引用非空，但是没有初始化，
+ctorSingleton(instance)为单列对象通过instance构造函数</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgb300452" class="outline-4">
+<h4 id="orgb300452"><span class="section-number-4">5.6.3.</span> 指令重排</h4>
+<div class="outline-text-4" id="text-5-6-3">
+<ol class="org-ol">
+<li>当java在创建一个对象时
+<ul class="org-ul">
+<li>首先会分配对象的内存空间 memory=allocate();</li>
+<li>初始化对象 ctorInstance(memory)</li>
+<li>设置instance指向刚分配的内存地址
+instance=memory;</li>
+</ul></li>
+<li>上述步骤在第二步和第三步，可能会在编译器中进行优化，而改变程序
+执行的顺序，重新排序之后，先为对象分配内存地址。在单线程之下，
+不会对代码的执行产生影响</li>
+<li>表格模拟2个线程创建单例
+来源： <a href="https://www.cnblogs.com/lkxsnow/p/12293791.html#:~:text=%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F%E6%98%AF%E6%8C%87%E7%BC%96,%E6%95%B4%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E3%80%82">指令重排介绍</a></li>
+</ol>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">时间</td>
+<td class="org-left">线程A</td>
+<td class="org-left">线程B</td>
+</tr>
+
+<tr>
+<td class="org-left">t1</td>
+<td class="org-left">A1:分配对象内存空间</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">t2</td>
+<td class="org-left">A3:设置instance指向内存空间</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">t3</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">B1:判断instance是否为空</td>
+</tr>
+
+<tr>
+<td class="org-left">t4</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">B2:由于instance不为null,线程B将访问instance引用的对象</td>
+</tr>
+
+<tr>
+<td class="org-left">t5</td>
+<td class="org-left">A2:初始化对象</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">t6</td>
+<td class="org-left">A4:访问instance引用的对象</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-org3abfa73" class="outline-3">
+<h3 id="org3abfa73"><span class="section-number-3">5.7.</span> 静态内部类</h3>
+<div class="outline-text-3" id="text-5-7">
+</div>
+<div id="outline-container-orga1dfd62" class="outline-4">
+<h4 id="orga1dfd62"><span class="section-number-4">5.7.1.</span> 例子</h4>
+<div class="outline-text-4" id="text-5-7-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">LazySingle</span><span style="color: #268bd2;">{</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> LazySingle<span style="color: #d75fd7;">(){}</span>
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">LazySingle</span> <span style="color: #d75fd7; font-weight: bold;">getInstance</span><span style="color: #d75fd7;">(){</span>
+        <span style="color: #268bd2; font-weight: bold;">return</span> <span style="color: #d75fd7;">Inner</span>.INSTANCE;
+    <span style="color: #d75fd7;">}</span>
+    <span style="color: #268bd2; font-weight: bold;">private</span> <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #268bd2; font-weight: bold;">class</span> <span style="color: #df005f; font-weight: bold;">Inner</span><span style="color: #d75fd7;">{</span>
+        <span style="color: #268bd2; font-weight: bold;">static</span> <span style="color: #df005f; font-weight: bold;">LazySingle</span> <span style="color: #8787d7;">INSTANCE</span>=<span style="color: #268bd2; font-weight: bold;">new</span> <span style="color: #df005f; font-weight: bold;">LazySingle</span><span style="color: #2aa198;">()</span>;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga0eaa1d" class="outline-4">
+<h4 id="orga0eaa1d"><span class="section-number-4">5.7.2.</span> 好处</h4>
+<div class="outline-text-4" id="text-5-7-2">
+<ol class="org-ol">
+<li>只有在外部类调用时才加载，产生实例，又不用加锁。</li>
+<li>JVM保证了线程的安全性（虽然不绝对）</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org29f9626" class="outline-3">
+<h3 id="org29f9626"><span class="section-number-3">5.8.</span> 枚举</h3>
+<div class="outline-text-3" id="text-5-8">
+</div>
+<div id="outline-container-org3f27f0c" class="outline-4">
+<h4 id="org3f27f0c"><span class="section-number-4">5.8.1.</span> 例子</h4>
+<div class="outline-text-4" id="text-5-8-1">
+<div class="org-src-container">
+<pre class="src src-java"><span style="color: #268bd2; font-weight: bold;">enum</span> <span style="color: #df005f; font-weight: bold;">Singleton</span><span style="color: #268bd2;">{</span>
+    <span style="color: #8787d7;">INSTANCE</span>;
+    <span style="color: #268bd2; font-weight: bold;">public</span> <span style="color: #df005f; font-weight: bold;">void</span> <span style="color: #d75fd7; font-weight: bold;">sayOK</span><span style="color: #d75fd7;">(){</span>
+        System.out.println<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"ok~"</span><span style="color: #2aa198;">)</span>;
+    <span style="color: #d75fd7;">}</span>
+<span style="color: #268bd2;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3f7db4e" class="outline-4">
+<h4 id="org3f7db4e"><span class="section-number-4">5.8.2.</span> 优点</h4>
+<div class="outline-text-4" id="text-5-8-2">
+<ol class="org-ol">
+<li>使用枚举来实现单例模式，不仅有效避免线程同步，而且能防止反序列
+化重新创建新的对象</li>
+<li>是Effective Java作者Josh Bloch提倡的方法</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgca31d00" class="outline-2">
+<h2 id="orgca31d00"><span class="section-number-2">6.</span> 工厂模式</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org91001b4" class="outline-3">
+<h3 id="org91001b4"><span class="section-number-3">6.1.</span> 需求</h3>
+<div class="outline-text-3" id="text-6-1">
+<ol class="org-ol">
+<li>批萨的项目，要便于批萨种类的扩展，要便于维护</li>
+<li>批萨种类多 GreekPizz CheesePizz 等</li>
+<li>批萨的制作prepare bake cut box</li>
+<li>完成批萨店订购功能</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org8f78d97" class="outline-3">
+<h3 id="org8f78d97"><span class="section-number-3">6.2.</span> 分类</h3>
+<div class="outline-text-3" id="text-6-2">
+<ol class="org-ol">
+<li>简单工厂</li>
+<li>工厂模式</li>
+<li>静态工厂模式</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbdef789" class="outline-2">
+<h2 id="orgbdef789"><span class="section-number-2">7.</span> 建造者模式</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org60dcc97" class="outline-3">
+<h3 id="org60dcc97"><span class="section-number-3">7.1.</span> 基本介绍</h3>
+<div class="outline-text-3" id="text-7-1">
+<ol class="org-ol">
+<li>将复杂对象的建造过程抽象出来，可以构造出不同属性的对象</li>
+<li>一步一步构建一个复杂的对象，只通过复杂对象的类型和内容就可以构造它们</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgdab9325" class="outline-3">
+<h3 id="orgdab9325"><span class="section-number-3">7.2.</span> 建造者模式的四个角色</h3>
+<div class="outline-text-3" id="text-7-2">
+<ol class="org-ol">
+<li>Product 一个具体的产品抽象</li>
+<li>Builder 创建一个Product对象的各个部件指定接口/抽象类</li>
+<li>ConcreteBuilder 实现接口，构建和装配各个部件</li>
+<li>Director(指挥者) 构建一个使用Builder接口的对象，它主要用于一个创建复杂的对象。两个作用，隔离了客户和对象的生成过程。二，负责控制产品对象的生产过程</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org09381b0" class="outline-2">
+<h2 id="org09381b0"><span class="section-number-2">8.</span> UML图测试</h2>
+<div class="outline-text-2" id="text-8">
+
+<div id="orgf6754c0" class="figure">
+<p><img src="my-diagram.png" alt="my-diagram.png" />
+</p>
+</div>
+
+<div class="UML" id="orgfa17695">
+<p>
+Alice -&gt; Bob: Authentication Request
+Bob &#x2013;&gt; Alice: Authentication Response
+</p>
+
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: akinjoker</p>
+<p class="date">Created: 2023-01-25 Wed 18:06</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

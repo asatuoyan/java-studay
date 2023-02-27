@@ -59,7 +59,7 @@
   抽取方法 alt+shift+m
   打开最近修改的文件 ctrl+e
   关闭当前代码栏 ctrl+w
-  
+  可选导入 options import C-M-o
 * 模板
 ** 两种模板
    setting > editor > general > postfix completion(不可修改)

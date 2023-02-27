@@ -1,3 +1,9 @@
+#+TITLE:cookie 
+#+AUTHOR: asatuoyan
+#+email: asatuoyan@email.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
 * Cookie
 ** 什么是Cookie
    1. 是服务器通知客户端保存键值对的一种技术

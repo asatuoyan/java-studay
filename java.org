@@ -95,6 +95,11 @@
     同： 都有生命周期
     异:  局部变量除形参外，需显式初始化
 
+* java导出jar包
+#+begin_src shell
+  jar cf my.jar inputfile \\或者 inputDir/
+  .shatteredpixel/
+#+end_src
 * 常用类及其API
 ** System
 - System.in 默认输入流

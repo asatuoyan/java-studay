@@ -1,0 +1,31 @@
+#+TITLE:groovy语法 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* 介绍
+1. groovy可以同时作为脚本语言金额，也可以作为面向对象的编程语言
+2. 在一个grovvy文件中可以混合类的定义和脚本顶点，此时不需要再定义
+   一个和文件同名的类
+3. 使用def定义变量方法，不建议使用具体的数据类型
+4. groovy中的注释，单行注释用//多行注释用/**/
+5. Groovy中语句末尾的分号可以省略，以换行作为结尾
+6. 声明时，参数类型，返回值可省略
+   return关键字默认使用方法最后一句的返回值作为方法的返回值
+7. z支持大部分语法结构
+8. 闭包，是一个开放的，匿名的代码快，它可以接收参数，也可以有返回值
+   闭包可以引用其周围作用域中声明的变量
+   - 语法 { {closureParameters -> } statements}
+   - 调用
+     1. 第一步: 将闭包赋值给一个变量
+     2. 第二步：变量名(),变量名.call()
+   可以将闭包作为参数传递给它
+   #+begin_src groovy
+def calculate(Closure closure){
+     def num1=10
+     def num2=15
+     closure(num1,num2)
+}
+caculate({k,v->println("$k+ $v=${k+v}")})
+   #+end_src

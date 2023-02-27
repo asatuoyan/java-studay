@@ -1,0 +1,284 @@
+#+TITLE:emacs lisp 
+#+AUTHOR: akinjoker
+#+email: asatuoyan@gamil.com
+#+INFOJS_OPT: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+-----
+* Prefix
+** Lisp list
+*** 简介
+   1. Emacs Lisp(Lisp Processing)缩写，Lisp语言的核心是列表(List)。在Lisp中每个小括号
+代表了list,当执行lisp时，会将列表的第一个元素作为函数名，之后的元素作为参数。
+   #+begin_src emacs-lisp
+	 (+ 4 (- 5 1))
+   #+end_src
+   #+RESULTS:
+   : 8
+   2. 单引号表示不执行后面的元素而直接返回它本身,
+   #+begin_src lisp
+     '(one two three)
+     ;; 此时表达了一个包含三个元素的数组
+   #+end_src
+   #+begin_src emacs-lisp
+	 (org-version)
+	 (emacs-version)
+   #+end_src
+   #+RESULTS:
+   : GNU Emacs 28.2 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.35, cairo version 1.16.0)
+   :  of 2022-12-20, modified by Debian
+#+begin_src emacs-lisp
+  '(lisp list has(a list inside of it))
+#+end_src
+*** Lisp atoms
+1. 对于Lisp，原子(atom)在Lisp List中使用的词不能被分割成任何细小的部分
+2. 作为程序的一部分，数字和单个字符也是不可分割的
+3. 一个列表可以由多个不可分隔原子组成，可以被括号或者原子或者括号和原子所环绕.
+4. 列表可以紧紧有一个原子，或者什么都没有。空列表可以同时被认为是一个原子和一个列表
+5. 列表们和原子们的表达式称为符号表达式，或者确切的说 expreesions。
+6. (expreesion)词语即可以表示输出，也可以表示计算机内部的原子或者列表
+7. 列表中的原子可以是双引号标识的句子或者段落，Stings的使用比符号或者数字更加特殊
+*** Whitespace in Lists
+1. 在lisp中以下两种空白的效果是一致的,空白和新行的设计为了人们更容易阅读。但是单词之类
+   需要至少一个空白来告诉程序读取时，它们不是一个部分。
+   #+begin_src emacs-lisp
+     '(this list
+            looks like this)
+     '(this list look like this)
+   #+end_src
+   #+RESULTS:
+   | this | list | look | like | this |
+
+2. lisp中所有的列表都看起来像这样,除了它们可能更长更复杂。
+3. 简单来说，一个列表带括号，字符串带有双引号，符号看起来像一个单词，数字看起来像数字
+   在特殊情况下，方括号，点和其它特殊的符号会被使用。
+*** GNU emacs将会帮你输入List
+1. 你可以使用自己的格式帮助代码更容易阅读。
+2. emacs 将会帮你自动输入另一个括号
+** Run a Program
+lisp中的任何列表，都是一个准备运行的程序。如果你运行它，它有可能做三件事
+- 返回list本身
+- 向你发送错误信息
+- 将list中的第一个元素(symbol)当作一个命令处理。
+单引号(') ,当它被放置在列表前面时，它告诉不能做除了be written之外的所有事情。如果没有加上单引号
+那么列表的第一个程序将作为命令来执行(也可以称其为函数)。
+- (+ 2 2),lisp 将第一个加号理解为列表的剩余部分的数字做加法。执行此函数，你将看到数字4出现在echo
+  区域
+- 在上面类似的情况中，你所做的就是给lisp解释器一个命令执行表达式。
+  就是翻译人类的语言到机器语言中。
+** 产生错误信息
+error信息应该被叫做有帮助的信息，error被gnu emacs debugger产生，我们可以进入bug窗口然后按q退出
+;打开的窗口名字叫做*BACKTRACE*。可以按下执行重新进入错误窗口
+- 当按下C-c C-e时，执行一个叫eval-last-sexp的交互命令，eval='evaluate' sexp 意味着符号表达式。
+  。symbolic expression
+- error 中越近的action越接近顶部。
+- 当函数未定义时，会显示 sysmbol's function definition is void:this'
+** Symbol Name And Function definnition
+1. 在lisp中，一组指令了被附加到名字上。数字加法的计算机指令可以与符号'plus'和符号‘+’相连
+2. 现在的emacs很庞大，所有处理文本信息的函数以'texinfo-'开头，所有处理email的信息以'rmail-'开头.
+** The Lisp Interpreter
+1. 编译的第一步，lisp解释器尝试将符号的值解释为一个变量，
+2. 编译第二步，是用来处理一些特殊虽然少见，但比较重要的函数，比如定义一个函数
+3. lisp解释在执行列表的时候，总是先执行列表中的列表然后查看它会做什么对外面的列表，解释器从左向右解释。
+   表达式一个一个解释
+*** Byte Compiling
+1. lisp解释器能够解析两类语言，人类可以阅读的或者说字节码。
+2. 编译代码比人类阅读代码运行的更快，可以通过运行编译命令来编译将人类可读的代码转换为字节编译的代码。
+3. 编译后源码通常存储在.elc后缀的文件中。对于大多数的练习来说，扩展emacs来说，你不需要去编译它。
+** 执行(Evaluation)
+*** 解释
+When the lisp interpreter work on an expression.the term for the activity is called
+evaluation.大多数情况下解释器会返回一个值或者造成一点影响，或者产生一些错误。
+*** Evaluation inner Lists
+1. 当执行列表时，由于外层列表需要内层列表的值来执行，所以内层列表总是先进行计算。
+** Variables(变量)
+*** 解释
+1. 符号的值可以是Lisp中任何表达式，比如符号，数字，列表，字符串。一个有值的符号称为变量。
+2. 一个symbol 可以同时被赋予函数定义和值。好比一个地方可以有多个不同的解释
+3. 一个符号，可以以几种方式被绑定为一个值
+*** Error msg for symbol without a function
+*** Error msg for symbol without a value
+** Arguments
+*** 简介
+1. 指代函数中需要的信息，函数通过调用这些原子或者列表来获取到返回值，不同函数要求不同类型的
+   参数
+2. 参数的数据类型
+   - 取决于函数的需要
+*** 参数的类型
+1. 函数也可以作为参数,数字作为参数时，可以参数算术运算
+   #+begin_src emacs-lisp
+     (concat "the " (number-to-string (+ 2 fill-column)) " red foxes")
+   #+end_src
+2. 如果传入了错误的参数类型，会返回一个wrong type argument
+3. 果某個函數末尾帶有p，那麼用行話來說，那個是函數確認某件事是true或者false的函數
+*** message
+1. 打印一條信息
+2. message打印的信息會帶有雙引號
+#+begin_src emacs-lisp
+  (message "this buffname is : %s" (buffer-name))
+  (message "this line is : %d" fill-column)
+  (message "He saw %d %s"
+           (- fill-column 32)
+           (concat "red "
+                   (substring
+                    "The quick brown foxes jumped." 16 21) ;取出foxes字符串拼接
+                   " leaping."))
+#+end_src
+#+RESULTS:
+: He saw 48 red foxes leaping.
+
+** 設置變量的值
+*** 概述
+1. 行話叫bind variable to a value
+*** 使用set
+1. lisp函數必須綁定一個值，如果你不返回錯誤信息
+2. 當使用set時，你必須使用單引號來確保要綁定的值被執行，除非你響應執行它們
+*** 使用setq(set with quote)
+1. 它的第一個參數將會被自動加上單引號
+2. setq 可以同時爲多個參數賦值
+*** 計算
+#+begin_src emacs-lisp
+  (setq counter 0)
+  (setq counter (+ counter 1))
+  counter
+#+end_src
+#+RESULTS:
+: 1
+* Practicing Evaluation
+** Buffer Name
+1. buffer-name the name of the buffer
+2. buffer-file-name the name of the file
+3. 两个函数的返回如下所示。
+   #+begin_src emacs-lisp
+     (buffer-name) ;;emacs-lisp.org
+     (buffer-file-name)
+   #+end_src
+   #+RESULTS:
+   : /home/akinjoker/study-org/emacs-lisp.org
+4. file 和buffer是两个不同的实体，file是存储在你电脑中的信息，
+   除非你删除它，否则不会消失。buffer是emacs中的信息，随着emacs
+   中对应的会话结束将会消失。除非你将buffer中的信息保存到原本的
+   文件中，否则它不会消失。
+5. nil是Latin语的nothing，在lisp中也意味着false
+6. 小括号可以让中间symbol作为函数所解释
+** Get Buffer
+1. buffer-name返回buffer的名字
+2. current-buffer函数获取当前buffer本身
+3. 如果获取到当前buffer,但是buffer本身的信息太长，所以会在回显
+   区域输出一个#<buffer *info*>
+4. (other-buffer) <#buffer *BackTrace*>
+** Switching Buffer
+1. 你可以通过 C-x b来打开最近打开过的buffer,然后输入你想要切换
+   到的buffer.
+2. (switch-to-buffer (other-buffer)) 当你按下C-x b时执行此函数
+   此函数切换buffer的显示到new buffer中，set-buffer仅仅只做一件事情，将计算机的注意力
+   转移到新buffer上，直到命令完成屏幕不变。
+** Buffer Size and the Location of Point
+1. (buffer-size) buffer中的字符数量
+2. (point) 当前光标的位置叫pointer.从buffer开始到光标位置的字符数目
+3. (point-min) 
+4. (point-max)
+* How to Write Function Definitions
+当lisp解释器执行一个list时，它会查看列表中的第一个符号是否attach一个函数定义；或者points
+一个函数定义
+** An Aside about Primitive Functions
+关于原始函数（用C所写的函数），所有的函数都被其它函数所定义，但是有一些原始函数是用C语言所写的。
+但是除非你
+** The defun Macro
+1) 当函数被执行时，会告诉电脑做什么的叫做宏
+2) 函数由以下五部分组成：
+   - 函数名
+   - 参数列表，也可以为空
+   - 文档描述 推荐写
+   - 可选：一个可以使得你的函数具有交互性的的表达式，(interactive)
+   - 函数体： 告诉计算机你要做什么
+   - (interactive "p") p告诉emacs传递prefix argument 给函数，并且函数使用该值作为参数
+     argument-passing-info 是一个预编译参数
+     #+begin_src emacs-lisp
+       (defun function-name (arguments ...)
+         "document-optional..."
+         (interactive argument-passing-info)
+         body...)
+     #+end_src
+** 不同的交互选项(different Options for interactive)
+1. emacs 有超过20种参数为interactive类似于"p",可以在code characters for interactive
+   emacs lisp reference manual
+2. 
+** let
+*** 为什么要使用
+1. 为了不和函数中的其它同名变量混淆，可以给一个符号值
+2. let相当于在函数内部创建了一个局部变量，与函数外部的同名变量，这个局部变量仅仅影响let表达式
+   的范围
+3. 在emacs中，这个let值的使用范围是动态的
+4. let可以一次性创建超过一个变量，给每个变量一个初始值。
+*** the parts of a let expression
+1. let表达式的list有三部分，第一部分是let.第二部分是变量列表，第三部分是let表达式体。
+2. (let (needles 3)) thread初始化值为nil 赋给needles值为3
+3. (let (
+   (variable value)
+   (variable value)
+   )
+   body...)
+*** sample let expression
+#+begin_src emacs-lisp
+  (let ((zebra "stripes")
+        (tiger "fierce"))
+    (message "One kind of animal has %s and another is %s." zebra tiger))
+#+end_src
+*** Uninitialized Variables in a let Statement
+#+begin_src emacs-lisp
+    (let (
+          (birch 3)
+           pine
+           fir
+           (oak 'some))
+      (message "Here are %d variable with %s,%s,and %s value."
+               birch pine fir oak)
+     )
+#+end_src
+** if 表达式
+*** 例子
+#+begin_src emacs-lisp
+  (defun type-of-animal (characteristic)
+       "Print message in echo area depending on CHARACTERISTIC.
+  If the CHARACTERISTIC is the string \"fierce\",then warn a tiger "
+  (if (equal characteristic "fierce")
+      (message "it is a tiger")))
+  (type-of-animal "fierce")
+#+end_src
+
+#+RESULTS:
+** If-then-else Expression
+*** 例子
+#+begin_src emacs-lisp
+  (if (> 4 5)
+      (message "4 falsely greater than 5") ;then part
+    (message "4 is not greater than 5"));else part
+#+end_src
+** Truth and Falsehood in Emacs Lisp
+1. in emacs lisp,false is just our old friend nil.anything else--anything at all is "true"
+   nil表示false.其它anything都是true
+2. 例子
+   #+begin_src emacs-lisp
+     (if 4
+         'true
+       'false)
+     (if nil
+         'true
+       'false)
+   #+end_src
+   #+RESULTS:
+   : false
+** Region(save-excursion)
+1. save-excursion 这个表单，存储光标的位置，如若有代码将光标移动到buffer的末尾，然后执行save
+   excursion这个函数，光标将回到原来的位置
+2. (save-excursion
+   first-expression-in-body
+   second-expression-in-body
+   ...
+   last-expression-in-body)
+3. (let varlist
+   (save-excursion)
+   body...)
+* A few Buffer-Related Functions
+
+

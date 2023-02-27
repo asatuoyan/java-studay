@@ -1,0 +1,9 @@
+#+TITLE: postgres
+* 安装以及启动账户
+#+begin_src shell
+# 安装postgre   s
+sudo apt-get install postgresql-15
+sudo -u postgres psql
+# 进入数据库后，修改密码
+ALTER USER postgres PASSWORD "myPasswd";
+#+end_src

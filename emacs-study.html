@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-12-29 Thu 23:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Emacs study Note</title>
+<meta name="author" content="akinjoker" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">My Emacs study Note</h1>
+<div id="outline-container-orgcba9495" class="outline-2">
+<h2 id="orgcba9495"><span class="section-number-2">1.</span> emacs study</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org282d07e" class="outline-3">
+<h3 id="org282d07e"><span class="section-number-3">1.1.</span> emacs install</h3>
+</div>
+<div id="outline-container-orgff65fe3" class="outline-3">
+<h3 id="orgff65fe3"><span class="section-number-3">1.2.</span> emacs command</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-org5e631cd" class="outline-4">
+<h4 id="org5e631cd"><span class="section-number-4">1.2.1.</span> 移动命令</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>C-a C-e start and end</li>
+<li>C-v 向下移动一个屏幕</li>
+<li>M-v 向上移动一个屏幕</li>
+<li>C-L 清理屏幕并且显示整个文本，移动光标到屏幕中心</li>
+<li>C-p 向上一行 C-n 向下一行</li>
+<li>C-b 屏幕上光标一个字母一个字母backward(向左（同行）)移动
+C-f 屏幕上光标一个字母一个字谜forward（向右（同行）移动）</li>
+<li>M-b M-f 一个字符一个字符的向backward或者forward移动 M-p M-n 未定义</li>
+<li>C-a 移动到一行的开始 C-e 移动到一行的结尾</li>
+<li>M-a 移动到一条语句的开始 M-e 移动到一句的结尾</li>
+<li>C-u 8 C-f 向前移动八个字母单位</li>
+<li>C-u 8 C-v(M-v) 向下卷动8行</li>
+<li>1和t是打开 0和 -1为关闭</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3edfdf1" class="outline-3">
+<h3 id="org3edfdf1"><span class="section-number-3">1.3.</span> 窗口命令</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+C-x 1 只留下一个窗口，干掉剩下所有窗口
+C-u 0 C-l 移动光标到本行 从屏幕0行开始显示
+C-h k C-f 显示C-f命令的文档
+C-x 2 开启第二个窗口在下面 C-x 3 开启窗口在右边
+C-x 0 关闭当前窗口
+</p>
+</div>
+</div>
+<div id="outline-container-orgc9b8fa2" class="outline-3">
+<h3 id="orgc9b8fa2"><span class="section-number-3">1.4.</span> switch buffer</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+-C-x C-B 可以切换到最近使用的文件
+</p>
+</div>
+</div>
+<div id="outline-container-org7184375" class="outline-3">
+<h3 id="org7184375"><span class="section-number-3">1.5.</span> disabled commands</h3>
+</div>
+<div id="outline-container-orgb50301a" class="outline-3">
+<h3 id="orgb50301a"><span class="section-number-3">1.6.</span> F1-F12</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>F1 help-command</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org89dfe10" class="outline-3">
+<h3 id="org89dfe10"><span class="section-number-3">1.7.</span> buffer-command</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+eval-buffer 执行buffer中的所有命令
+</p>
+</div>
+</div>
+<div id="outline-container-org53444b7" class="outline-3">
+<h3 id="org53444b7"><span class="section-number-3">1.8.</span> mark</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+ctrl+shift+space
+</p>
+<ul class="org-ul">
+<li>major mode and miner mode</li>
+</ul>
+<p>
+** major mode 同时只能激活一个
+</p>
+<ul class="org-ul">
+<li>minor mode 同时可以激活多个</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3bf2dc2" class="outline-3">
+<h3 id="org3bf2dc2"><span class="section-number-3">1.9.</span> indent</h3>
+</div>
+<div id="outline-container-orgdac3009" class="outline-3">
+<h3 id="orgdac3009"><span class="section-number-3">1.10.</span> hippie expan(补全)</h3>
+</div>
+<div id="outline-container-org00f268b" class="outline-3">
+<h3 id="org00f268b"><span class="section-number-3">1.11.</span> create directory</h3>
+<div class="outline-text-3" id="text-1-11">
+<p>
++: to create directory
+C-x C-f: to create file
+g: to refresh dired buffer
+C(upper letter): copy file
+D: delete file after confirm
+d: delete that only marking
+R: rename files
+</p>
+</div>
+</div>
+<div id="outline-container-org25ee24b" class="outline-3">
+<h3 id="org25ee24b"><span class="section-number-3">1.12.</span> dired(目录，文件的显示)</h3>
+<div class="outline-text-3" id="text-1-12">
+<p>
+C-x C-j 打开当前目录
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8de275f" class="outline-2">
+<h2 id="org8de275f"><span class="section-number-2">2.</span> buffer</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org3dc52d6" class="outline-3">
+<h3 id="org3dc52d6"><span class="section-number-3">2.1.</span> buffer-local</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>emacs 中一些变量是"buffer-local" 如果不是buffer-local 那么setq 和setq-default
+是等价的，反之则不等价，setq-default修改全局变量的值。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge2c7c87" class="outline-3">
+<h3 id="orge2c7c87"><span class="section-number-3">2.2.</span> mode</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>(dekete-selection-mode t) 当选中时，输入characters,选中内容被替换</li>
+<li>add-hook 'emacs-lisp-mode-hook 'show-paren-mode
+向emacs-lisp major mode上添加钩子，打开文件后，加载majormode，之后添加所有钩子</li>
+<li>hungry-delete-mode 删除</li>
+<li>package-list-packages (I(install)/delete/update)
+按下I可以选中安装的package,按下U则可以取消</li>
+<li>smex 提供说明为M-x</li>
+<li>swiper 为M-x 输入命令时提供补全</li>
+<li>smartparen 智能双括号</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org475cc08" class="outline-3">
+<h3 id="org475cc08"><span class="section-number-3">2.3.</span> 激活的mode</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+c-h m 查看的激活的mode
+</p>
+</div>
+</div>
+<div id="outline-container-org1ca1a9d" class="outline-3">
+<h3 id="org1ca1a9d"><span class="section-number-3">2.4.</span> load</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+require 实际上内部调用load来加载文件
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org2899185" class="outline-2">
+<h2 id="org2899185"><span class="section-number-2">3.</span> short keyword setting</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgcb2cd41" class="outline-3">
+<h3 id="orgcb2cd41"><span class="section-number-3">3.1.</span> 按键设置</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+kbd "M-&lt;return&gt;"
+</p>
+</div>
+</div>
+<div id="outline-container-orge635905" class="outline-3">
+<h3 id="orge635905"><span class="section-number-3">3.2.</span> RET 按键</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+RET = C-m 在图形界面中，当按下&lt;Enter&gt;/&lt;Return&gt; 键实际上向Emacs发送&lt;Return&gt;
+而Emacs自动将&lt;return&gt;映射为RET。
+</p>
+</div>
+</div>
+<div id="outline-container-orgae334a4" class="outline-3">
+<h3 id="orgae334a4"><span class="section-number-3">3.3.</span> customize</h3>
+<div class="outline-text-3" id="text-3-3">
+<ul class="org-ul">
+<li>customize group 自定义Mode功能</li>
+</ul>
+<p>
+org mode
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga85e4be" class="outline-2">
+<h2 id="orga85e4be"><span class="section-number-2">4.</span> org</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org3d6044a" class="outline-3">
+<h3 id="org3d6044a"><span class="section-number-3">4.1.</span> table</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+alt + 右箭头
+alt+  up 或者down 移动当前行
+</p>
+<ul class="org-ul">
+<li>heml
+M-; comment-dwim 设置为注释</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">some</td>
+<td class="org-left">data</td>
+</tr>
+
+<tr>
+<td class="org-right">12</td>
+<td class="org-left">bukle my shoe</td>
+</tr>
+
+<tr>
+<td class="org-right">34</td>
+<td class="org-left">shut the door</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+org todo事项
+</p>
+<p>
+todo  C-c C-t 标记todo事项
+timer C-c C-x 标记待做事项的事件
+</p>
+</div>
+</div>
+<div id="outline-container-org0f6de35" class="outline-3">
+<h3 id="org0f6de35"><span class="section-number-3">4.2.</span> export to other Exports</h3>
+<div class="outline-text-3" id="text-4-2">
+<ol class="org-ol">
+<li>C-c C-e 打开一个window显示导出格式</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgfb9f4c3" class="outline-3">
+<h3 id="orgfb9f4c3"><span class="section-number-3">4.3.</span> org-capture [记笔记]</h3>
+</div>
+</div>
+
+<div id="outline-container-org36dc1e6" class="outline-2">
+<h2 id="org36dc1e6"><span class="section-number-2">5.</span> emacs lisp</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgc0229f0" class="outline-3">
+<h3 id="orgc0229f0"><span class="section-number-3">5.1.</span> 概述</h3>
+<div class="outline-text-3" id="text-5-1">
+<ol class="org-ol">
+<li>Emacs Lisp(Lisp Processing)缩写，Lisp语言的核心是列表(List)。在Lisp中每个小括号</li>
+</ol>
+<p>
+代表了list,当执行lisp时，会将列表的第一个元素作为函数名，之后的元素作为参数。
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #4f97d7;">(</span>+ <span style="color: #a45bad;">4</span> <span style="color: #bc6ec5;">(</span>- <span style="color: #a45bad;">5</span> <span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span>
+</pre>
+</div>
+<ol class="org-ol">
+<li>单引号表示不执行后面的元素而直接返回它本身,</li>
+</ol>
+<div class="org-src-container">
+<pre class="src src-lisp">'<span style="color: #4f97d7;">(</span>one two three<span style="color: #4f97d7;">)</span>
+<span style="color: #2aa1ae; background-color: #292e34;">;; </span><span style="color: #2aa1ae; background-color: #292e34;">&#27492;&#26102;&#34920;&#36798;&#20102;&#19968;&#20010;&#21253;&#21547;&#19977;&#20010;&#20803;&#32032;&#30340;&#25968;&#32452;</span>
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #4f97d7;">(</span>org-version<span style="color: #4f97d7;">)</span>
+<span style="color: #4f97d7;">(</span>emacs-version<span style="color: #4f97d7;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org67e43d2" class="outline-3">
+<h3 id="org67e43d2"><span class="section-number-3">5.2.</span> defun-advice</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+可以增强函数增强功能，但是不用修改函数代码
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf83c908" class="outline-2">
+<h2 id="orgf83c908"><span class="section-number-2">6.</span> Source code的使用</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #4f97d7;">echo</span> $<span style="color: #7590db;">ARG1</span> $<span style="color: #7590db;">ARG2</span>
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-ruby"><span style="color: #4f97d7; font-weight: bold;">def</span> <span style="color: #bc6ec5; font-weight: bold;">fact</span><span style="color: #4f97d7;">(</span>n<span style="color: #4f97d7;">)</span>
+<span style="color: #4f97d7; font-weight: bold;">if</span> n==<span style="color: #a45bad;">0</span>
+  <span style="color: #a45bad;">1</span>
+<span style="color: #4f97d7; font-weight: bold;">else</span>
+  n*fact<span style="color: #4f97d7;">(</span>n-<span style="color: #a45bad;">1</span><span style="color: #4f97d7;">)</span>
+<span style="color: #4f97d7; font-weight: bold;">end</span>
+<span style="color: #4f97d7; font-weight: bold;">end</span>
+fact<span style="color: #4f97d7;">(</span><span style="color: #a45bad;">4</span><span style="color: #4f97d7;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org36362a4" class="outline-2">
+<h2 id="org36362a4"><span class="section-number-2">7.</span> Latex integration</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>Characters &alpha; &rarr; &beta;</li>
+<li>\(0(0 \log n)\)</li>
+</ul>
+\begin{align*}
+  3 * 2 + &= 6 + 1 \\
+          &= 7
+\end{align*}
+</div>
+</div>
+<div id="outline-container-orgac4110a" class="outline-2">
+<h2 id="orgac4110a"><span class="section-number-2">8.</span> Literate programming</h2>
+</div>
+<div id="outline-container-orgbf2d013" class="outline-2">
+<h2 id="orgbf2d013"><span class="section-number-2">9.</span> Todo stuff!</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-orgf7d710f" class="outline-3">
+<h3 id="orgf7d710f"><span class="section-number-3">9.1.</span> <span class="todo TODO">TODO</span> explain todo lists</h3>
+<div class="outline-text-3" id="text-9-1">
+</div>
+</div>
+<div id="outline-container-orgbda3738" class="outline-3">
+<h3 id="orgbda3738"><span class="section-number-3">9.2.</span> <span class="done DONE">DONE</span> cycle through states</h3>
+<div class="outline-text-3" id="text-9-2">
+</div>
+</div>
+</div>
+<div id="outline-container-org4b173a1" class="outline-2">
+<h2 id="org4b173a1"><span class="section-number-2">10.</span> org-capture</h2>
+</div>
+<div id="outline-container-org0a0b362" class="outline-2">
+<h2 id="org0a0b362"><span class="section-number-2">11.</span> global menu</h2>
+<div class="outline-text-2" id="text-11">
+<ol class="org-ol">
+<li>f10可以使用global menu</li>
+<li>org menu中浏览cutomize-browse org group</li>
+</ol>
+
+
+<p>
+<code>org2blog</code>
+<code>org-publish</code>
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: akinjoker</p>
+<p class="date">Created: 2022-12-29 Thu 23:15</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
